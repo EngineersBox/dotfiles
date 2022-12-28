@@ -10,7 +10,7 @@ fi
 
 # Path to your oh-my-zsh installation.
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
-export ZSH="/Users/jackkilrain/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -115,11 +115,11 @@ source "$HOME/.cargo/env"
 # ---- CUSTOM CONFIGS ----
 
 # heroku autocomplete setup
-HEROKU_AC_ZSH_SETUP_PATH=/Users/jackkilrain/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;source /Users/jackkilrain/Desktop/Work/Second-Year/COMP2310/testing/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-[[ -s /Users/jackkilrain/.autojump/etc/profile.d/autojump.sh ]] && source /Users/jackkilrain/.autojump/etc/profile.d/autojump.sh
+HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;source $HOME/Desktop/Work/Second-Year/COMP2310/testing/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 
 # ---- PATH ENV VAR ---- #
-export PATH="/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:/Users/jackkilrain/.autojump/bin:/Users/jackkilrain/opt/GNAT/2019/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin"
+export PATH="/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:$HOME/opt/GNAT/2019/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin"
 
 CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
@@ -145,33 +145,33 @@ function leak_test_log() {
 }
 
 function init_pmem_qemu() {
-  cd /Users/jackkilrain/Desktop/Projects/C:C++/$1
-  qemu-system-x86_64 -drive file=/Users/jackkilrain/linux_distros/ubuntu.raw,format=raw,index=0,media=disk \
-    -drive media=cdrom,file=/Users/jackkilrain/linux_distros/ubuntu-20.04.4-live-server-amd64.iso,readonly=on \
+  cd $HOME/Desktop/Projects/C:C++/$1
+  qemu-system-x86_64 -drive file=$HOME/linux_distros/ubuntu.raw,format=raw,index=0,media=disk \
+    -drive media=cdrom,file=$HOME/linux_distros/ubuntu-20.04.4-live-server-amd64.iso,readonly=on \
     -boot d \
     -m 4G,slots=4,maxmem=32G \
     -smp 4 \
     -machine pc,nvdimm=on \
-    -object memory-backend-file,id=mem1,share=on,mem-path=/Users/jackkilrain/linux_distros/vms/qemu/f27nvdimm0,size=4G \
+    -object memory-backend-file,id=mem1,share=on,mem-path=$HOME/linux_distros/vms/qemu/f27nvdimm0,size=4G \
     -device nvdimm,memdev=mem1,id=nv1,label-size=2M \
-    -object memory-backend-file,id=mem2,share=on,mem-path=/Users/jackkilrain/linux_distros/vms/qemu/f27nvdimm1,size=4G \
+    -object memory-backend-file,id=mem2,share=on,mem-path=$HOME/linux_distros/vms/qemu/f27nvdimm1,size=4G \
     -device nvdimm,memdev=mem2,id=nv2,label-size=2M \
-    -virtfs local,path=/Users/jackkilrain/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
+    -virtfs local,path=$HOME/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
 }
 
 function start_pmem_qemu() {
   echo "Mount the FS into the VM with: 'sudo mount -t 9p -o trans=virtio $1 /home/qemu/$1 -oversion=9p2000.u'"
-  cd /Users/jackkilrain/Desktop/Projects/C:C++/$1
-  qemu-system-x86_64 -drive file=/Users/jackkilrain/linux_distros/ubuntu.raw,format=raw,index=0,media=disk \
+  cd $HOME/Desktop/Projects/C:C++/$1
+  qemu-system-x86_64 -drive file=$HOME/linux_distros/ubuntu.raw,format=raw,index=0,media=disk \
     -boot d \
     -m 4G,slots=4,maxmem=32G \
     -smp 4 \
     -machine pc,nvdimm=on \
-    -object memory-backend-file,id=mem1,share=on,mem-path=/Users/jackkilrain/linux_distros/vms/qemu/f27nvdimm0,size=4G \
+    -object memory-backend-file,id=mem1,share=on,mem-path=$HOME/linux_distros/vms/qemu/f27nvdimm0,size=4G \
     -device nvdimm,memdev=mem1,id=nv1,label-size=2M \
-    -object memory-backend-file,id=mem2,share=on,mem-path=/Users/jackkilrain/linux_distros/vms/qemu/f27nvdimm1,size=4G \
+    -object memory-backend-file,id=mem2,share=on,mem-path=$HOME/linux_distros/vms/qemu/f27nvdimm1,size=4G \
     -device nvdimm,memdev=mem2,id=nv2,label-size=2M \
-    -virtfs local,path=/Users/jackkilrain/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
+    -virtfs local,path=$HOME/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
 }
 
 function showPreview() {
@@ -312,6 +312,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
 
 # Opam configuration
-[[ ! -r /Users/jackkilrain/.opam/opam-init/init.zsh ]] || source /Users/jackkilrain/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 compinit
