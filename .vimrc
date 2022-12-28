@@ -2,7 +2,6 @@ call plug#begin()
 
 Plug 'sheerun/vim-polyglot'
 Plug 'phanviet/vim-monokai-pro'
-Plug 'valloric/youcompleteme'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'frazrepo/vim-rainbow'
@@ -10,7 +9,7 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'vim-syntastic/syntastic'
 Plug 'tikhomirov/vim-glsl'
 Plug 'preservim/nerdtree' |
-                  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+				  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
                   \ Plug 'ryanoasis/vim-devicons' | 
                   \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
@@ -28,7 +27,11 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'voldikss/vim-floaterm'
-
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
 
 call plug#end()
 
@@ -111,24 +114,36 @@ highlight GitGutterAdd guifg=#a1d373 ctermfg=2
 highlight GitGutterChange guifg=#f19465 ctermfg=3
 highlight GitGutterDelete guifg=#f45e84 ctermfg=1
 
-lua require('Comment').setup()
+let g:coq_settings = { 'auto_start': 'shut-up' }
 
-lua vim.opt.list = true
-lua vim.opt.listchars:append "space:⋅"
-lua vim.opt.listchars:append "eol:↴"
+lua <<EOF
 
-lua require("indent_blankline").setup({
-			\ space_char_blankline = " ",
-			\ show_current_context = true,
-			\  show_current_context_start = true,
-			\ })
+require("Comment").setup()
 
-lua require("nvim-treesitter.configs").setup({
-			\ ensure_installed = "all",
-			\ sync_install = false,
-			\ auto_install = true,
-			\ highlight = {
-			\	enabled = true,
-			\ },
-			\ additional_vim_regex_highlighting = false,
-			\ })
+vim.opt.list = true
+vim.opt.listchars:append "space:⋅"
+vim.opt.listchars:append "eol:↴"
+
+require("indent_blankline").setup({
+	space_char_blankline = " ",
+	show_current_context = true,
+	show_current_context_start = true,
+})
+
+require("nvim-treesitter.configs").setup({
+	ensure_installed = "all",
+	sync_install = false,
+	auto_install = true,
+	highlight = {
+		enabled = true,
+	},
+	additional_vim_regex_highlighting = false,
+})
+
+-- local chadtree_settings = { 
+-- 	theme = {
+--  	text_colour_set = "nord",
+--	 },	
+-- }
+-- vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+EOF
