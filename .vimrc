@@ -17,6 +17,18 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+Plug 'numToStr/Comment.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'voldikss/vim-floaterm'
+
 
 call plug#end()
 
@@ -98,3 +110,25 @@ nmap <F8> :TagbarToggle<CR>
 highlight GitGutterAdd guifg=#a1d373 ctermfg=2
 highlight GitGutterChange guifg=#f19465 ctermfg=3
 highlight GitGutterDelete guifg=#f45e84 ctermfg=1
+
+lua require('Comment').setup()
+
+lua vim.opt.list = true
+lua vim.opt.listchars:append "space:⋅"
+lua vim.opt.listchars:append "eol:↴"
+
+lua require("indent_blankline").setup({
+			\ space_char_blankline = " ",
+			\ show_current_context = true,
+			\  show_current_context_start = true,
+			\ })
+
+lua require("nvim-treesitter.configs").setup({
+			\ ensure_installed = "all",
+			\ sync_install = false,
+			\ auto_install = true,
+			\ highlight = {
+			\	enabled = true,
+			\ },
+			\ additional_vim_regex_highlighting = false,
+			\ })
