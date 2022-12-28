@@ -174,7 +174,6 @@ function start_pmem_qemu() {
     -virtfs local,path=/Users/jackkilrain/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
 }
 
-#!/usr/bin/env bash
 function showPreview() {
   gitFilePreview="git diff $@ --color=always -- {-1} | delta --line-numbers --dark"
   execute="enter:execute(git difftool {} < /dev/tty)"
