@@ -39,8 +39,8 @@ yabai -m config external_bar               all:39:0     \
                                                         \
                 top_padding                20           \
                 bottom_padding             10           \
-                left_padding               10           \
-                right_padding              10           \
+                left_padding               20           \
+                right_padding              20           \
                 window_gap                 8
 
 # Exclude problematic apps from being managed:
