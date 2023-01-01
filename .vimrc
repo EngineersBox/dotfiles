@@ -45,6 +45,10 @@ Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'goolord/alpha-nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'm-demare/hlargs.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'joehannes-os/telescope-media-files.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'luochen1990/rainbow'
 
 call plug#end()
 
@@ -99,6 +103,11 @@ let g:lightline = {
 	  \ }
 
 let g:rainbow_active = 1
+" TODO: Fix colouring of rainbow brackets here
+let g:rainbow_conf = {
+			\ 'guifgs': ['LightBlue','LightCyan','LightGreen','LightYellow','LightRed','LightMagenta'],
+			\ 'ctermfgs': ['LightBlue','LightCyan','LightGreen','LightYellow','LightRed','LightMagenta'],
+			\ }
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -144,12 +153,15 @@ nnoremap <A-CR> :CodeActionMenu<CR>
 
 nmap <F9> :FloatermNew<CR>
 
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<CR>
+nnoremap <leader>fg <cmd>Telescope live_grep<CR>
+nnoremap <leader>fb <cmd>Telescope buffers<CR>
+nnoremap <leader>fB <cmd>Telescope file_browser<CR>
+nnoremap <leader>fh <cmd>Telescope help_tags<CR>
 
 lua <<EOF
+vim.api.nvim_set_hl(0, "@punctuation.bracket", { link = "" })
+
 local alpha = require("alpha")
 local dashboard = require("alpha.themes.dashboard")
   dashboard.section.header.val = {
@@ -312,9 +324,17 @@ require('lspconfig')['rust_analyzer'].setup{
 }
 
 local telescope = require('telescope')
-telescope.setup()
+telescope.setup({
+	extensions = {
+		media_files = {
+			find_cmd = "rg",
+		},
+	},
+})
 telescope.load_extension('project')
 telescope.load_extension('fzf')
+telescope.load_extension('media_files')
+telescope.load_extension('file_browser')
 -- telescope.load_extension("ui-select")
 
 require("dressing").setup({
