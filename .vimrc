@@ -10,7 +10,6 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'preservim/nerdtree' |
 				  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
                   \ Plug 'ryanoasis/vim-devicons' | 
-                  \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -37,6 +36,15 @@ Plug 'rmagatti/goto-preview'
 Plug 'mfussenegger/nvim-jdtls'
 Plug 'simrat39/rust-tools.nvim'
 Plug 'jose-elias-alvarez/typescript.nvim'
+Plug 'weilbith/nvim-code-action-menu'
+Plug 'stevearc/dressing.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope-project.nvim'
+Plug 'goolord/alpha-nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'm-demare/hlargs.nvim'
 
 call plug#end()
 
@@ -54,6 +62,9 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set noexpandtab
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set foldlevelstart=99
 
 set clipboard=unnamedplus
 set encoding=UTF-8
@@ -111,8 +122,10 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 let g:NERDTreeGitStatusShowClean = 1
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
-autocmd VimEnter * TagbarToggle | if (argc() > 0 || exists("s:std_in")) && (&filetype ==# 'c' || &filetype ==# 'cpp') | wincmd p | endif
+autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | TagbarToggle | wincmd p | else | Alpha | endif 
+"autocmd VimEnter * Alpha | if argc() = 0 | wincmd p | endif
+"autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+"autocmd VimEnter * TagbarToggle | if (argc() > 0 || exists("s:std_in")) | wincmd p | endif
 autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()
 
 nmap <F8> :TagbarToggle<CR>
@@ -127,8 +140,81 @@ nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>
 nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<CR>
 nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>
 nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>
+nnoremap <A-CR> :CodeActionMenu<CR>
+
+nmap <F9> :FloatermNew<CR>
+
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 lua <<EOF
+local alpha = require("alpha")
+local dashboard = require("alpha.themes.dashboard")
+  dashboard.section.header.val = {
+    [[=================     ===============     ===============   ========  ========]],
+    [[\\ . . . . . . .\\   //. . . . . . .\\   //. . . . . . .\\  \\. . .\\// . . //]],
+    [[||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\/ . . .||]],
+    [[|| . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||]],
+    [[||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||]],
+    [[|| . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\ . . . . ||]],
+    [[||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\_ . .|. .||]],
+    [[|| . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\ `-_/| . ||]],
+    [[||_-' ||  .|/    || ||    \|.  || `-_|| ||_-' ||  .|/    || ||   | \  / |-_.||]],
+    [[||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \  / |  `||]],
+    [[||    `'         || ||         `'    || ||    `'         || ||   | \  / |   ||]],
+    [[||            .===' `===.         .==='.`===.         .===' /==. |  \/  |   ||]],
+    [[||         .=='   \_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \/  |   ||]],
+    [[||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \/  |   ||]],
+    [[||   .=='    _-'          '-__\._-'         '-_./__-'         `' |. /|  |   ||]],
+    [[||.=='    _-'                                                     `' |  /==.||]],
+    [[=='    _-'                        N E O V I M                         \/   `==]],
+    [[\   _-'                                                                `-_   /]],
+    [[ `''                                                                      ``' ]],
+  }
+
+  dashboard.section.buttons.val = {
+    dashboard.button("f", "  Find a file", ":Telescope find_files <CR>"),
+    dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+    dashboard.button("p", "  Find a project", ":Telescope project <CR>"),
+    dashboard.button("r", "  Recently used files", ":Telescope oldfiles <CR>"),
+    dashboard.button("t", "  Find text", ":Telescope live_grep <CR>"),
+    dashboard.button("c", "  Configuration", ":e $MYVIMRC<CR>"),
+    dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
+  }
+
+  local function footer()
+    -- Number of plugins
+    local total_plugins = #vim.tbl_keys(vim.g.plugs)
+    local datetime = os.date "%d-%m-%Y %H:%M:%S"
+    local plugins_text = "   "
+      .. total_plugins
+      .. " plugins"
+      .. "   v"
+      .. vim.version().major
+      .. "."
+      .. vim.version().minor
+      .. "."
+      .. vim.version().patch
+      .. "   "
+      .. datetime
+
+    -- Quote
+    local fortune = require("alpha.fortune")
+    local quote = table.concat(fortune(), "\n")
+
+    return plugins_text .. "\n" .. quote
+  end
+
+  dashboard.section.footer.val = footer()
+
+  dashboard.section.footer.opts.hl = "Type"
+  dashboard.section.header.opts.hl = "Include"
+  dashboard.section.buttons.opts.hl = "Keyword"
+
+  dashboard.opts.opts.noautocmd = true
+  alpha.setup(dashboard.opts)
 
 require("Comment").setup()
 
@@ -224,6 +310,23 @@ require('lspconfig')['rust_analyzer'].setup{
       ["rust-analyzer"] = {}
     }
 }
+
+local telescope = require('telescope')
+telescope.setup()
+telescope.load_extension('project')
+telescope.load_extension('fzf')
+-- telescope.load_extension("ui-select")
+
+require("dressing").setup({
+      input = {
+            relative = "editor",
+      },
+      select = {
+            backend = { "telescope", "fzf", "builtin" }
+      },
+})
+
+require("hlargs").setup()
 
 -- local chadtree_settings = { 
 -- 	theme = {
