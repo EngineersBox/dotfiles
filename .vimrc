@@ -128,6 +128,7 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Clean'     :'✔︎',
                 \ 'Unknown'   :'?',
                 \ }
+
 let g:NERDTreeGitStatusShowClean = 1
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
@@ -157,36 +158,39 @@ nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
 nnoremap <leader>fb <cmd>Telescope buffers<CR>
 nnoremap <leader>fB <cmd>Telescope file_browser<CR>
+nnoremap <leader>fo <cmd>Telescope oldfiles<CR>
 nnoremap <leader>fh <cmd>Telescope help_tags<CR>
 
 lua <<EOF
 vim.api.nvim_set_hl(0, "@punctuation.bracket", { link = "" })
 
 local alpha = require("alpha")
+local alphaterm = require("alpha.term")
 local dashboard = require("alpha.themes.dashboard")
-  dashboard.section.header.val = {
-    [[=================     ===============     ===============   ========  ========]],
-    [[\\ . . . . . . .\\   //. . . . . . .\\   //. . . . . . .\\  \\. . .\\// . . //]],
-    [[||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\/ . . .||]],
-    [[|| . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||]],
-    [[||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||]],
-    [[|| . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\ . . . . ||]],
-    [[||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\_ . .|. .||]],
-    [[|| . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\ `-_/| . ||]],
-    [[||_-' ||  .|/    || ||    \|.  || `-_|| ||_-' ||  .|/    || ||   | \  / |-_.||]],
-    [[||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \  / |  `||]],
-    [[||    `'         || ||         `'    || ||    `'         || ||   | \  / |   ||]],
-    [[||            .===' `===.         .==='.`===.         .===' /==. |  \/  |   ||]],
-    [[||         .=='   \_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \/  |   ||]],
-    [[||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \/  |   ||]],
-    [[||   .=='    _-'          '-__\._-'         '-_./__-'         `' |. /|  |   ||]],
-    [[||.=='    _-'                                                     `' |  /==.||]],
-    [[=='    _-'                        N E O V I M                         \/   `==]],
-    [[\   _-'                                                                `-_   /]],
-    [[ `''                                                                      ``' ]],
-  }
+  -- dashboard.section.header.val = {
+  --   [[=================     ===============     ===============   ========  ========]],
+  --   [[\\ . . . . . . .\\   //. . . . . . .\\   //. . . . . . .\\  \\. . .\\// . . //]],
+  --   [[||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\/ . . .||]],
+  --   [[|| . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||]],
+  --   [[||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||]],
+  --   [[|| . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\ . . . . ||]],
+  --   [[||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\_ . .|. .||]],
+  --   [[|| . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\ `-_/| . ||]],
+  --   [[||_-' ||  .|/    || ||    \|.  || `-_|| ||_-' ||  .|/    || ||   | \  / |-_.||]],
+  --   [[||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \  / |  `||]],
+  --   [[||    `'         || ||         `'    || ||    `'         || ||   | \  / |   ||]],
+  --   [[||            .===' `===.         .==='.`===.         .===' /==. |  \/  |   ||]],
+  --   [[||         .=='   \_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \/  |   ||]],
+  --   [[||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \/  |   ||]],
+  --   [[||   .=='    _-'          '-__\._-'         '-_./__-'         `' |. /|  |   ||]],
+  --   [[||.=='    _-'                                                     `' |  /==.||]],
+  --   [[=='    _-'                        N E O V I M                         \/   `==]],
+  --   [[\   _-'                                                                `-_   /]],
+  --   [[ `''                                                                      ``' ]],
+-- 
+  -- }
 
-  dashboard.section.buttons.val = {
+dashboard.section.buttons.val = {
     dashboard.button("f", "  Find a file", ":Telescope find_files <CR>"),
     dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
     dashboard.button("p", "  Find a project", ":Telescope project <CR>"),
@@ -194,9 +198,8 @@ local dashboard = require("alpha.themes.dashboard")
     dashboard.button("t", "  Find text", ":Telescope live_grep <CR>"),
     dashboard.button("c", "  Configuration", ":e $MYVIMRC<CR>"),
     dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
-  }
-
-  local function footer()
+}
+local function footer()
     -- Number of plugins
     local total_plugins = #vim.tbl_keys(vim.g.plugs)
     local datetime = os.date "%d-%m-%Y %H:%M:%S"
@@ -217,16 +220,33 @@ local dashboard = require("alpha.themes.dashboard")
     local quote = table.concat(fortune(), "\n")
 
     return plugins_text .. "\n" .. quote
-  end
+end
 
-  dashboard.section.footer.val = footer()
+dashboard.section.footer.val = footer()
 
-  dashboard.section.footer.opts.hl = "Type"
-  dashboard.section.header.opts.hl = "Include"
-  dashboard.section.buttons.opts.hl = "Keyword"
+dashboard.section.footer.opts.hl = "Type"
+-- dashboard.section.header.opts.hl = "Include"
+dashboard.section.buttons.opts.hl = "Keyword"
 
-  dashboard.opts.opts.noautocmd = true
-  alpha.setup(dashboard.opts)
+dashboard.opts.opts.noautocmd = true
+
+local width = 52
+local height = 17
+dashboard.section.terminal.command = "cat | " .. os.getenv("HOME") .. "/.config/nvim/doom/render.sh"
+dashboard.section.terminal.width = width
+dashboard.section.terminal.height = height
+dashboard.section.terminal.opts.redraw = true
+
+dashboard.config.layout = {
+	{ type = "padding", val = 1 },
+	dashboard.section.terminal,
+	{ type = "padding", val = height + 8 },
+	dashboard.section.buttons,
+	{ type = "padding", val = 1 },
+	dashboard.section.footer,
+}
+
+alpha.setup(dashboard.opts)
 
 require("Comment").setup()
 
