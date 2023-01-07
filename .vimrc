@@ -150,6 +150,7 @@ nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>
 nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<CR>
 nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>
 nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>
+nnoremap gr <cmd>lua require('goto-preview').goto_preview_references()<CR>
 nnoremap <A-CR> :CodeActionMenu<CR>
 
 nmap <F9> :FloatermNew<CR>
@@ -161,7 +162,16 @@ nnoremap <leader>fB <cmd>Telescope file_browser<CR>
 nnoremap <leader>fo <cmd>Telescope oldfiles<CR>
 nnoremap <leader>fh <cmd>Telescope help_tags<CR>
 
+nnoremap n<TAB> :bn<CR>
+nnoremap n<S-TAB> :bp<CR>
+nnoremap n<leader>bd :bd<CR>
+
 lua <<EOF
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv'", { noremap = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv'", { noremap = true })
+vim.keymap.set("v", ">", ">gv", { noremap = true })
+vim.keymap.set("v", "<", "<gv", { noremap = true })
+
 vim.api.nvim_set_hl(0, "@punctuation.bracket", { link = "" })
 
 local alpha = require("alpha")
@@ -230,8 +240,8 @@ dashboard.section.buttons.opts.hl = "Keyword"
 
 dashboard.opts.opts.noautocmd = true
 
-local width = 52
-local height = 17
+local width = 52 -- 104
+local height = 17 -- 28
 dashboard.section.terminal.command = "cat | " .. os.getenv("HOME") .. "/.config/nvim/doom/render.sh"
 dashboard.section.terminal.width = width
 dashboard.section.terminal.height = height
