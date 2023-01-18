@@ -2,7 +2,9 @@ call plug#begin()
 
 Plug 'sheerun/vim-polyglot'
 Plug 'sainnhe/sonokai'
-Plug 'itchyny/lightline.vim'
+"Plug 'itchyny/lightline.vim'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'frazrepo/vim-rainbow'
 Plug 'itchyny/vim-gitbranch'
@@ -49,6 +51,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'joehannes-os/telescope-media-files.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'luochen1990/rainbow'
+Plug 'phaazon/hop.nvim'
 
 call plug#end()
 
@@ -166,7 +169,84 @@ nnoremap n<TAB> :bn<CR>
 nnoremap n<S-TAB> :bp<CR>
 nnoremap n<leader>bd :bd<CR>
 
+nnoremap <leader>hw :HopWord<CR>
+nnoremap <leader>hl :HopLine<CR>
+nnoremap <leader>hc1 :HopChar1<CR>
+nnoremap <leader>hc2 :HopChar2<CR>
+
 lua <<EOF
+require('hop').setup({})
+
+local configuration = vim.fn['sonokai#get_configuration']()
+local palette = vim.fn['sonokai#get_palette'](configuration.style, configuration.colors_override)
+
+local conditions = {
+  buffer_not_empty = function()
+    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
+  end,
+  hide_in_width = function()
+    return vim.fn.winwidth(0) > 80
+  end,
+  check_git_workspace = function()
+    local filepath = vim.fn.expand('%:p:h')
+    local gitdir = vim.fn.finddir('.git', filepath .. ';')
+    return gitdir and #gitdir > 0 and #gitdir < #filepath
+  end,
+}
+
+local lualine = require('lualine')
+local lualine_config = {
+  options = {
+    theme = "sonokai",
+    component_separators = '|',
+    section_separators = { left = '', right = '' },
+  },
+  sections = {
+    lualine_a = {
+      { 'mode', separator = { left = '' }, right_padding = 2 },
+    },
+	lualine_b = {
+		'filename',
+		'branch',
+		{
+		  'diagnostics',
+		  sources = { 'nvim_diagnostic' },
+		  symbols = { error = ' ', warn = ' ', info = ' ' },
+		  diagnostics_color = {
+			color_error = { fg = palette.red[1] },
+			color_warn = { fg = palette.yellow[1] },
+			color_info = { fg = palette.green[1] },
+		  },
+		}
+	},
+    lualine_c = { 'fileformat' },
+    lualine_x = {},
+    lualine_y = {
+		'filetype',
+		{
+			'filesize',
+			cond = conditions.buffer_not_empty
+		},
+		'progress'
+	},
+    lualine_z = {
+      { 'location', separator = { right = '' }, left_padding = 2 },
+    },
+  },
+  inactive_sections = {
+    lualine_a = { 'filename' },
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'location' },
+  },
+  tabline = {},
+  extensions = {},
+}
+
+lualine.setup(lualine_config)
+
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv'", { noremap = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv'", { noremap = true })
 vim.keymap.set("v", ">", ">gv", { noremap = true })
