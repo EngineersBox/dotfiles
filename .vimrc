@@ -52,6 +52,7 @@ Plug 'joehannes-os/telescope-media-files.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'phaazon/hop.nvim'
+Plug 'preservim/nerdcommenter'
 
 call plug#end()
 
