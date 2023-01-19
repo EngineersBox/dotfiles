@@ -53,6 +53,10 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'phaazon/hop.nvim'
 Plug 'preservim/nerdcommenter'
+Plug 'andymass/vim-matchup'
+Plug 'folke/noice.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'rcarriga/nvim-notify'
 
 call plug#end()
 
@@ -176,6 +180,55 @@ nnoremap <leader>hc1 :HopChar1<CR>
 nnoremap <leader>hc2 :HopChar2<CR>
 
 lua <<EOF
+require("noice").setup({
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = false, -- use a classic bottom cmdline for search
+    command_palette = false, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false, -- add a border to hover docs and signature help
+  },
+   views = {
+      cmdline_popup = {
+        position = {
+          row = 5,
+          col = "50%",
+        },
+        size = {
+          width = 60,
+          height = "auto",
+        },
+      },
+    },
+})
+
+vim.g.matchup_matchparen_offscreen = { method = "popup" }
+
+require("hlargs").setup({
+	disable = function(_, bufnr)
+		if vim.b.semantic_tokens then
+			return true
+		end
+		local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+		for _, c in pairs(clients) do
+			local caps = c.server_capabilities
+			if c.name ~= "null-ls" and caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+				vim.b.semantic_tokens = true
+				return vim.b.semantic_tokens
+			end
+		end
+	end,
+})
+
 require('hop').setup({})
 
 local configuration = vim.fn['sonokai#get_configuration']()
@@ -358,6 +411,9 @@ require("nvim-treesitter.configs").setup({
 	highlight = {
 		enable = true,
 	},
+	matchup = {
+		enable = true,
+	}
 })
 
 require('goto-preview').setup({
@@ -446,6 +502,7 @@ telescope.load_extension('project')
 telescope.load_extension('fzf')
 telescope.load_extension('media_files')
 telescope.load_extension('file_browser')
+telescope.load_extension('noice')
 -- telescope.load_extension("ui-select")
 
 require("dressing").setup({
@@ -456,8 +513,6 @@ require("dressing").setup({
             backend = { "telescope", "fzf", "builtin" }
       },
 })
-
-require("hlargs").setup()
 
 -- local chadtree_settings = { 
 -- 	theme = {
