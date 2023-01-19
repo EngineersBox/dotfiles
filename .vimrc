@@ -59,6 +59,9 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'windwp/nvim-autopairs'
 Plug 'abecodes/tabout.nvim'
+" Plug 'karb94/neoscroll.nvim'
+Plug 'declancm/cinnamon.nvim'
+Plug 'gorbit99/codewindow.nvim'
 
 call plug#end()
 
@@ -182,6 +185,17 @@ nnoremap <leader>hc1 :HopChar1<CR>
 nnoremap <leader>hc2 :HopChar2<CR>
 
 lua <<EOF
+local codewindow = require('codewindow')
+codewindow.setup({
+	auto_enable = true,
+	exclude_filetypes = { "nerdtree", "tagbar" },
+	minimap_width = 15,
+})
+codewindow.apply_default_keybinds()
+
+-- require('neoscroll').setup({})
+require('cinnamon').setup({})
+
 require("nvim-autopairs").setup({})
 require("tabout").setup({})
 
