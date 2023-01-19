@@ -57,6 +57,8 @@ Plug 'andymass/vim-matchup'
 Plug 'folke/noice.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'rcarriga/nvim-notify'
+Plug 'windwp/nvim-autopairs'
+Plug 'abecodes/tabout.nvim'
 
 call plug#end()
 
@@ -180,6 +182,9 @@ nnoremap <leader>hc1 :HopChar1<CR>
 nnoremap <leader>hc2 :HopChar2<CR>
 
 lua <<EOF
+require("nvim-autopairs").setup({})
+require("tabout").setup({})
+
 require("noice").setup({
   lsp = {
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
