@@ -8,9 +8,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'frazrepo/vim-rainbow'
 Plug 'itchyny/vim-gitbranch'
 Plug 'tikhomirov/vim-glsl'
-" Plug 'preservim/nerdtree' |
-"				  \ Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons'
+Plug 'preservim/nerdtree' |
+				  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+				  \ Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -25,7 +25,7 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'voldikss/vim-floaterm'
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
@@ -152,19 +152,21 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Clean'     :'✔︎',
                 \ 'Unknown'   :'?',
                 \ }
-
+let g:NERDTreeShowLineNumbers = 0
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 let g:NERDTreeGitStatusShowClean = 1
 
-
-
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() > 0 || exists("s:stdin") | TagbarToggle | wincmd p | else | Alpha | endif 
+autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | TagbarToggle | wincmd p | else | Alpha | endif 
 "autocmd VimEnter * Alpha | if argc() = 0 | wincmd p | endif
 "autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 "autocmd VimEnter * TagbarToggle | if (argc() > 0 || exists("s:std_in")) | wincmd p | endif
 autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()
 
-nmap <F7> :CHADopen --nofocus<CR>
+" nmap <F7> :CHADopen --nofocus<CR>
 nmap <F8> :TagbarToggle<CR>
 
 highlight GitGutterAdd guifg=#a1d373 ctermfg=2
