@@ -8,9 +8,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'frazrepo/vim-rainbow'
 Plug 'itchyny/vim-gitbranch'
 Plug 'tikhomirov/vim-glsl'
-Plug 'preservim/nerdtree' |
-				  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
-                  \ Plug 'ryanoasis/vim-devicons' | 
+" Plug 'preservim/nerdtree' |
+"				  \ Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
@@ -25,7 +25,7 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'voldikss/vim-floaterm'
-" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
@@ -62,11 +62,15 @@ Plug 'declancm/cinnamon.nvim'
 Plug 'gorbit99/codewindow.nvim'
 Plug 'wellle/targets.vim'
 Plug 'kdheepak/tabline.nvim'
+Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 
 call plug#end()
 
+set termguicolors
+
 syntax on
 let g:sonokai_style = 'default'
+let g:sonokai_diagnostic_virtual_text = ''
 colorscheme sonokai
 set autoindent
 set smartindent
@@ -150,14 +154,17 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ }
 
 let g:NERDTreeGitStatusShowClean = 1
-" Start NERDTree. If a file is specified, move the cursor to its window.
+
+
+
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | TagbarToggle | wincmd p | else | Alpha | endif 
+autocmd VimEnter * if argc() > 0 || exists("s:stdin") | TagbarToggle | wincmd p | else | Alpha | endif 
 "autocmd VimEnter * Alpha | if argc() = 0 | wincmd p | endif
 "autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 "autocmd VimEnter * TagbarToggle | if (argc() > 0 || exists("s:std_in")) | wincmd p | endif
 autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()
 
+nmap <F7> :CHADopen --nofocus<CR>
 nmap <F8> :TagbarToggle<CR>
 
 highlight GitGutterAdd guifg=#a1d373 ctermfg=2
@@ -330,10 +337,20 @@ local function getLspName()
 	return "  " .. msg
 end
 
+local configuration = vim.fn['sonokai#get_configuration']()
+local palette = vim.fn['sonokai#get_palette'](configuration.style, configuration.colors_override)
+
 local dia = {
 	'diagnostics',
 	color = { bg = "#313244", fg = "#80A7EA" },
 	separator = { left = "", right = "" },
+	sources = { 'nvim_diagnostic' },
+	symbols = { error = ' ', warn = ' ', info = ' ' },
+	diagnostics_color = {
+		color_error = { fg = palette.red[1] },
+		color_warn = { fg = palette.yellow[1] },
+		color_info = { fg = palette.green[1] },
+	},
 }
 
 local lsp = {
@@ -428,10 +445,17 @@ require('lualine').setup {
 EOF
 
 lua <<EOF
+local chadtree_settings = {
+      theme = {
+            text_colour_set = "nerdtree_syntax_dark"
+      }
+}
+vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+
 local codewindow = require('codewindow')
 codewindow.setup({
 	auto_enable = true,
-	exclude_filetypes = { "nerdtree", "tagbar", "alpha" },
+	exclude_filetypes = { "nerdtree", "CHADTree", "telescope", "tagbar", "alpha" },
 	minimap_width = 15,
 })
 codewindow.apply_default_keybinds()
@@ -782,6 +806,12 @@ require("dressing").setup({
 })
 
 local coq = require("coq")
+
+require("lsp_lines").setup({})
+
+vim.diagnostic.config({
+  virtual_text = false,
+})
 
 -- local chadtree_settings = { 
 -- 	theme = {
