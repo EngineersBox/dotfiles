@@ -39,6 +39,8 @@ Plug 'jose-elias-alvarez/typescript.nvim'
 Plug 'weilbith/nvim-code-action-menu'
 Plug 'stevearc/dressing.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'folke/todo-comments.nvim'
+Plug 'folke/trouble.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'nvim-telescope/telescope-project.nvim'
@@ -457,7 +459,7 @@ vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
 local codewindow = require('codewindow')
 codewindow.setup({
 	auto_enable = true,
-	exclude_filetypes = { "nerdtree", "CHADTree", "telescope", "tagbar", "alpha" },
+	exclude_filetypes = { "nerdtree", "CHADTree", "telescope", "tagbar", "alpha", "qf" },
 	minimap_width = 15,
 })
 codewindow.apply_default_keybinds()
@@ -715,7 +717,6 @@ require('goto-preview').setup({
 require("typescript").setup({})
 
 local rt = require("rust-tools")
-
 rt.setup({
   server = {
     on_attach = function(_, bufnr)
@@ -814,6 +815,9 @@ require("lsp_lines").setup({})
 vim.diagnostic.config({
   virtual_text = false,
 })
+
+require("todo-comments").setup({})
+require("trouble").setup({})
 
 -- local chadtree_settings = { 
 -- 	theme = {
