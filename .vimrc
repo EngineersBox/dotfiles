@@ -65,6 +65,8 @@ Plug 'gorbit99/codewindow.nvim'
 Plug 'wellle/targets.vim'
 Plug 'kdheepak/tabline.nvim'
 Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
+Plug 'petertriho/nvim-scrollbar'
+Plug 'kevinhwang91/nvim-hlslens'
 
 call plug#end()
 
@@ -818,6 +820,14 @@ vim.diagnostic.config({
 
 require("todo-comments").setup({})
 require("trouble").setup({})
+
+require('hlslens').setup({})
+require("scrollbar").setup({
+	handlers = {
+		search = true,
+		ale = true,
+	}
+})
 
 -- local chadtree_settings = { 
 -- 	theme = {
