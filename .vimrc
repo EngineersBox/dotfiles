@@ -2,7 +2,6 @@ call plug#begin()
 
 Plug 'sheerun/vim-polyglot'
 Plug 'sainnhe/sonokai'
-"Plug 'itchyny/lightline.vim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'tpope/vim-fugitive'
@@ -17,7 +16,6 @@ Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 Plug 'nvim-tree/nvim-web-devicons'
-Plug 'romgrk/barbar.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mfussenegger/nvim-dap'
@@ -62,6 +60,8 @@ Plug 'abecodes/tabout.nvim'
 " Plug 'karb94/neoscroll.nvim'
 Plug 'declancm/cinnamon.nvim'
 Plug 'gorbit99/codewindow.nvim'
+Plug 'wellle/targets.vim'
+Plug 'kdheepak/tabline.nvim'
 
 call plug#end()
 
@@ -185,10 +185,247 @@ nnoremap <leader>hc1 :HopChar1<CR>
 nnoremap <leader>hc2 :HopChar2<CR>
 
 lua <<EOF
+require("tabline").setup({
+	-- Defaults configuration options
+	enable = true,
+	options = {
+		-- If lualine is installed tabline will use separators configured in lualine by default.
+		-- These options can be used to override those settings.
+		component_separators = { '', '' },
+		section_separators = { '', '' },
+		max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+		show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
+		show_devicons = true, -- this shows devicons in buffer section
+		colored = true,
+		show_bufnr = false, -- this appends [bufnr] to buffer section,
+		tabline_show_last_separator = true,
+		show_filename_only = true, -- shows base filename only instead of relative path in filename
+		modified_icon = "+ ", -- change the default modified icon
+		modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
+		show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+	}
+})
+vim.cmd [[
+	set guioptions-=e " Use showtabline in gui vim
+	set sessionoptions+=tabpages,globals " store tabpages and globals in session
+]]
+
+local colors = {
+	red = '#cdd6f4',
+	grey = '#181825',
+	black = '#1e1e2e',
+	white = '#313244',
+	light_green = '#6c7086',
+	orange = '#fab387',
+	green = '#a6e3a1',
+	blue = '#80A7EA',
+}
+
+local theme = {
+	normal = {
+		a = { fg = colors.black, bg = colors.blue },
+		b = { fg = colors.blue, bg = colors.white },
+		c = { fg = colors.white, bg = colors.black },
+		z = { fg = colors.white, bg = colors.black },
+	},
+	insert = { a = { fg = colors.black, bg = colors.orange } },
+	visual = { a = { fg = colors.black, bg = colors.green } },
+	replace = { a = { fg = colors.black, bg = colors.green } },
+}
+
+local vim_icons = {
+	function()
+		return " "
+	end,
+	separator = { left = "", right = "" },
+	color = { bg = "#313244", fg = "#80A7EA" },
+}
+
+local space = {
+	function()
+		return " "
+	end,
+	color = { bg = colors.black, fg = "#80A7EA" },
+}
+
+local filename = {
+	'filename',
+	color = { bg = "#80A7EA", fg = "#242735" },
+	separator = { left = "", right = "" },
+}
+
+local filetype = {
+	"filetype",
+	icon_only = true,
+	colored = true,
+	color = { bg = "#313244" },
+	separator = { left = "", right = "" },
+}
+
+local filetype_tab = {
+	"filetype",
+	icon_only = true,
+	colored = true,
+	color = { bg = "#313244" },
+}
+
+local buffer = {
+	require 'tabline'.tabline_buffers,
+	separator = { left = "", right = "" },
+}
+
+local tabs = {
+	require 'tabline'.tabline_tabs,
+	separator = { left = "", right = "" },
+}
+
+local fileformat = {
+	'fileformat',
+	color = { bg = "#b4befe", fg = "#313244" },
+	separator = { left = "", right = "" },
+}
+
+local encoding = {
+	'encoding',
+	color = { bg = "#313244", fg = "#80A7EA" },
+	separator = { left = "", right = "" },
+}
+
+local branch = {
+	'branch',
+	color = { bg = "#a6e3a1", fg = "#313244" },
+	separator = { left = "", right = "" },
+}
+
+local diff = {
+	"diff",
+	color = { bg = "#313244", fg = "#313244" },
+	separator = { left = "", right = "" },
+}
+
+local modes = {
+	'mode', --fmt = function(str) return str:sub(1, 1) end,
+	separator = { left = "", right = "" },
+}
+
+local function getLspName()
+	local msg = 'No Active Lsp'
+	local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+	local clients = vim.lsp.get_active_clients()
+	if next(clients) == nil then
+		return msg
+	end
+	for _, client in ipairs(clients) do
+		local filetypes = client.config.filetypes
+		if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+			return "  " .. client.name
+		end
+	end
+	return "  " .. msg
+end
+
+local dia = {
+	'diagnostics',
+	color = { bg = "#313244", fg = "#80A7EA" },
+	separator = { left = "", right = "" },
+}
+
+local lsp = {
+	function()
+		return getLspName()
+	end,
+	separator = { left = "", right = "" },
+	color = { bg = "#f38ba8", fg = "#1e1e2e" },
+}
+
+require('lualine').setup {
+
+	options = {
+		icons_enabled = true,
+		theme = 'sonokai',
+		component_separators = { left = '', right = '' },
+		section_separators = { left = '', right = '' },
+		disabled_filetypes = {
+			statusline = {},
+			winbar = {},
+		},
+		ignore_focus = {},
+		always_divide_middle = true,
+		globalstatus = true,
+		refresh = {
+			statusline = 1000,
+			tabline = 1000,
+			winbar = 1000,
+		}
+	},
+
+	sections = {
+		lualine_a = {
+			--{ 'mode', fmt = function(str) return str:gsub(str, "  ") end },
+			modes,
+			vim_icons,
+			--{ 'mode', fmt = function(str) return str:sub(1, 1) end },
+		},
+		lualine_b = {
+			space,
+
+		},
+		lualine_c = {
+
+			filename,
+			filetype,
+			space,
+			branch,
+			diff,
+		},
+		lualine_x = {
+			space,
+		},
+		lualine_y = {
+			encoding,
+			fileformat,
+			space,
+		},
+		lualine_z = {
+			dia,
+			lsp,
+		}
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = { 'filename' },
+		lualine_x = { 'location' },
+		lualine_y = {},
+		lualine_z = {}
+	},
+	tabline = {
+		lualine_a = {
+			buffer,
+		},
+		lualine_b = {
+		},
+		lualine_c = {},
+		lualine_x = {
+			tabs,
+		},
+		lualine_y = {
+			space,
+		},
+		lualine_z = {
+		},
+	},
+	winbar = {},
+	inactive_winbar = {},
+
+}
+EOF
+
+lua <<EOF
 local codewindow = require('codewindow')
 codewindow.setup({
 	auto_enable = true,
-	exclude_filetypes = { "nerdtree", "tagbar" },
+	exclude_filetypes = { "nerdtree", "tagbar", "alpha" },
 	minimap_width = 15,
 })
 codewindow.apply_default_keybinds()
@@ -267,7 +504,7 @@ local conditions = {
   end,
 }
 
-local lualine = require('lualine')
+-- local lualine = require('lualine')
 local lualine_config = {
   options = {
     theme = "sonokai",
@@ -318,7 +555,7 @@ local lualine_config = {
   extensions = {},
 }
 
-lualine.setup(lualine_config)
+-- lualine.setup(lualine_config)
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv'", { noremap = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv'", { noremap = true })
@@ -429,9 +666,13 @@ require("nvim-treesitter.configs").setup({
 	auto_install = true,
 	highlight = {
 		enable = true,
+		additional_vim_regex_highlighting = false,
 	},
 	matchup = {
 		enable = true,
+	},
+	indent = {
+		enable = false,
 	}
 })
 
@@ -522,6 +763,7 @@ telescope.load_extension('fzf')
 telescope.load_extension('media_files')
 telescope.load_extension('file_browser')
 telescope.load_extension('noice')
+telescope.load_extension("notify")
 -- telescope.load_extension("ui-select")
 
 require("dressing").setup({
@@ -532,6 +774,8 @@ require("dressing").setup({
             backend = { "telescope", "fzf", "builtin" }
       },
 })
+
+local coq = require("coq")
 
 -- local chadtree_settings = { 
 -- 	theme = {
