@@ -67,6 +67,7 @@ Plug 'kdheepak/tabline.nvim'
 Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 Plug 'petertriho/nvim-scrollbar'
 Plug 'kevinhwang91/nvim-hlslens'
+Plug 'uga-rosa/ccc.nvim'
 
 call plug#end()
 
@@ -472,7 +473,9 @@ require('cinnamon').setup({})
 require("nvim-autopairs").setup({})
 require("tabout").setup({})
 
-require("noice").setup({
+-- FIXME: This makes LSP completion really slow for some reason
+local noice = require("noice")
+local noice_config = {
   lsp = {
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
     override = {
@@ -501,7 +504,8 @@ require("noice").setup({
         },
       },
     },
-})
+}
+noice.setup(noice_config)
 
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
 
@@ -539,59 +543,6 @@ local conditions = {
     return gitdir and #gitdir > 0 and #gitdir < #filepath
   end,
 }
-
--- local lualine = require('lualine')
-local lualine_config = {
-  options = {
-    theme = "sonokai",
-    component_separators = '|',
-    section_separators = { left = '', right = '' },
-  },
-  sections = {
-    lualine_a = {
-      { 'mode', separator = { left = '' }, right_padding = 2 },
-    },
-	lualine_b = {
-		'filename',
-		'branch',
-		{
-		  'diagnostics',
-		  sources = { 'nvim_diagnostic' },
-		  symbols = { error = ' ', warn = ' ', info = ' ' },
-		  diagnostics_color = {
-			color_error = { fg = palette.red[1] },
-			color_warn = { fg = palette.yellow[1] },
-			color_info = { fg = palette.green[1] },
-		  },
-		}
-	},
-    lualine_c = { 'fileformat' },
-    lualine_x = {},
-    lualine_y = {
-		'filetype',
-		{
-			'filesize',
-			cond = conditions.buffer_not_empty
-		},
-		'progress'
-	},
-    lualine_z = {
-      { 'location', separator = { right = '' }, left_padding = 2 },
-    },
-  },
-  inactive_sections = {
-    lualine_a = { 'filename' },
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = { 'location' },
-  },
-  tabline = {},
-  extensions = {},
-}
-
--- lualine.setup(lualine_config)
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv'", { noremap = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv'", { noremap = true })
@@ -797,7 +748,7 @@ telescope.load_extension('project')
 telescope.load_extension('fzf')
 telescope.load_extension('media_files')
 telescope.load_extension('file_browser')
-telescope.load_extension('noice')
+--telescope.load_extension('noice')
 telescope.load_extension("notify")
 -- telescope.load_extension("ui-select")
 
@@ -827,6 +778,12 @@ require("scrollbar").setup({
 		search = true,
 		ale = true,
 	}
+})
+
+require("ccc").setup({
+	highlighter = {
+		auto_enable = true,
+	},
 })
 
 -- local chadtree_settings = { 
