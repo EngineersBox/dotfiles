@@ -69,6 +69,7 @@ Plug 'petertriho/nvim-scrollbar'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'uga-rosa/ccc.nvim'
 Plug 'sudormrfbin/cheatsheet.nvim'
+Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
 
 call plug#end()
 
@@ -790,6 +791,8 @@ require("ccc").setup({
 		auto_enable = true,
 	},
 })
+
+require("crates").setup()
 
 -- local chadtree_settings = { 
 -- 	theme = {
