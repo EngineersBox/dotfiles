@@ -68,6 +68,7 @@ Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 Plug 'petertriho/nvim-scrollbar'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'uga-rosa/ccc.nvim'
+Plug 'sudormrfbin/cheatsheet.nvim'
 
 call plug#end()
 
