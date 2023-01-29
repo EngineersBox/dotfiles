@@ -70,6 +70,9 @@ Plug 'kevinhwang91/nvim-hlslens'
 Plug 'uga-rosa/ccc.nvim'
 Plug 'sudormrfbin/cheatsheet.nvim'
 Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
+Plug 'simrat39/inlay-hints.nvim'
+Plug 'iamcco/markdown-preview.nvim', { 'dp': 'cd app && yarn install' }
+Plug 'jbyuki/venn.nvim'
 
 call plug#end()
 
@@ -678,12 +681,21 @@ require("typescript").setup({})
 local rt = require("rust-tools")
 rt.setup({
   server = {
-    on_attach = function(_, bufnr)
+    on_attach = function(client, bufnr)
       -- Hover actions
       vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
       -- Code action groups
       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+      require("inlay-hints").on_attach(client, bufnr)
     end,
+  },
+  on_initialized = function()
+    require("inlay-hints").set_all()
+  end,
+  tools = {
+        inlay_hints = {
+              auto = false,
+        },
   },
 })
 
@@ -793,6 +805,7 @@ require("ccc").setup({
 })
 
 require("crates").setup()
+require("inlay-hints").setup()
 
 -- local chadtree_settings = { 
 -- 	theme = {
