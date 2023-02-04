@@ -45,7 +45,6 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'goolord/alpha-nvim'
-Plug 'nvim-tree/nvim-web-devicons'
 Plug 'm-demare/hlargs.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'joehannes-os/telescope-media-files.nvim'
@@ -73,6 +72,8 @@ Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
 Plug 'simrat39/inlay-hints.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'dp': 'cd app && yarn install' }
 Plug 'jbyuki/venn.nvim'
+Plug 'SmiteshP/nvim-navic'
+Plug 'utilyre/barbecue.nvim'
 
 call plug#end()
 
@@ -213,6 +214,8 @@ nnoremap <leader>hw :HopWord<CR>
 nnoremap <leader>hl :HopLine<CR>
 nnoremap <leader>hc1 :HopChar1<CR>
 nnoremap <leader>hc2 :HopChar2<CR>
+
+nnoremap <leader>/ :nohl<CR>
 
 lua <<EOF
 require("tabline").setup({
@@ -806,6 +809,10 @@ require("ccc").setup({
 
 require("crates").setup()
 require("inlay-hints").setup()
+
+local barbecue = require("barbecue")
+barbecue.setup()
+-- barbecue.ui.toggle(true)
 
 -- local chadtree_settings = { 
 -- 	theme = {
