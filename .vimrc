@@ -740,22 +740,48 @@ local lsp_flags = {
   -- This is the default in Nvim 0.7+
   debounce_text_changes = 150,
 }
-require('lspconfig')['pyright'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
+local lspconfig = require("lspconfig")
+lspconfig['jdtls'].setup({
+	on_attach = on_attach,
+	flags = flags,
+	cmd = { "jdtls" },
+	root_dir = function(name)
+		return lspconfig['jdtls'].util.root_pattern(
+			'pom.xml',
+			'gradle.build',
+			'.git'
+		)(name) or vim.fn.getcwd()
+	end
+})
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+lspconfig['jsonls'].setup({
+	on_attach = on_attach,
+	flags = flags,
+	capabilities = capabilities
+})
+local lsps = {
+	'pyright',
+	'tsserver',
+	'rust_analyzer',
+	'cmake',
+	'clangd',
+	'clojure_lsp',
+	'gopls',
+	'terraformls',
+	'vimls',
+	'asm_lsp',
+	'bashls',
+	'dotls',
+	'glslls'
 }
-require('lspconfig')['tsserver'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-require('lspconfig')['rust_analyzer'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-    -- Server-specific settings...
-    settings = {
-      ["rust-analyzer"] = {}
-    }
-}
+for _,lsp_name in ipairs(lsps) do
+	lspconfig[lsp_name].setup({
+		on_attach = on_attach,
+		flags = flags
+	})
+end
 
 local telescope = require('telescope')
 telescope.setup({
