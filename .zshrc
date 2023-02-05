@@ -288,6 +288,7 @@ alias update_vcpkg="cd $HOME/vcpkg && git pull && cd -"
 
 alias reload_yabai="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.yabai\""
 alias reload_sketchybar="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.sketchybar\""
+alias reload_skhd="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.skhd\""
 
 # ---- EXPORT DEFINITIONS ---- #
 
@@ -309,6 +310,7 @@ export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/us
 export NNN_PLUG="p:preview-tui"
 export NNN_FIFO="~/nnn.fifo"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
 
 # Opam configuration
