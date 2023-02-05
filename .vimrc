@@ -794,7 +794,8 @@ local lsps = {
 	'asm_lsp',
 	'bashls',
 	'dotls',
-	'glslls'
+	'glslls',
+	'svls'
 }
 for _,lsp_name in ipairs(lsps) do
 	lspconfig[lsp_name].setup({
