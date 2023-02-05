@@ -795,7 +795,8 @@ local lsps = {
 	'bashls',
 	'dotls',
 	'glslls',
-	'svls'
+	'svls',
+	'texlab'
 }
 for _,lsp_name in ipairs(lsps) do
 	lspconfig[lsp_name].setup({
