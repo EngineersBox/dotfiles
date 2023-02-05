@@ -797,7 +797,8 @@ local lsps = {
 	'glslls',
 	'svls',
 	'texlab',
-	'ansiblels'
+	'ansiblels',
+	'bufls'
 }
 for _,lsp_name in ipairs(lsps) do
 	lspconfig[lsp_name].setup({
