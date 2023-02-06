@@ -461,9 +461,7 @@ require('lualine').setup {
 	inactive_winbar = {},
 
 }
-EOF
 
-lua <<EOF
 local chadtree_settings = {
       theme = {
             text_colour_set = "nerdtree_syntax_dark"
@@ -862,7 +860,27 @@ require("inlay-hints").setup()
 
 local barbecue = require("barbecue")
 barbecue.setup()
--- barbecue.ui.toggle(true)
+
+-- venn.nvim: enable or disable keymappings
+function _G.ToggleVenn()
+    local venn_enabled = vim.inspect(vim.b.venn_enabled)
+    if venn_enabled == "nil" then
+        vim.b.venn_enabled = true
+        vim.cmd[[setlocal ve=all]]
+        -- draw a line on HJKL keystokes
+        vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
+        -- draw a box by pressing "f" with visual selection
+        vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+    else
+        vim.cmd[[setlocal ve=]]
+        vim.cmd[[mapclear <buffer>]]
+        vim.b.venn_enabled = nil
+    end
+end
+vim.api.nvim_set_keymap('n', '<leader>v', ":lua ToggleVenn()<CR>", { noremap = true})
 
 -- local chadtree_settings = { 
 -- 	theme = {
