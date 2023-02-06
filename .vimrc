@@ -796,7 +796,9 @@ local lsps = {
 	'svls',
 	'texlab',
 	'ansiblels',
-	'bufls'
+	'bufls',
+	'dockerls',
+	'opencl_ls'
 }
 for _,lsp_name in ipairs(lsps) do
 	lspconfig[lsp_name].setup({
