@@ -3,6 +3,10 @@ Configuration dotfiles for various programs I use
 
 ## Screenshots
 
+### Sketchybar
+
+![Sketchybar](./screenshots/sketchybar.png)
+
 ### Neovim
 
 Alpha dashboard with custom DOOM logo
