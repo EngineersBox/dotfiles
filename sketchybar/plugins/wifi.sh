@@ -10,18 +10,24 @@ render_bar_item() {
         args+=(--set "$NAME"    label="$SSID (${CURR_TX}Mbps)" \
                                 label.drawing=off) # remove if you want more detailed info available without hovering
     fi
-	
-	if ((RSSI >= -50)); then
-		args+=(--set wifi.alias alias.color="$GREEN")
-	elif ((RSSI < -50 && RSSI >= -80)); then
-		args+=(--set wifi.alias alias.color="$YELLOW")
+
+	SNR=$(($RSSI - $NOISE));
+	if (($SNR >= 40)); then
+		args+=(--set wifi.alias alias.color="0xFF${NORD14:1}");
+	elif (($SNR < 40 && $SNR >= 25)); then
+		args+=(--set wifi.alias alias.color="0xFF${NORD13:1}");
+	elif (($SNR < 25 && $SNR >= 15)); then
+		args+=(--set wifi.alias alias.color="0xFF${NORD12:1}");
+	elif (($SNR < 15 && $SNR >= 10)); then
+		args+=(--set wifi.alias alias.color="0xFF${NORD11:1}");
 	else
-		args+=(--set wifi.alias alias.color="$GREEN")
+		args+=(--set wifi.alias alias.color="0xFF${NORD10:1}");
 	fi
+
 }
 
 render_popup() {
-   args+=(--set wifi.details label="$SSID ($CURR_TX Mbps)"                            \
+	args+=(--set wifi.details label="$SSID ($CURR_TX Mbps $(($RSSI - $NOISE)) SNR)"                            \
                             click_script="sketchybar --set $NAME popup.drawing=off")
 
   sketchybar -m "${args[@]}" > /dev/null
@@ -33,6 +39,7 @@ update() {
   SSID="$(echo "$CURRENT_WIFI" | grep -o "SSID: .*" | sed 's/^SSID: //')"
   CURR_TX="$(echo "$CURRENT_WIFI" | grep -o "lastTxRate: .*" | sed 's/^lastTxRate: //')"
   RSSI="$(echo "$CURRENT_WIFI" | grep -o "agrCtlRSSI: .*" | sed 's/^agrCtlRSSI: //')"
+  NOISE="$(echo "$CURRENT_WIFI" | grep -o "agrCtlNoise: .*" | sed 's/^agrCtlNoise: //')"
 
   args=()
 
