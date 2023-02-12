@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 window_state() {
   source "$HOME/.config/sketchybar/colors.sh"
@@ -6,8 +6,6 @@ window_state() {
 
   WINDOW=$(yabai -m query --windows --window)
   CURRENT=$(echo "$WINDOW" | jq '.["stack-index"]')
-  ACTIVE_BORDER_COLOUR="0xffe17989"
-  NORMAL_BORDER_COLOUR="0xffb29aea"
 
   args=()
   if [[ $CURRENT -gt 0 ]]; then
@@ -21,13 +19,13 @@ window_state() {
       "false")
         if [ "$(echo "$WINDOW" | jq '.["has-fullscreen-zoom"]')" = "true" ]; then
           args+=(--set $NAME icon=$YABAI_FULLSCREEN_ZOOM icon.color=$GREEN)
-          yabai -m config active_window_border_color $ACTIVE_BORDER_COLOUR > /dev/null 2>&1 &
+          yabai -m config active_window_border_color $GREEN > /dev/null 2>&1 &
         elif [ "$(echo "$WINDOW" | jq '.["has-parent-zoom"]')" = "true" ]; then
           args+=(--set $NAME icon=$YABAI_PARENT_ZOOM icon.color=$BLUE)
           yabai -m config active_window_border_color $BLUE > /dev/null 2>&1 &
         else
           args+=(--set $NAME icon=$YABAI_GRID icon.color=$ORANGE)
-          yabai -m config active_window_border_color $ACTIVE_BORDER_COLOUR > /dev/null 2>&1 &
+          yabai -m config active_window_border_color $WHITE > /dev/null 2>&1 &
         fi
         ;;
       "true")

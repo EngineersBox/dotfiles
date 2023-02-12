@@ -5,7 +5,7 @@ POPUP_CLICK_SCRIPT="sketchybar --set $NAME popup.drawing=toggle"
 sketchybar --add alias  "Control Centre,WiFi" right                      \
            --rename     "Control Centre,WiFi" wifi.alias                 \
            --set        wifi.alias    icon.drawing=off                   \
-                                      alias.color="$YELLOW"              \
+                                      alias.color="$GREEN"              \
                                       background.padding_right=0         \
 									  background.padding_left=10          \
                                       icon.padding_right=0               \

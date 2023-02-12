@@ -10,7 +10,14 @@ render_bar_item() {
         args+=(--set "$NAME"    label="$SSID (${CURR_TX}Mbps)" \
                                 label.drawing=off) # remove if you want more detailed info available without hovering
     fi
-
+	
+	if ((RSSI >= -50)); then
+		args+=(--set wifi.alias alias.color="$GREEN")
+	elif ((RSSI < -50 && RSSI >= -80)); then
+		args+=(--set wifi.alias alias.color="$YELLOW")
+	else
+		args+=(--set wifi.alias alias.color="$GREEN")
+	fi
 }
 
 render_popup() {
@@ -25,6 +32,7 @@ update() {
   CURRENT_WIFI="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I)"
   SSID="$(echo "$CURRENT_WIFI" | grep -o "SSID: .*" | sed 's/^SSID: //')"
   CURR_TX="$(echo "$CURRENT_WIFI" | grep -o "lastTxRate: .*" | sed 's/^lastTxRate: //')"
+  RSSI="$(echo "$CURRENT_WIFI" | grep -o "agrCtlRSSI: .*" | sed 's/^agrCtlRSSI: //')"
 
   args=()
 
