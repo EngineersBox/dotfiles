@@ -1,0 +1,64 @@
+## Code-Previews @goto @preview @definition @implementation @reference
+Preview definition | gpd
+Preview type | gpt
+Preview implementation | gpi
+Close all previews | gP
+Preview references | gr
+Go to definition | gD
+Hover on cursor | K
+Show signature | <C-k>
+
+
+## Code-Actions @actions
+Show code actions | <A-CR>
+Show code actions (other) | <space>ca
+Rename | <space>rn
+Format text | <space>f
+Hover actions | <C-space>
+
+## Utilities @terminal @tags
+Open floaterm | <F9>
+Toggle tagbar | <F8>
+
+## Finding-Content @open @grep @recent @find @search @help
+Find files relative to current directory | <leader>ff
+Grep for content in files | <leader>fg
+Show open buffers | <leader>fb
+File browser | <leader>fB
+Show recently opened fies | <leader>fo
+Show help tags for :h <help tag> | <leader>fh
+
+## Tabs @tab
+Go to next tab | n<TAB> 
+Go to previous tab | n<S-TAB> 
+Close current tab | n<leader>bd 
+
+## Hop-Motion @motion @hop
+Start a new Hop word motion | <leader>hw 
+Start a new Hop line motion | <leader>hl 
+Hop to a single char | <leader>hc1 [target character]
+Hop to a duplet of characters | <leader>hc2 [target 2 characters]
+
+## Highlighting @highlight @search
+Clear highlighting | <leader>/
+
+## Text-Alignment @move @indent
+Move visual selection up a line | vK
+Move visual selection down a line | vJ
+Indent visual selection | >
+Unindent visual selection | <
+
+## Workspace @workspace @project
+Add a workspace directory | <space>wa
+Remove a workspace directory | <space>wr
+List workspaces | <space>wl
+
+## Diagrams @venn
+Toggle venn visual mode | <leader>v
+Start block/line selection (visual venn) | <C-v>
+Draw box selection | vf
+Draw filled selection | vF
+Draw line left | vH
+Draw line right | vL
+Draw line up | vK
+Draw line down | vJ
