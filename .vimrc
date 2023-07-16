@@ -70,7 +70,7 @@ Plug 'uga-rosa/ccc.nvim'
 Plug 'sudormrfbin/cheatsheet.nvim'
 Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
 Plug 'simrat39/inlay-hints.nvim'
-Plug 'iamcco/markdown-preview.nvim', { 'dp': 'cd app && yarn install' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'jbyuki/venn.nvim'
 Plug 'SmiteshP/nvim-navic'
 Plug 'utilyre/barbecue.nvim'
@@ -146,7 +146,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-let g:python3_host_prog = '/usr/local/opt/python@3.10/bin/python3'
+let g:python3_host_prog = '$(which python3)'
 
 let g:gitgutter_sign_added = '▐'
 let g:gitgutter_sign_modified = '▐'
@@ -217,7 +217,10 @@ nnoremap <leader>hc2 :HopChar2<CR>
 
 nnoremap <leader>/ :nohl<CR>
 
+autocmd! BufNewFile,BufRead *.vs,*.vsh,*.fs,*.fsh set ft=glsl
+
 lua <<EOF
+require('hlslens').setup()
 require("tabline").setup({
 	-- Defaults configuration options
 	enable = true,
@@ -554,8 +557,8 @@ local conditions = {
   end,
 }
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv'", { noremap = true })
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv'", { noremap = true })
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
 vim.keymap.set("v", ">", ">gv", { noremap = true })
 vim.keymap.set("v", "<", "<gv", { noremap = true })
 
@@ -629,7 +632,7 @@ dashboard.opts.opts.noautocmd = true
 
 local width = 52 -- 104
 local height = 17 -- 28
-dashboard.section.terminal.command = "cat | " .. os.getenv("HOME") .. "/.config/nvim/doom/render.sh"
+dashboard.section.terminal.command = os.getenv("HOME") .. "/.config/nvim/doom/render.sh"
 dashboard.section.terminal.width = width
 dashboard.section.terminal.height = height
 dashboard.section.terminal.opts.redraw = true
@@ -759,7 +762,7 @@ lspconfig['jsonls'].setup({
 	flags = flags,
 	capabilities = capabilities
 })
-lspconfig['sumneko_lua'].setup({
+lspconfig['lua_ls'].setup({
 	on_attach = on_attach,
 	flags = flags,
 	settings = {
@@ -793,7 +796,7 @@ local lsps = {
 	'bashls',
 	'dotls',
 	'glslls',
-	'svls',
+	'svlangserver',
 	'texlab',
 	'ansiblels',
 	'bufls',
@@ -843,7 +846,6 @@ vim.diagnostic.config({
 require("todo-comments").setup({})
 require("trouble").setup({})
 
-require('hlslens').setup({})
 require("scrollbar").setup({
 	handlers = {
 		search = true,
@@ -876,6 +878,7 @@ function _G.ToggleVenn()
         vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
         -- draw a box by pressing "f" with visual selection
         vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "v", "F", ":VFill<CR>", {noremap = true})
     else
         vim.cmd[[setlocal ve=]]
         vim.cmd[[mapclear <buffer>]]
