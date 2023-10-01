@@ -74,6 +74,12 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'jbyuki/venn.nvim'
 Plug 'SmiteshP/nvim-navic'
 Plug 'utilyre/barbecue.nvim'
+Plug 'timtro/glslView-nvim' ", { ft: 'glsl' }
+Plug 'artempyanykh/marksman'
+Plug 'sindrets/diffview.nvim'
+Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+Plug 'ray-x/sad.nvim'
+Plug 'ray-x/navigator.lua'
 
 call plug#end()
 
@@ -146,7 +152,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-let g:python3_host_prog = '$(which python3)'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 let g:gitgutter_sign_added = '▐'
 let g:gitgutter_sign_modified = '▐'
@@ -486,7 +492,6 @@ require('cinnamon').setup({})
 require("nvim-autopairs").setup({})
 require("tabout").setup({})
 
--- FIXME: This makes LSP completion really slow for some reason
 local noice = require("noice")
 local noice_config = {
   lsp = {
@@ -801,7 +806,8 @@ local lsps = {
 	'ansiblels',
 	'bufls',
 	'dockerls',
-	'opencl_ls'
+	'opencl_ls',
+	'marksman'
 }
 for _,lsp_name in ipairs(lsps) do
 	lspconfig[lsp_name].setup({
@@ -825,6 +831,11 @@ telescope.load_extension('file_browser')
 --telescope.load_extension('noice')
 telescope.load_extension("notify")
 -- telescope.load_extension("ui-select")
+require("navigator").setup({
+	lsp = {
+		servers = lsps
+	}
+})
 
 require("dressing").setup({
       input = {
@@ -893,4 +904,19 @@ vim.api.nvim_set_keymap('n', '<leader>v', ":lua ToggleVenn()<CR>", { noremap = t
 --	 },	
 -- }
 -- vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+
+require("glslView").setup({
+  exe_path = "$(which glslViewer)",
+  arguments = { "-l", "-w", "128", "-h", "256" },
+})
+require('sad').setup({
+  debug = false, -- print debug info
+  diff = 'delta', -- you can use `less`, `diff-so-fancy`
+  ls_file = 'fd', -- also git ls-files
+  exact = false, -- exact match
+  vsplit = false, -- split sad window the screen vertically, when set to number
+  -- it is a threadhold when window is larger than the threshold sad will split vertically,
+  height_ratio = 0.6, -- height ratio of sad window when split horizontally
+  width_ratio = 0.6, -- height ratio of sad window when split vertically
+})
 EOF
