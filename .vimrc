@@ -26,30 +26,30 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'voldikss/vim-floaterm'
 " Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-Plug 'neovim/nvim-lspconfig'
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
-Plug 'kosayoda/nvim-lightbulb'
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'rmagatti/goto-preview'
-Plug 'mfussenegger/nvim-jdtls'
-Plug 'simrat39/rust-tools.nvim'
-Plug 'jose-elias-alvarez/typescript.nvim'
-Plug 'weilbith/nvim-code-action-menu'
-Plug 'stevearc/dressing.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'folke/todo-comments.nvim'
-Plug 'folke/trouble.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-Plug 'nvim-telescope/telescope-project.nvim'
-Plug 'goolord/alpha-nvim'
-Plug 'm-demare/hlargs.nvim'
+	Plug 'neovim/nvim-lspconfig'
+	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+	Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+	Plug 'kosayoda/nvim-lightbulb'
+	Plug 'antoinemadec/FixCursorHold.nvim'
+	Plug 'rmagatti/goto-preview'
+	Plug 'mfussenegger/nvim-jdtls'
+	Plug 'simrat39/rust-tools.nvim'
+	Plug 'jose-elias-alvarez/typescript.nvim'
+	Plug 'weilbith/nvim-code-action-menu'
+	Plug 'stevearc/dressing.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'folke/todo-comments.nvim'
+	Plug 'folke/trouble.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+	Plug 'nvim-telescope/telescope-project.nvim'
+	Plug 'goolord/alpha-nvim'
+	Plug 'm-demare/hlargs.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'joehannes-os/telescope-media-files.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
-Plug 'luochen1990/rainbow'
+"Plug 'luochen1990/rainbow'
 Plug 'phaazon/hop.nvim'
 Plug 'preservim/nerdcommenter'
 Plug 'andymass/vim-matchup'
@@ -99,7 +99,7 @@ set number
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set noexpandtab
+set expandtab
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldtext=substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend))
@@ -114,6 +114,9 @@ set encoding=UTF-8
 highlight CursorLineNr guifg=#73d3de
 set cursorline
 set cursorlineopt=number
+
+set guioptions+=m
+let g:guifont='JetBrainsMono Nerd Font'
 
 set laststatus=2
 let g:lightline = {
@@ -181,14 +184,18 @@ let g:NERDTreeDirArrowCollapsible = ''
 let g:NERDTreeGitStatusShowClean = 1
 
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | TagbarToggle | wincmd p | else | Alpha | endif 
+"autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | LspAndDiag | wincmd p | else | Alpha | endif 
 "autocmd VimEnter * Alpha | if argc() = 0 | wincmd p | endif
 "autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 "autocmd VimEnter * TagbarToggle | if (argc() > 0 || exists("s:std_in")) | wincmd p | endif
+autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | wincmd p | else | Alpha | endif 
 autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()
+autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
 
 " nmap <F7> :CHADopen --nofocus<CR>
+nmap <F9> :FloatermNew<CR>
 nmap <F8> :TagbarToggle<CR>
+nmap <F7> :LspAndDiag<CR>
 
 highlight GitGutterAdd guifg=#a1d373 ctermfg=2
 highlight GitGutterChange guifg=#f19465 ctermfg=3
@@ -201,9 +208,7 @@ nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<CR>
 nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>
 nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>
 nnoremap gr <cmd>lua require('goto-preview').goto_preview_references()<CR>
-nnoremap <A-CR> :CodeActionMenu<CR>
-
-nmap <F9> :FloatermNew<CR>
+nnoremap <leader>ac :CodeActionMenu<CR>
 
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
@@ -211,6 +216,7 @@ nnoremap <leader>fb <cmd>Telescope buffers<CR>
 nnoremap <leader>fB <cmd>Telescope file_browser<CR>
 nnoremap <leader>fo <cmd>Telescope oldfiles<CR>
 nnoremap <leader>fh <cmd>Telescope help_tags<CR>
+
 
 nnoremap n<TAB> :bn<CR>
 nnoremap n<S-TAB> :bp<CR>
@@ -659,11 +665,35 @@ vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 vim.opt.listchars:append "eol:↴"
 
-require("indent_blankline").setup({
-	space_char_blankline = " ",
-	show_current_context = true,
-	show_current_context_start = true,
+local highlight = {
+    "RainbowRed",
+    "RainbowYellow",
+    "RainbowBlue",
+    "RainbowOrange",
+    "RainbowGreen",
+    "RainbowViolet",
+    "RainbowCyan",
+}
+local hooks = require "ibl.hooks"
+-- create the highlight groups in the highlight setup hook, so they are reset
+-- every time the colorscheme changes
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+    vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
+end)
+
+vim.g.rainbow_delimiters = { highlight = highlight }
+require("ibl").setup({
+	scope = { highlight = highlight },
+	indent = { highlight = highlight }
 })
+
+hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
 require("nvim-treesitter.configs").setup({
 	ensure_installed = "all",

@@ -4,21 +4,51 @@ Preview type | gpt
 Preview implementation | gpi
 Close all previews | gP
 Preview references | gr
+Show reference and context (under curosor) | <leader>gr
 Go to definition | gD
 Hover on cursor | K
 Show signature | <C-k>
+Hierarchy of incoming calls | <leader>gi
+Hierarchy of outgoing calls | <leader>go
 
+## Symbols @symbols
+View document symbols | g0
+Workspace symbol fuzzy finder | gW
+Treesitter document symbol | <leader>gt
+Treesitter symboll all open buffers | <leader>gT
+CTags symbol search | <leader>ct
+CTags symbol generate (under cursor) | <leader>cg
 
-## Code-Actions @actions
+## Code-Actions @actions @diagnostic
 Show code actions | <A-CR>
 Show code actions (other) | <space>ca
 Rename | <space>rn
 Format text | <space>f
 Hover actions | <C-space>
+Lens actions | <space>la
+Line diagnostic | gL
+All buffers diagnostics | gG
+Next diagnostic | ]d
+Previous diagnostic | [d
+Toggle diagnostic | <leader>dt
+
+## Find-Replace @replace @find
+Replace under cusor | :Sad
+Replace targetted | :Sad <from> <to>
+Replace targetted with filter filter | :Sad <from> <to> <filetype>
+Selective replace | :Spectre
+
+## Files @files @preview
+Open preview file in nvim/apply action | <C-o>
+Open preview file in nvim with vsplit | <C-v>
+Open preview file in nvim with split | <C-s>
+Open preview file in nvim/apply action | <Enter>
+Save modification to preview window to file | <C-s>
 
 ## Utilities @terminal @tags
 Open floaterm | <F9>
 Toggle tagbar | <F8>
+Toggle LspAndDiag | <F7>
 
 ## Finding-Content @open @grep @recent @find @search @help
 Find files relative to current directory | <leader>ff
@@ -62,3 +92,7 @@ Draw line left | vH
 Draw line right | vL
 Draw line up | vK
 Draw line down | vJ
+
+## Git @git
+Current line blame | :Gitsigns toggle_current_line_blame
+Add/remove/change signs | :Gitsigns toggle_signs
