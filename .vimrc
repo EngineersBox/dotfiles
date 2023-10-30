@@ -8,13 +8,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'frazrepo/vim-rainbow'
 Plug 'itchyny/vim-gitbranch'
 Plug 'tikhomirov/vim-glsl'
-Plug 'preservim/nerdtree' |
-				  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
-				  \ Plug 'ryanoasis/vim-devicons'
+"Plug 'preservim/nerdtree' |
+				  "\ Plug 'Xuyuanp/nerdtree-git-plugin' |
+				  "\ Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -26,26 +26,25 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'voldikss/vim-floaterm'
 " Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-	Plug 'neovim/nvim-lspconfig'
-	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-	Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
-	Plug 'kosayoda/nvim-lightbulb'
-	Plug 'antoinemadec/FixCursorHold.nvim'
-	Plug 'rmagatti/goto-preview'
-	Plug 'mfussenegger/nvim-jdtls'
-	Plug 'simrat39/rust-tools.nvim'
-	Plug 'jose-elias-alvarez/typescript.nvim'
-	Plug 'weilbith/nvim-code-action-menu'
-	Plug 'stevearc/dressing.nvim'
-	Plug 'nvim-lua/plenary.nvim'
-	Plug 'folke/todo-comments.nvim'
-	Plug 'folke/trouble.nvim'
-	Plug 'nvim-telescope/telescope.nvim'
-	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-	Plug 'nvim-telescope/telescope-project.nvim'
-	Plug 'goolord/alpha-nvim'
-	Plug 'm-demare/hlargs.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+Plug 'kosayoda/nvim-lightbulb'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'rmagatti/goto-preview'
+Plug 'mfussenegger/nvim-jdtls'
+Plug 'simrat39/rust-tools.nvim'
+Plug 'jose-elias-alvarez/typescript.nvim'
+Plug 'stevearc/dressing.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'folke/todo-comments.nvim'
+Plug 'folke/trouble.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope-project.nvim'
+Plug 'goolord/alpha-nvim'
+Plug 'm-demare/hlargs.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'joehannes-os/telescope-media-files.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
@@ -58,18 +57,18 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'windwp/nvim-autopairs'
 Plug 'abecodes/tabout.nvim'
-" Plug 'karb94/neoscroll.nvim'
 Plug 'declancm/cinnamon.nvim'
 Plug 'gorbit99/codewindow.nvim'
 Plug 'wellle/targets.vim'
 Plug 'kdheepak/tabline.nvim'
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 Plug 'petertriho/nvim-scrollbar'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'uga-rosa/ccc.nvim'
 Plug 'sudormrfbin/cheatsheet.nvim'
 Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
-Plug 'simrat39/inlay-hints.nvim'
+Plug 'lvimuser/lsp-inlayhints.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'jbyuki/venn.nvim'
 Plug 'SmiteshP/nvim-navic'
@@ -83,8 +82,11 @@ Plug 'ray-x/navigator.lua'
 
 call plug#end()
 
-set termguicolors
+" Advised settings for NvimTree
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
+set termguicolors
 syntax on
 let g:sonokai_style = 'default'
 let g:sonokai_diagnostic_virtual_text = ''
@@ -188,7 +190,7 @@ autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * Alpha | if argc() = 0 | wincmd p | endif
 "autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 "autocmd VimEnter * TagbarToggle | if (argc() > 0 || exists("s:std_in")) | wincmd p | endif
-autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NERDTree | wincmd p | else | Alpha | endif 
+autocmd VimEnter * if argc() > 0 || exists("s:stdin") | NvimTreeOpen | wincmd p | else | Alpha | endif 
 autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()
 autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
 
@@ -233,26 +235,90 @@ autocmd! BufNewFile,BufRead *.vs,*.vsh,*.fs,*.fsh set ft=glsl
 
 lua <<EOF
 require('hlslens').setup()
-require("tabline").setup({
+
+local function nvim_tree_on_attach(bufnr)
+    local api = require("nvim-tree.api")
+
+    local function opts(desc)
+        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    -- default mappings
+    api.config.mappings.default_on_attach(bufnr)
+
+    -- custom mappings
+    vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
+    vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
+    local treeutils = require("treeutils")
+    vim.keymap.set('n', '<c-f>', treeutils.launch_find_files, opts('Launch Find Files'))
+    vim.keymap.set('n', '<c-g>', treeutils.launch_live_grep,  opts('Launch Live Grep'))
+
+end
+
+require("nvim-tree").setup({
+    renderer = {
+        icons = {
+            show = {
+                folder_arrow = false
+            }
+        },
+        indent_markers = {
+            enable = true
+        },
+        highlight_git = true,
+        highlight_diagnostics = true,
+        highlight_opened_files = "all",
+        highlight_modified = "all",
+        highlight_bookmarks = "all"
+    },
+    on_attach = nvim_tree_on_attach
+})
+
+require("bufferline").setup({
+    options = {
+        numbers = "both",
+        color_icons = true,
+        offsets = {
+            {
+                filetype = "NvimTree",
+                text = "File Explorer",
+                text_align = "center",
+                separator = true
+            }
+        },
+        show_buffer_icons = true,
+        show_buffer_close_icons = true,
+        show_close_icon = true,
+        show_tab_indicators = true,
+        separator_style = "slant",
+        always_show_bufferline = true,
+        hover = {
+            enabled = true,
+            delay = 200,
+            reveal = {'close'}
+        }
+    }
+})
+--require("tabline").setup({
 	-- Defaults configuration options
-	enable = true,
-	options = {
+--	enable = false,
+--	options = {
 		-- If lualine is installed tabline will use separators configured in lualine by default.
 		-- These options can be used to override those settings.
-		component_separators = { '', '' },
-		section_separators = { '', '' },
-		max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-		show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
-		show_devicons = true, -- this shows devicons in buffer section
-		colored = true,
-		show_bufnr = false, -- this appends [bufnr] to buffer section,
-		tabline_show_last_separator = true,
-		show_filename_only = true, -- shows base filename only instead of relative path in filename
-		modified_icon = "+ ", -- change the default modified icon
-		modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
-		show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
-	}
-})
+--		component_separators = { '', '' },
+--		section_separators = { '', '' },
+--		max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+--		show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
+--		show_devicons = true, -- this shows devicons in buffer section
+--		colored = true,
+--		show_bufnr = false, -- this appends [bufnr] to buffer section,
+--		tabline_show_last_separator = true,
+--		show_filename_only = true, -- shows base filename only instead of relative path in filename
+--		modified_icon = "+ ", -- change the default modified icon
+--		modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
+--		show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+--	}
+--})
 vim.cmd [[
 	set guioptions-=e " Use showtabline in gui vim
 	set sessionoptions+=tabpages,globals " store tabpages and globals in session
@@ -456,22 +522,23 @@ require('lualine').setup {
 		lualine_y = {},
 		lualine_z = {}
 	},
-	tabline = {
-		lualine_a = {
-			buffer,
-		},
-		lualine_b = {
-		},
-		lualine_c = {},
-		lualine_x = {
-			tabs,
-		},
-		lualine_y = {
-			space,
-		},
-		lualine_z = {
-		},
-	},
+    tabline = {},
+--	tabline = {
+--		lualine_a = {
+--			buffer,
+--		},
+--		lualine_b = {
+--		},
+--		lualine_c = {},
+--		lualine_x = {
+--			tabs,
+--		},
+--		lualine_y = {
+--			space,
+--		},
+--		lualine_z = {
+--		},
+--	},
 	winbar = {},
 	inactive_winbar = {},
 
@@ -487,7 +554,7 @@ vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
 local codewindow = require('codewindow')
 codewindow.setup({
 	auto_enable = true,
-	exclude_filetypes = { "nerdtree", "CHADTree", "telescope", "tagbar", "alpha", "qf" },
+	exclude_filetypes = { "NvimTree",  "nerdtree", "CHADTree", "telescope", "tagbar", "alpha", "qf" },
 	minimap_width = 15,
 })
 codewindow.apply_default_keybinds()
@@ -717,6 +784,21 @@ require('goto-preview').setup({
 
 require("typescript").setup({})
 
+require("lsp-inlayhints").setup({})
+vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = "LspAttach_inlayhints",
+  callback = function(args)
+    if not (args.data and args.data.client_id) then
+      return
+    end
+
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    require("lsp-inlayhints").on_attach(client, bufnr)
+  end,
+})
+
 local rt = require("rust-tools")
 rt.setup({
   server = {
@@ -725,18 +807,18 @@ rt.setup({
       vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
       -- Code action groups
       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-      require("inlay-hints").on_attach(client, bufnr)
     end,
   },
   on_initialized = function()
-    require("inlay-hints").set_all()
+    require("lsp-inlayhints").set_all()
   end,
   tools = {
         inlay_hints = {
-              auto = false,
+              auto = true,
         },
   },
 })
+rt.inlay_hints.enable()
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -820,7 +902,7 @@ lspconfig['lua_ls'].setup({
 local lsps = {
 	'pyright',
 	'tsserver',
-	'rust_analyzer',
+--	'rust_analyzer',
 	'cmake',
 	'clangd',
 	'clojure_lsp',
@@ -901,7 +983,6 @@ require("ccc").setup({
 })
 
 require("crates").setup()
-require("inlay-hints").setup()
 
 local barbecue = require("barbecue")
 barbecue.setup()
