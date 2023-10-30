@@ -198,6 +198,7 @@ autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
 nmap <F9> :FloatermNew<CR>
 nmap <F8> :TagbarToggle<CR>
 nmap <F7> :LspAndDiag<CR>
+nmap <F6> :NvimTreeToggle<CR>
 
 highlight GitGutterAdd guifg=#a1d373 ctermfg=2
 highlight GitGutterChange guifg=#f19465 ctermfg=3
@@ -282,6 +283,18 @@ require("bufferline").setup({
             {
                 filetype = "NvimTree",
                 text = "File Explorer",
+                text_align = "center",
+                separator = true
+            },
+            {
+                filetype = "tagbar",
+                text = "Structure",
+                text_align = "center",
+                separator = true
+            },
+            {
+                filetype = "guihua",
+                text = "LSP | Diagnostic",
                 text_align = "center",
                 separator = true
             }
