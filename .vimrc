@@ -20,6 +20,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'folke/neodev.nvim'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
@@ -195,10 +197,10 @@ autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb(
 autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
 
 " nmap <F7> :CHADopen --nofocus<CR>
-nmap <F9> :FloatermNew<CR>
-nmap <F8> :TagbarToggle<CR>
-nmap <F7> :LspAndDiag<CR>
-nmap <F6> :NvimTreeToggle<CR>
+nmap <F21> :FloatermNew<CR>
+nmap <F20> :TagbarToggle<CR>
+nmap <F19> :LspAndDiag<CR>
+nmap <F18> :NvimTreeToggle<CR>
 
 highlight GitGutterAdd guifg=#a1d373 ctermfg=2
 highlight GitGutterChange guifg=#f19465 ctermfg=3
@@ -234,7 +236,88 @@ nnoremap <leader>/ :nohl<CR>
 
 autocmd! BufNewFile,BufRead *.vs,*.vsh,*.fs,*.fsh set ft=glsl
 
+"vnoremap <leader>dt <cmd>lua require("dapui").toggle()<CR>
+"vnoremap <leader>de <cmd>lua require("dapui").eval()<CR>
+"vnoremap <leader>db <cmd>lua require("dap").toggle_breakpoint()
+"vnoremap <leader>dc <cmd>lua require("dap").continue()
+"vnoremap <leader>ds <cmd>lua require("dap").step_over()
+"vnoremap <leader>dS <cmd>lua require("dap").step_into()
+"vnoremap <leader>dr <cmd>lua require("dap").repl.toggle()
+
 lua <<EOF
+local dap = require("dap")
+
+local dapui = require("dapui")
+dapui.setup({})
+
+dap.listeners.after.event_initialized["dapui_config"] = function()
+    dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+    dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+    dapui.close()
+end
+
+local extension_path = vim.env.HOME .. '/.vscode/extensions/vadimcn.vscode-lldb-1.10.0/'
+local codelldb_path = extension_path .. 'adapter/codelldb'
+dap.adapters.codelldb = {
+    type = 'server',
+    port = "${port}",
+    executable = {
+        command = codelldb_path,
+        args = {"--port", "${port}"},
+    }
+}
+
+dap.configurations.rust = {
+    {
+        name = "Rust debug",
+        type = "codelldb",
+        request = "launch",
+        program = function()
+            vim.fn.jobstart("cargo build")
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = true,
+        showDisassembly = "never"
+    },
+}
+
+require("nvim-dap-virtual-text").setup()
+require("neodev").setup({
+    library = {
+        plugins = {
+            "nvim-dap-ui"
+        },
+        types = true
+    },
+})
+
+vim.keymap.set('v', '<leader>dt', function() require("dapui").toggle() end)
+vim.keymap.set('v', '<leader>de', function() require("dapui").eval() end)
+vim.keymap.set('v', '<F5>', function() require('dap').continue() end)
+vim.keymap.set('v', '<F6>', function() require('dap').step_over() end)
+vim.keymap.set('v', '<F7>', function() require('dap').step_into() end)
+vim.keymap.set('v', '<F8>', function() require('dap').step_out() end)
+vim.keymap.set('v', '<Leader>db', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('v', '<Leader>dB', function() require('dap').set_breakpoint() end)
+vim.keymap.set('v', '<Leader>dl', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('[DAP BREAKPOINT LOG]: ')) end)
+vim.keymap.set('v', '<Leader>dr', function() require('dap').repl.toggle() end)
+vim.keymap.set('v', '<Leader>dl', function() require('dap').run_last() end)
+vim.keymap.set({'n', 'v'}, '<Leader>dh', function() require('dap.ui.widgets').hover() end)
+vim.keymap.set({'n', 'v'}, '<Leader>dp', function() require('dap.ui.widgets').preview() end)
+vim.keymap.set('v', '<Leader>df', function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.frames)
+end)
+vim.keymap.set('v', '<Leader>ds', function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.scopes)
+end)
+
 require('hlslens').setup()
 
 local function nvim_tree_on_attach(bufnr)
@@ -812,25 +895,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-local rt = require("rust-tools")
-rt.setup({
-  server = {
-    on_attach = function(client, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+local liblldb_path = extension_path .. 'lldb/lib/liblldb'
+local this_os = vim.loop.os_uname().sysname;
+
+-- The path in windows is different
+if this_os:find "Windows" then
+    codelldb_path = extension_path .. "adapter\\codelldb.exe"
+    liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+else
+    -- The liblldb extension is .so for linux and .dylib for macOS
+    liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+end
+
+local rt_opts = {
+    server = {
+        on_attach = function(client, bufnr)
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
+    },
+    on_initialized = function()
+        require("lsp-inlayhints").set_all()
     end,
-  },
-  on_initialized = function()
-    require("lsp-inlayhints").set_all()
-  end,
-  tools = {
+    tools = {
         inlay_hints = {
               auto = true,
         },
-  },
-})
+    },
+    dap = {
+        adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+    },
+}
+local rt = require("rust-tools")
+rt.setup(rt_opts)
 rt.inlay_hints.enable()
 
 -- Mappings.

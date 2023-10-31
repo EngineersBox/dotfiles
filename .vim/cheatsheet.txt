@@ -32,6 +32,23 @@ Next diagnostic | ]d
 Previous diagnostic | [d
 Toggle diagnostic | <leader>dt
 
+## Debug @debug @dap
+DAP toggle view (visual mode) | v<leader>dt
+DAP UI eval under cusor (visual mode) | v<leader>de
+DAP breakpoint toggle (visual mode) | v<leader>db
+DAP set breakpoint (visual mode) | v<leader>dB
+DAP set log breakpoint (visual mode) | v<leader>dl
+DAP REPL toggle (visual mode) | v<leader>dr
+DAP run last (visual mode) | v<leader>dl
+DAP continue (visual mode) | v<F5>
+DAP step over (visual mode) | v<F6>
+DAP step into (visual mode) | v<F7>
+DAP step out (visual mode) | v<F8>
+DAP hover (visual mode) | v<leader>dh
+DAP preview (visual mode) | v<leader>dp
+DAP frames (visual mode) | v<leader>df
+DAP scopes (visual mode) | v<leader>ds
+
 ## Find-Replace @replace @find
 Replace under cusor | :Sad
 Replace targetted | :Sad <from> <to>
@@ -46,9 +63,9 @@ Open preview file in nvim/apply action | <Enter>
 Save modification to preview window to file | <C-s>
 
 ## Utilities @terminal @tags
-Open floaterm | <F9>
-Toggle tagbar | <F8>
-Toggle LspAndDiag | <F7>
+Open floaterm | <F21> (Shift + <F9>)
+Toggle tagbar | <F20> (Shift + <F8>)
+Toggle LspAndDiag | <F19> (Shift + <F7>)
 
 ## Finding-Content @open @grep @recent @find @search @help
 Find files relative to current directory | <leader>ff
