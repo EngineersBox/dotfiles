@@ -49,6 +49,15 @@ DAP preview (visual mode) | v<leader>dp
 DAP frames (visual mode) | v<leader>df
 DAP scopes (visual mode) | v<leader>ds
 
+## Buffers @bufferline @buffer @buf
+Buffer n from start (n in [1..9]) | n<leader>[n]
+Buffer n from end (n in [!..(]) | n<leader>[n]
+Next buffer | n<TAB>
+Previous buffer | n<S-TAB>
+Pick buffer | n<leader>bp
+Close buffer | n<leader>bd
+Pin buffer | n<leader>bP
+
 ## Find-Replace @replace @find
 Replace under cusor | :Sad
 Replace targetted | :Sad <from> <to>
