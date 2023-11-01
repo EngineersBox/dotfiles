@@ -62,7 +62,7 @@ Plug 'abecodes/tabout.nvim'
 Plug 'declancm/cinnamon.nvim'
 Plug 'gorbit99/codewindow.nvim'
 Plug 'wellle/targets.vim'
-Plug 'kdheepak/tabline.nvim'
+"Plug 'kdheepak/tabline.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 Plug 'petertriho/nvim-scrollbar'
@@ -388,6 +388,10 @@ bl.setup({
         numbers = function(opts)
             return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
         end,
+        indicator = {
+            icon = nil,
+            style = "underline"
+        },
         color_icons = true,
         offsets = {
             {
@@ -441,7 +445,7 @@ bl.setup({
                     name = "Tests", -- Mandatory
                     highlight = {
                         fg = palette.green[1],
-                        sp = palette.green[1]
+                        sp = palette.red[1]
                     }, -- Optional
                     priority = 2, -- determines where it will appear relative to other groups (Optional)
                     icon = "", -- Optional
@@ -449,12 +453,15 @@ bl.setup({
                         return buf.name:match('%_test')
                             or buf.name:match('%_spec')
                     end,
+                    separator = {
+                        style = require('bufferline.groups').separator.pill,
+                    },
                 },
                 {
                     name = "Configs",
                     highlight = {
                         fg = palette.yellow[1],
-                        sp = palette.yellow[1]
+                        sp = palette.red[1]
                     },
                     priority = 3,
                     matcher = function(buf)
@@ -462,19 +469,23 @@ bl.setup({
                             or buf.name:match("%.toml")
                             or buf.name:match("%.properties")
                     end,
+                    separator = {
+                        style = require('bufferline.groups').separator.pill,
+                    },
                 },
                 {
                     name = "Docs",
                     highlight = {
+                        --underline = false,
                         fg = palette.blue[1],
-                        sp = palette.blue[1]
+                        sp = palette.red[1]
                     },
                     auto_close = false,  -- whether or not close this group if it doesn't contain the current buffer
                     matcher = function(buf)
                         return buf.name:match('%.md')
                             or buf.name:match('%.txt')
                     end,
-                    separator = { -- Optional
+                    separator = {
                         style = require('bufferline.groups').separator.pill,
                     },
                 }
@@ -566,13 +577,15 @@ local filetype_tab = {
 }
 
 local buffer = {
-	require 'tabline'.tabline_buffers,
+--	require 'tabline'.tabline_buffers,
+    {},
 	separator = { left = "", right = "" },
 }
 
 local tabs = {
-	require 'tabline'.tabline_tabs,
-	separator = { left = "", right = "" },
+--	require 'tabline'.tabline_tabs,
+    {},
+    separator = { left = "", right = "" },
 }
 
 local fileformat = {
@@ -657,7 +670,7 @@ require('lualine').setup {
 		globalstatus = true,
 		refresh = {
 			statusline = 1000,
-			tabline = 1000,
+--			tabline = 1000,
 			winbar = 1000,
 		}
 	},
