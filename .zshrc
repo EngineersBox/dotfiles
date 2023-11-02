@@ -144,8 +144,8 @@ function leak_test_log() {
     leaks --hex --outputGraph="./memory_analysis/$(date +"%Y-%m-%d_%H-%M-%S")" --atExit -- $1
 }
 
-function init_pmem_qemu() {
-  cd $HOME/Desktop/Projects/C:C++/$1
+function init_qemu() {
+  cd $1
   qemu-system-x86_64 -drive file=$HOME/linux_distros/ubuntu.raw,format=raw,index=0,media=disk \
     -drive media=cdrom,file=$HOME/linux_distros/ubuntu-20.04.4-live-server-amd64.iso,readonly=on \
     -boot d \
@@ -156,12 +156,12 @@ function init_pmem_qemu() {
     -device nvdimm,memdev=mem1,id=nv1,label-size=2M \
     -object memory-backend-file,id=mem2,share=on,mem-path=$HOME/linux_distros/vms/qemu/f27nvdimm1,size=4G \
     -device nvdimm,memdev=mem2,id=nv2,label-size=2M \
-    -virtfs local,path=$HOME/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
+    -virtfs local,path=$1,security_model=none,mount_tag=$2
 }
 
-function start_pmem_qemu() {
-  echo "Mount the FS into the VM with: 'sudo mount -t 9p -o trans=virtio $1 /home/qemu/$1 -oversion=9p2000.u'"
-  cd $HOME/Desktop/Projects/C:C++/$1
+function start_qemu() {
+  echo "Mount the FS into the VM with: 'sudo mount -t 9p -o trans=\"virtio $2 $1\" -oversion=9p2000.u'"
+  cd $1
   qemu-system-x86_64 -drive file=$HOME/linux_distros/ubuntu.raw,format=raw,index=0,media=disk \
     -boot d \
     -m 4G,slots=4,maxmem=32G \
@@ -171,7 +171,7 @@ function start_pmem_qemu() {
     -device nvdimm,memdev=mem1,id=nv1,label-size=2M \
     -object memory-backend-file,id=mem2,share=on,mem-path=$HOME/linux_distros/vms/qemu/f27nvdimm1,size=4G \
     -device nvdimm,memdev=mem2,id=nv2,label-size=2M \
-    -virtfs local,path=$HOME/Desktop/Projects/C:C++/$1,security_model=none,mount_tag=$1
+    -virtfs local,path=$1,security_model=none,mount_tag=$3
 }
 
 function showPreview() {
@@ -285,6 +285,9 @@ alias ts="ets -f '[%Y-%m-%d %H:%M:%S.%L]'"
 alias mvshaders="ditto ~/Desktop/Projects/GLSL/QuantaShader/shaders ~/Library/Application\ Support/minecraft/shaderpacks/QuantaShader/shaders"
 
 alias update_vcpkg="cd $HOME/vcpkg && git pull && cd -"
+alias update_overleaf="nativefier --upgrade /Applications/Overleaf.app"
+
+alias clear_intellij_cache="rm -rf ~/Library/Caches/JetBrains/IntelliJIdea*"
 
 alias reload_yabai="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.yabai\""
 alias reload_sketchybar="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.sketchybar\""
@@ -292,11 +295,12 @@ alias reload_skhd="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.skhd\""
 
 # ---- EXPORT DEFINITIONS ---- #
 
+export WEZTERM_CONFIG_FILE="~/.config/wezterm/wezterm.lua"
 export GOPATH=$HOME/golang
 export GOROOT=/usr/local/opt/go/libexec
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$GOROOT/bin:$PATH"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_241.jdk/Contents/Home"
+export JAVA_HOME=`/usr/libexec/java_home -v 19.0.2`
 export GUILE_LOAD_PATH="/usr/local/share/guile/site/3.0"
 export GUILE_LOAD_COMPILED_PATH="/usr/local/lib/guile/3.0/site-ccache"
 export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
@@ -306,11 +310,11 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 export VCPKG_ROOT="$HOME/vcpkg"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig:/Users/jackkilrain/vcpkg/packages/openmpi_x64-osx/lib/pkgconfig"
 export NNN_PLUG="p:preview-tui"
 export NNN_FIFO="~/nnn.fifo"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin:/usr/local/opt/openjdk/bin"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
 
 # Opam configuration
