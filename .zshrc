@@ -295,6 +295,7 @@ alias reload_skhd="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.skhd\""
 
 # ---- EXPORT DEFINITIONS ---- #
 
+export EDITOR="$(which nvim)"
 export WEZTERM_CONFIG_FILE="~/.config/wezterm/wezterm.lua"
 export GOPATH=$HOME/golang
 export GOROOT=/usr/local/opt/go/libexec
