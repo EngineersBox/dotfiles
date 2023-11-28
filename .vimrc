@@ -81,6 +81,7 @@ Plug 'sindrets/diffview.nvim'
 Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 Plug 'ray-x/sad.nvim'
 Plug 'ray-x/navigator.lua'
+Plug 'mikesmithgh/kitty-scrollback.nvim'
 
 call plug#end()
 
@@ -266,6 +267,7 @@ autocmd! BufNewFile,BufRead *.vs,*.vsh,*.fs,*.fsh set ft=glsl
 "vnoremap <leader>dr <cmd>lua require("dap").repl.toggle()
 
 lua <<EOF
+require("kitty-scrollback").setup({})
 local dap = require("dap")
 
 local dapui = require("dapui")
