@@ -3,8 +3,8 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+        vim.g.sonokai_style = "default"
+        vim.g.sonokai_diagnostic_virtual_text = "highlighted"
         vim.cmd([[colorscheme sonokai]])
-        vim.g.sonokai_style="default"
-        vim.g.sonokai_daignostic_virtual_text=""
     end
 }

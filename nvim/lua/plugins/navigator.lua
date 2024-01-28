@@ -30,12 +30,19 @@ return {
         "ray-x/navigator.lua",
         dependencies = {
             "ray-x/guihua.lua",
-            "neovim/nvim-lspconfig"
         },
         opts = {
             lsp = {
-                servers = lsps
+                enabled = true,
+                format_on_save = true,
+                diagnostic = {
+                    virtual_text = true,
+                    update_in_insert = true,
+                },
+                disable_lsp = "all"
+                --servers = lsps
             }
         }
     }
 }
+-- return {}

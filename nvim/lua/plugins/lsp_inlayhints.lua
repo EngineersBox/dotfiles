@@ -2,7 +2,7 @@ return {
     {
         "lvimuser/lsp-inlayhints.nvim",
         dependencies = {
-            "neovim/nvim-lspconfig"
+            -- "neovim/nvim-lspconfig"
         },
         init = function()
             vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
