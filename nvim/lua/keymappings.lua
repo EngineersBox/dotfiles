@@ -1,5 +1,4 @@
 vim.cmd([[
-nmap <F21> :FloatermNew<CR>
 nmap <F20> :TagbarToggle<CR>
 nmap <F19> :LspAndDiag<CR>
 nmap <F18> :NvimTreeToggle<CR>
@@ -43,11 +42,6 @@ nnoremap <silent> n<S-TAB> :BufferLineCyclePrev<CR>
 nnoremap <silent> n<leader>bp :BufferLinePick<CR>
 nnoremap <silent> n<leader>bd :BufferLinePickClose<CR>
 nnoremap <silent> n<leader>bP :BufferLineTogglePin<CR>
-
-nnoremap <leader>hw :HopWord<CR>
-nnoremap <leader>hl :HopLine<CR>
-nnoremap <leader>hc1 :HopChar1<CR>
-nnoremap <leader>hc2 :HopChar2<CR>
 
 nnoremap <leader>/ :nohl<CR>
 ]])
