@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -76,7 +76,24 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git k)
+plugins=(
+    git
+    k
+    autojump
+    brew
+    cp
+    colored-man-pages
+    command-not-found
+    docker-machine
+    fancy-ctrl-z
+    fzf
+    gitignore
+    mvn
+    rsync
+    ripgrep
+    rust
+    sudo
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -234,6 +251,15 @@ function nnn-preview () {
     rm -f "$NNN_FIFO"
 }
 
+function find_port() {
+    lsof -i :$1
+}
+
+function kill_port() {
+    local pid="$(lsof -t -i :$1)"
+    kill -9 "$pid"
+}
+
 # ---- SKETCHYBAR ---- #
 
 # Sketchybar interactivity overloads
@@ -309,14 +335,15 @@ export PATH=$PATH:/usr/local/Cellar/rust/1.59.0/bin
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-export PATH="/usr/local/opt/python@3.10/bin:$PATH"
+export PATH="/usr/local/opt/python@3.10/bin:$HOME/Library/psn00bsdk/bin:$PATH"
 export VCPKG_ROOT="$HOME/vcpkg"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig:/Users/jackkilrain/vcpkg/packages/openmpi_x64-osx/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig:$HOME/vcpkg/packages/openmpi_x64-osx/lib/pkgconfig"
 export NNN_PLUG="p:preview-tui"
 export NNN_FIFO="~/nnn.fifo"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin:/usr/local/opt/openjdk/bin"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
+export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
 
 # Opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
