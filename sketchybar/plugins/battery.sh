@@ -1,28 +1,39 @@
-#!/usr/bin/env sh
+#!/bin/bash
+source "$HOME/.config/sketchybar/icons.sh"
 
-source "$HOME/.config/sketchybar/colors.sh"
-
-PERCENTAGE=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
+ICON="$ICON_BATTERY_FULL"
+LABEL="$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)"
 CHARGING=$(pmset -g batt | grep 'AC Power')
 
-if [ $PERCENTAGE = "" ]; then
-  exit 0
+if [[ ${CHARGING} != "" ]]; then
+ case ${LABEL} in
+  100) ICON="$ICON_BATTERY_FULL_CHARGING" ;;
+  9[0-9]) ICON="$ICON_BATTERY_90_CHARGING" ;;
+  8[0-9]) ICON="$ICON_BATTERY_80_CHARGING" ;;
+  7[0-9]) ICON="$ICON_BATTERY_70_CHARGING" ;;
+  6[0-9]) ICON="$ICON_BATTERY_60_CHARGING" ;;
+  5[0-9]) ICON="$ICON_BATTERY_50_CHARGING" ;;
+  4[0-9]) ICON="$ICON_BATTERY_40_CHARGING" ;;
+  3[0-9]) ICON="$ICON_BATTERY_30_CHARGING" ;;
+  2[0-9]) ICON="$ICON_BATTERY_20_CHARGING" ;;
+  1[0-9]) ICON="$ICON_BATTERY_10_CHARGING" ;;
+  *) ICON="$ICON_BATTERY_10_CHARGING"
+ esac
+else
+ case ${LABEL} in
+  100) ICON="$ICON_BATTERY_FULL" ;;
+  9[0-9]) ICON="$ICON_BATTERY_90" ;;
+  8[0-9]) ICON="$ICON_BATTERY_80" ;;
+  7[0-9]) ICON="$ICON_BATTERY_70" ;;
+  6[0-9]) ICON="$ICON_BATTERY_60" ;;
+  5[0-9]) ICON="$ICON_BATTERY_50" ;;
+  4[0-9]) ICON="$ICON_BATTERY_40" ;;
+  3[0-9]) ICON="$ICON_BATTERY_30" ;;
+  2[0-9]) ICON="$ICON_BATTERY_20" ;;
+  1[0-9]) ICON="$ICON_BATTERY_10" ;;
+  *) ICON="$ICON_BATTERY_10"
+ esac
 fi
 
-case ${PERCENTAGE} in
-   100) COLOR=0xff${NORD14:1} ;;
-   9[0-9]) COLOR=0xff${NORD14:1} ;;
-   8[0-9]) COLOR=0xff${NORD14:1} ;;
-   7[0-9]) COLOR=0xff${NORD14:1} ;;
-   6[0-9]) COLOR=0xff${NORD14:1} ;;
-   5[0-9]) COLOR=0xff${NORD14:1} ;;
-   4[0-9]) COLOR=0xff${NORD14:1} ;;
-   3[0-9]) COLOR=0xff${NORD13:1} ;;
-   2[0-9]) COLOR=0xff${NORD13:1} ;;
-   1[0-9]) COLOR=0xff${NORD11:1} ;;
-   *) COLOR=0xff${NORD11:1}
-esac
 
-[ $CHARGING != "" ] && COLOR=0xff${NORD14:1}
-
-sketchybar --set "Control Centre,Battery" alias.color=$COLOR label="${PERCENTAGE}%"
+sketchybar --set $NAME icon="$ICON" label="$LABEL%"

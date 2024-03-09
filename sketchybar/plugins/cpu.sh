@@ -1,15 +1,7 @@
-#!/usr/bin/env sh
-source "$HOME/.config/sketchybar/icons.sh"
 source "$HOME/.config/sketchybar/colors.sh"
 
-update() {
-    ICON="$ICON_CALENDAR"
-    LABEL=$(date '+%a %-d %b')
-    sketchybar --set $NAME icon="$ICON" label="$LABEL"
-}
-
 add_hover() {
-    sketchybar --animate linear 10 --set $NAME background.border_color=$BAR_ACQUA
+    sketchybar --animate linear 10 --set $NAME background.border_color=$BAR_ORANGE
 }
 
 remove_hover() {
@@ -17,7 +9,7 @@ remove_hover() {
 }
 
 mouse_clicked() {
-    open -a calendar
+    open -a alacritty --args -e btop
 }
 
 case "$SENDER" in
@@ -26,7 +18,5 @@ case "$SENDER" in
   "mouse.entered") add_hover
   ;;
   "mouse.exited") remove_hover
-  ;;
-  *) update
   ;;
 esac

@@ -1,59 +1,56 @@
-#!/bin/bash
+#!/usr/bin/env sh
+source "$HOME/.config/sketchybar/colors.sh"
+source "$HOME/.config/sketchybar/plugins/space.sh"
 
-SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15")
+SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13")
 
-# Destroy space on right click, focus space on left click.
-# New space by left clicking separator (>)
+sketchybar --add  item                 spaces.left.spacer left \
+           --set  spaces.left.spacer   width=20
 
-sid=0
 spaces=()
 for i in "${!SPACE_ICONS[@]}"
 do
   sid=$(($i+1))
 
-  space=(
-    associated_space=$sid
-    icon=${SPACE_ICONS[i]}
-    icon.padding_left=10
-    icon.padding_right=15
-    padding_left=2
-    padding_right=2
-    label.padding_right=20
-    icon.highlight_color=$RED
-    label.font="sketchybar-app-font:Regular:16.0"
-    label.background.height=26
-    label.background.drawing=on
-    label.background.color=$BACKGROUND_2
-    label.background.corner_radius=8
-    label.drawing=off
-    script="$PLUGIN_DIR/space.sh"
-  )
-
-  sketchybar --add space space.$sid left    \
-             --set space.$sid "${space[@]}" \
-             --subscribe space.$sid mouse.clicked
+  sketchybar --add space               space.$sid left                                \
+             --set space.$sid          associated_space=$sid                          \
+                                       \
+                                       icon=${SPACE_ICONS[i]}                         \
+                                       icon.font="$FONT:Bold:11.0"      \
+                                       icon.highlight_color=$BAR_ACTIVE_ICON          \
+                                       icon.color=$BAR_INACTIVE_ICON                  \
+                                       icon.y_offset=4                                \
+                                       \
+                                       label.font="sketchybar-app-font:Regular:11.0"  \
+                                       label.color=$BAR_ACTIVE_ICON                   \
+                                       label.padding_right=12                         \
+                                       \
+                                       background.padding_left=2                      \
+                                       background.padding_right=2                     \
+                                       background.corner_radius=6                     \
+                                       background.drawing=on                          \
+                                       \
+                                       script="$PLUGIN_DIR/space.sh"
 done
 
-spaces=(
-  background.color=$BACKGROUND_1
-  background.border_color=$BACKGROUND_2
-  background.border_width=2
-  background.drawing=on
-)
+sketchybar --add       event        refresh_current_workspace     \
+           --add       event        refresh_workspaces            \
+           --add       item         system.yabai left             \
+           --set       system.yabai script="$PLUGIN_DIR/space.sh" \
+                                    drawing=off                   \
+                                    associated_display=active     \
+           --subscribe system.yabai refresh_current_workspace     \
+                                    refresh_workspaces
 
-separator=(
-  icon=􀆊
-  icon.font="$FONT:Heavy:16.0"
-  padding_left=15
-  padding_right=15
-  label.drawing=off
-  associated_display=active
-  click_script='yabai -m space --create && sketchybar --trigger space_change'
-  icon.color=$WHITE
-)
+sketchybar --add  item                 spaces.right.spacer left                      \
+           --set  spaces.right.spacer  width=10
 
-sketchybar --add bracket spaces '/space\..*/' \
-           --set spaces "${spaces[@]}"        \
-                                              \
-           --add item separator left          \
-           --set separator "${separator[@]}"
+sketchybar --add  bracket     spaces   spaces.left.spacer                            \
+                                       '/space\..*/'                                 \
+                                       spaces.right.spacer                           \
+           --set  spaces               background.color=$BAR_BACKGROUND              \
+                                       background.corner_radius=4                    \
+                                       background.height=32                          \
+                                       background.y_offset=5
+
+refresh_workspaces

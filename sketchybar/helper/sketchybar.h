@@ -72,7 +72,7 @@ static inline mach_port_t mach_get_bs_port() {
 
 static inline void mach_receive_message(mach_port_t port, struct mach_buffer* buffer, bool timeout) {
   *buffer = (struct mach_buffer) { 0 };
-  mach_msg_return_t msg_return;
+  mach_msg_return_t msg_return = MACH_MSG_SUCCESS;
   if (timeout)
     msg_return = mach_msg(&buffer->message.header,
                           MACH_RCV_MSG | MACH_RCV_TIMEOUT,
@@ -179,11 +179,12 @@ static inline bool mach_server_begin(struct mach_server* mach_server, mach_handl
 
   mach_server->handler = handler;
   mach_server->is_running = true;
-  struct mach_buffer buffer;
   while (mach_server->is_running) {
-    mach_receive_message(mach_server->port, &buffer, false);
-    mach_server->handler((env)buffer.message.descriptor.address);
-    mach_msg_destroy(&buffer.message.header);
+    struct mach_buffer* buffer = (struct mach_buffer*)malloc(sizeof(struct mach_buffer));
+    mach_receive_message(mach_server->port, buffer, false);
+    mach_server->handler((env)buffer->message.descriptor.address);
+    mach_msg_destroy(&buffer->message.header);
+    free(buffer);
   }
 
   return true;

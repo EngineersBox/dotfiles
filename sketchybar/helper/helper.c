@@ -1,10 +1,11 @@
 #include "cpu.h"
 #include "sketchybar.h"
+#include "wattage.h"
 
 struct cpu g_cpu;
+struct wattage g_wattage;
 
 void handler(env env) {
-  // Environment variables passed from sketchybar can be accessed as seen below
   char* name = env_get_value_for_key(env, "NAME");
   char* sender = env_get_value_for_key(env, "SENDER");
   char* info = env_get_value_for_key(env, "INFO");
@@ -12,15 +13,18 @@ void handler(env env) {
 
   if ((strcmp(sender, "routine") == 0)
             || (strcmp(sender, "forced") == 0)) {
-    // CPU graph updates
+
     cpu_update(&g_cpu);
+    wattage_update(&g_wattage);
 
     if (strlen(g_cpu.command) > 0) sketchybar(g_cpu.command);
+    if (strlen(g_wattage.command) > 0) sketchybar(g_wattage.command);
   }
 }
 
 int main (int argc, char** argv) {
   cpu_init(&g_cpu);
+  wattage_init(&g_wattage);
 
   if (argc < 2) {
     printf("Usage: provider \"<bootstrap name>\"\n");

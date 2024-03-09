@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 # Color Palette
 export BLACK=0xff181926
@@ -13,31 +13,26 @@ export GREY=0xff939ab7
 export TRANSPARENT=0x00000000
 
 # General bar colors
-export BAR_COLOR=0xa024273a
+export BAR_COLOR=0xcc24273a
 export ICON_COLOR=$WHITE # Color of all icons
 export LABEL_COLOR=$WHITE # Color of all labels
-export BACKGROUND_1=0x903c3e4f
-export BACKGROUND_2=0x90494d64
+export BACKGROUND_1=0xff3c3e4f
+export BACKGROUND_2=0xff494d64
 
-export POPUP_BACKGROUND_COLOR=0xff24273a
+export POPUP_BACKGROUND_COLOR=$BLACK
 export POPUP_BORDER_COLOR=$WHITE
 
 export SHADOW_COLOR=$BLACK
 
-# Battery Nord
-export NORD0=#2E3440
-export NORD1=#3B4252
-export NORD2=#434C5E
-export NORD3=#4C566A
-export NORD4=#D8DEE9
-export NORD5=#E5E9F0
-export NORD6=#ECEFF4
-export NORD7=#8FBCBB
-export NORD8=#88C0D0
-export NORD9=#81A1C1
-export NORD10=#5E81AC
-export NORD11=#BF616A
-export NORD12=#D08770
-export NORD13=#EBCB8B
-export NORD14=#A3BE8C
-export NORD15=#B48EAD
+# Custom
+export BAR_BACKGROUND=0xff272727
+export BAR_INACTIVE_ICON=0xff83725B
+export BAR_ACTIVE_ICON=0xffAD946E
+
+export BAR_RED=0xffE96862
+export BAR_ORANGE=0xffE5894E
+export BAR_GREEN=0xffA8B665
+export BAR_PINK=0xffD3859B
+export BAR_BLUE=0xff7CAEA3
+export BAR_ACQUA=0xff89B482
+export BAR_YELLOW=0xffE2A84F
