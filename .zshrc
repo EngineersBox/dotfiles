@@ -319,6 +319,9 @@ alias reload_yabai="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.yabai\""
 alias reload_sketchybar="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.sketchybar\""
 alias reload_skhd="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.skhd\""
 
+alias kitten="kitty +kitten"
+alias icat="kitten icat"
+
 # ---- EXPORT DEFINITIONS ---- #
 
 export EDITOR="$(which nvim)"
