@@ -8,7 +8,6 @@ nnoremap gpt <cmd>lua require('goto-preview').goto_preview_type_definition()<CR>
 nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>
 nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>
 nnoremap gr <cmd>lua require('goto-preview').goto_preview_references()<CR>
-nnoremap <leader>ac :CodeActionMenu<CR>
 
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
@@ -17,7 +16,6 @@ nnoremap <leader>fB <cmd>Telescope file_browser<CR>
 
 nnoremap <leader>fo <cmd>Telescope oldfiles<CR>
 nnoremap <leader>fh <cmd>Telescope help_tags<CR>
-
 
 nnoremap <silent> n<leader>1 <cmd>lua require("bufferline").go_to(1, true)<CR>
 nnoremap <silent> n<leader>2 <cmd>lua require("bufferline").go_to(2, true)<CR>

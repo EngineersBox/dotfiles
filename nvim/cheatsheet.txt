@@ -19,7 +19,7 @@ Treesitter symboll all open buffers | <leader>gT
 CTags symbol search | <leader>ct
 CTags symbol generate (under cursor) | <leader>cg
 
-## Code-Actions @actions @diagnostic
+## Code-Actions @actions @diagnostic @trouble
 Show code actions | <A-CR>
 Show code actions (other) | <space>ca
 Rename | <space>rn
@@ -31,6 +31,12 @@ All buffers diagnostics | gG
 Next diagnostic | ]d
 Previous diagnostic | [d
 Toggle diagnostic | <leader>dt
+(Trouble) diagnostics toggle | <leader>xx
+(Trouble) diagnostics toggle filter | <leader>xX
+(Trouble) Symbols toggle | <leader>cs
+(Trouble) LSP definitions/references/... | <leader>cl
+(Trouble) Location list | <leader>xL
+(Trouble) Quickfix list | <leader>xQ
 
 ## Debug @debug @dap
 DAP toggle view (visual mode) | v<leader>dt
