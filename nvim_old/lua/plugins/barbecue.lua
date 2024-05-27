@@ -7,12 +7,9 @@ return {
             "SmiteshP/nvim-navic",
             "nvim-tree/nvim-web-devicons", -- optional dependency
         },
-        opts = {
-            attach_navic = false,
-        },
-        init = function()
+        config = function(_, _)
             require("barbecue.ui").toggle(true)
-        end,
+        end
     }
 }
 
