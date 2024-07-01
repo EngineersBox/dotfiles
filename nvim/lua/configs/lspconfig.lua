@@ -35,7 +35,7 @@ local servers = {
   "pyright",
   "tsserver",
   "cmake",
-  "clangd",
+  -- "clangd",
   "clojure_lsp",
   "gopls",
   "vimls",
@@ -107,6 +107,52 @@ lspconfig['groovyls'].setup({
         "-jar",
         "/home/jackkilrain/repos/groovy-language-server/build/libs/groovy-language-server-all.jar"
     },
+})
+
+local root_pattern = lspconfig.util.root_pattern('.git')
+local function file_exists(name)
+   local f=io.open(name,"r")
+   if f ~= nil then io.close(f) return true else return false end
+end
+-- Might be cleaner to try to expose this as a pattern from `lspconfig.util`, as
+-- really it is just stolen from part of the `clangd` config
+local function format_clangd_command()
+    -- Turn the name of the current file into the name of an expected container, assuming that
+    -- the container running/building this file is named the same as the basename of the project
+    -- that the file is in
+    --
+    -- The name of the current buffer
+    local bufname = vim.api.nvim_buf_get_name(0)
+    -- Project root
+    local project_root = vim.loop.cwd()
+    -- Turned into a filename
+    local filename = lspconfig.util.path.is_absolute(bufname) and bufname or lspconfig.util.path.join(project_root, bufname)
+    -- Then the directory of the project
+    local project_dirname = root_pattern(filename) or lspconfig.util.path.dirname(filename)
+    -- And finally perform what is essentially a `basename` on this directory
+    local basename = vim.fn.fnamemodify(lspconfig.util.find_git_ancestor(project_dirname), ':t')
+    if (basename == nil) then
+        return nil
+    end
+    local name, _ = string.gsub(
+        string.lower(basename),
+        "-",
+        "_"
+    )
+    -- require("noice").redirect(function()
+    --     local result = "false"
+    --     if (file_exists(project_root .. "/cclangd")) then result = "true" end
+    --     print("QUERYING: " .. project_root .. "/cclangd => " .. result)
+    -- end)
+    if (file_exists(project_root .. "/cclangd")) then
+        return { project_root .. "/cclangd" }
+    else
+        return { "/usr/local/bin/cclangd", name, project_root }
+    end
+end
+lspconfig["clangd"].setup({
+    on_attach = on_attach,
+    cmd = format_clangd_command(),
 })
 
 -- jinja_lsp
