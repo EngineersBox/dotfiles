@@ -3,12 +3,6 @@ return {
         "smoka7/hop.nvim",
         version = "*",
         init = function()
-            vim.cmd([[
-                nnoremap <leader>hw :HopWord<CR>
-                nnoremap <leader>hl :HopLine<CR>
-                nnoremap <leader>hc1 :HopChar1<CR>
-                nnoremap <leader>hc2 :HopChar2<CR>
-            ]])
             require("hop").setup({})
         end
     }
