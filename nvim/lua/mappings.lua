@@ -34,3 +34,7 @@ map("n", "<leader>ts", "<cmd> Trouble symbols toggle focus=false<CR>", { desc = 
 map("n", "<leader>tl", "<cmd> Trouble lsp toggle focus=false win.postion=right<CR>", { desc = "Trouble LSP definitions, references, etc" })
 map("n", "<leader>tL", "<cmd> Trouble loclist toggle<CR>", { desc = "Trouble location list" })
 map("n", "<leader>tq", "<cmd> Trouble qflist<CR>", { desc = "Toruble quickfix list" })
+
+-- Split
+map("n", "<leader>wv", "<cmd> vsplit<CR>", { desc = "Window split vertically" })
+map("n", "<leader>wh", "<cmd> split<CR>", { desc = "Window split horizontally" })

@@ -21,4 +21,5 @@ vim.cmd([[
     set foldlevelstart=99
     set cursorline
     set cursorlineopt=screenline,number
+    set switchbuf=useopen
 ]])

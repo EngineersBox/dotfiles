@@ -37,3 +37,8 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+vim.cmd [[
+   augroup ilikecursorline
+      autocmd VimEnter * :highlight CursorLineNr guifg=#73d3de
+   augroup END
+]]
