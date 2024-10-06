@@ -67,7 +67,13 @@ def infer_tab_name(tab: TabBarData) -> str:
         return tab.title
     tabconf_path = Path(f"{cwd}/.tabconf")
     if not tabconf_path.exists() or not tabconf_path.is_file():
-        return tab.title
+        cwd_path = Path(cwd)
+        if cwd_path == Path.home():
+            return "~"
+        try:
+            return f"~/{str(Path(cwd).relative_to(Path.home()))}"
+        except ValueError:
+            return cwd
     tabconf = configparser.ConfigParser()
     tabconf.read(tabconf_path)
     title = tabconf.get("Tab", "Title", fallback=tab.title)
