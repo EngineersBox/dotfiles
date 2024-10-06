@@ -1,7 +1,9 @@
+import json
+import subprocess
+from collections import defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
-import configparser
 
+from kitty.boss import get_boss
 from kitty.fast_data_types import Screen, add_timer
 from kitty.rgb import Color
 from kitty.tab_bar import (
@@ -12,12 +14,8 @@ from kitty.tab_bar import (
     as_rgb,
     draw_attributed_string,
     draw_title,
-    get_boss
 )
-from kitty.utils import (
-    color_as_int,
-    log_error
-)
+from kitty.utils import color_as_int
 
 timer_id = None
 
@@ -55,26 +53,6 @@ def _draw_icon(screen: Screen, index: int) -> int:
     screen.cursor.x = len(ICON)
     return screen.cursor.x
 
-def infer_tab_name(tab: TabBarData) -> str:
-    tab_manager = get_boss().active_tab_manager
-    if tab_manager is None:
-        return tab.title
-    window = tab_manager.active_window
-    if window is None:
-        return tab.title
-    cwd = window.cwd_of_child
-    if cwd is None:
-        return tab.title
-    tabconf_path = Path(f"{cwd}/.tabconf")
-    if not tabconf_path.exists() or not tabconf_path.is_file():
-        return tab.title
-    tabconf = configparser.ConfigParser()
-    tabconf.read(tabconf_path)
-    title = tabconf.get("Tab", "Title", fallback=tab.title)
-    active_tab = get_boss().active_tab
-    active_tab.set_title(title)
-    active_tab.title_changed(window)
-    return title
 
 def _draw_left_status(
     draw_data: DrawData,
@@ -89,7 +67,6 @@ def _draw_left_status(
     # print(extra_data)
     if draw_data.leading_spaces:
         screen.draw(" " * draw_data.leading_spaces)
-    tab = tab._replace(title=infer_tab_name(tab))
 
     draw_title(draw_data, screen, tab, index)
     trailing_spaces = min(max_title_length - 1, draw_data.trailing_spaces)
