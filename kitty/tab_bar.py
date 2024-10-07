@@ -42,11 +42,9 @@ def calc_draw_spaces(*args) -> int:
         length += len(i)
     return length
 
-
 def _draw_icon(screen: Screen, index: int) -> int:
     if index != 1:
         return 0
-
     fg, bg = screen.cursor.fg, screen.cursor.bg
     screen.cursor.fg = icon_fg
     screen.cursor.bg = icon_bg
@@ -55,18 +53,16 @@ def _draw_icon(screen: Screen, index: int) -> int:
     screen.cursor.x = len(ICON)
     return screen.cursor.x
 
-def infer_tab_name(tab: TabBarData) -> str:
-    tab_manager = get_boss().active_tab_manager
-    if tab_manager is None:
-        return tab.title
-    window = tab_manager.active_window
-    if window is None:
-        return tab.title
-    cwd = window.cwd_of_child
-    if cwd is None:
-        return tab.title
-    tabconf_path = Path(f"{cwd}/.tabconf")
-    if not tabconf_path.exists() or not tabconf_path.is_file():
+def search_upwards_for_file(directory: Path, filename: str) -> Path | None:
+    root = Path(directory.root)
+    while directory != root:
+        attempt = directory / filename
+        if attempt.exists() and attempt.is_file():
+            return attempt
+        directory = directory.parent
+    return None
+
+def retrieve_current_path(cwd: str) -> str:
         cwd_path = Path(cwd)
         if cwd_path == Path.home():
             return "~"
@@ -74,12 +70,39 @@ def infer_tab_name(tab: TabBarData) -> str:
             return f"~/{str(Path(cwd).relative_to(Path.home()))}"
         except ValueError:
             return cwd
+
+def infer_tab_name(tab: TabBarData) -> str:
+    log_error(f"Title: {tab.title}")
+    tab_manager = get_boss().active_tab_manager
+    if tab_manager is None:
+        return tab.title
+    current_tab = tab_manager.tab_for_id(tab.tab_id)
+    if  current_tab is None:
+        return tab.title
+    window = current_tab.active_window
+    if window is None:
+        log_error(f"No window: {tab.title}")
+        return tab.title
+    cwd = window.cwd_of_child
+    if cwd is None:
+        log_error(f"No cwd: {tab.title}")
+        return tab.title
+    tabconf_path = search_upwards_for_file(Path(cwd), ".tabconf")
+    if tabconf_path is None:
+        title =retrieve_current_path(cwd)
+        log_error(f"No tabconf: {cwd} => {title}")
+        return title
     tabconf = configparser.ConfigParser()
     tabconf.read(tabconf_path)
-    title = tabconf.get("Tab", "Title", fallback=tab.title)
-    active_tab = get_boss().active_tab
-    active_tab.set_title(title)
-    active_tab.title_changed(window)
+    if not tabconf.has_section("Tab"):
+        title = retrieve_current_path(cwd)
+        log_error(f"No section: {title}")
+        return title
+    title = tabconf.get("Tab", "Title", fallback=None)
+    if title is None:
+        title = retrieve_current_path(cwd)
+        log_error(f"No title: {title}")
+        return title
     return title
 
 def _draw_left_status(
@@ -92,11 +115,9 @@ def _draw_left_status(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    # print(extra_data)
     if draw_data.leading_spaces:
         screen.draw(" " * draw_data.leading_spaces)
     tab = tab._replace(title=infer_tab_name(tab))
-
     draw_title(draw_data, screen, tab, index)
     trailing_spaces = min(max_title_length - 1, draw_data.trailing_spaces)
     max_title_length -= trailing_spaces
@@ -121,37 +142,26 @@ def _draw_right_status(screen: Screen, is_last: bool) -> int:
     if not is_last:
         return 0
     draw_attributed_string(Formatter.reset, screen)
-
     clock = datetime.now().strftime("%H:%M")
     utc = datetime.now(timezone.utc).strftime(" (UTC %H:%M)")
-
     cells = []
-
     cells.append((clock_color, clock))
     cells.append((utc_color, utc))
-
     # right_status_length = calc_draw_spaces(dnd + " " + clock + " " + utc)
-
     right_status_length = RIGHT_MARGIN
     for cell in cells:
         right_status_length += len(str(cell[1]))
-
     draw_spaces = screen.columns - screen.cursor.x - right_status_length
-
     if draw_spaces > 0:
         screen.draw(" " * draw_spaces)
-
     screen.cursor.fg = 0
     for color, status in cells:
         screen.cursor.fg = color  # as_rgb(color_as_int(color))
         screen.draw(status)
     screen.cursor.bg = 0
-
     if screen.columns - screen.cursor.x > right_status_length:
         screen.cursor.x = screen.columns - right_status_length
-
     return screen.cursor.x
-
 
 def draw_tab(
     draw_data: DrawData,
@@ -163,7 +173,6 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-
     _draw_icon(screen, index)
     _draw_left_status(
         draw_data,
@@ -179,5 +188,4 @@ def draw_tab(
         screen,
         is_last,
     )
-
     return screen.cursor.x
