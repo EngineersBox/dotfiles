@@ -72,7 +72,6 @@ def retrieve_current_path(cwd: str) -> str:
             return cwd
 
 def infer_tab_name(tab: TabBarData) -> str:
-    log_error(f"Title: {tab.title}")
     tab_manager = get_boss().active_tab_manager
     if tab_manager is None:
         return tab.title
@@ -81,27 +80,26 @@ def infer_tab_name(tab: TabBarData) -> str:
         return tab.title
     window = current_tab.active_window
     if window is None:
-        log_error(f"No window: {tab.title}")
         return tab.title
     cwd = window.cwd_of_child
     if cwd is None:
-        log_error(f"No cwd: {tab.title}")
         return tab.title
     tabconf_path = search_upwards_for_file(Path(cwd), ".tabconf")
     if tabconf_path is None:
-        title =retrieve_current_path(cwd)
-        log_error(f"No tabconf: {cwd} => {title}")
+        title = retrieve_current_path(cwd)
         return title
     tabconf = configparser.ConfigParser()
     tabconf.read(tabconf_path)
     if not tabconf.has_section("Tab"):
         title = retrieve_current_path(cwd)
-        log_error(f"No section: {title}")
         return title
-    title = tabconf.get("Tab", "Title", fallback=None)
+    check_path = cwd + "/.tabconf"
+    if str(tabconf_path) != check_path and not tabconf.getboolean("Tab", "apply_nested", fallback=True):
+        title = retrieve_current_path(cwd)
+        return title
+    title = tabconf.get("Tab", "title", fallback=None)
     if title is None:
         title = retrieve_current_path(cwd)
-        log_error(f"No title: {title}")
         return title
     return title
 
