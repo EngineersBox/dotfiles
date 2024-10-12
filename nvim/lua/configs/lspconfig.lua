@@ -33,7 +33,7 @@ local servers = {
   "html",
   "cssls",
   "pyright",
-  "tsserver",
+  "ts_ls",
   "cmake",
   -- "clangd",
   "clojure_lsp",
@@ -46,7 +46,18 @@ local servers = {
   "bufls",
   "dockerls",
   "marksman",
-  "jinja_lsp"
+  "jinja_lsp",
+  "zls",
+  "wgsl_analyzer",
+  "vhdl_ls",
+  "veridian",
+  "verible",
+  "thriftls",
+  "tflint",
+  "texlab",
+  "svls",
+  "svlangserver"
+  -- "dartls"
 }
 
 -- lsps with default config
@@ -139,11 +150,6 @@ local function format_clangd_command()
         "-",
         "_"
     )
-    -- require("noice").redirect(function()
-    --     local result = "false"
-    --     if (file_exists(project_root .. "/cclangd")) then result = "true" end
-    --     print("QUERYING: " .. project_root .. "/cclangd => " .. result)
-    -- end)
     if (file_exists(project_root .. "/cclangd")) then
         return { project_root .. "/cclangd" }
     else

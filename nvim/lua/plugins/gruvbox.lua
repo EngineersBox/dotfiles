@@ -30,7 +30,7 @@ return {
 					)
 					local set_hl = vim.fn["gruvbox_material#highlight"]
 					set_hl("NormalMoody", palette.blue, palette.none)
-					set_hl("InsertMoody", palette.none, palette.none)
+					set_hl("InsertMoody", palette.fg0, palette.none)
 					set_hl("VisualMoody", palette.purple, palette.none)
 					set_hl("CommandMoody", palette.green, palette.none)
 					set_hl("ReplaceMoody", palette.orange, palette.none)

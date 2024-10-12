@@ -24,6 +24,11 @@ local function source_path_header_guard(cfg)
     return project_name .. path .. "__" .. filename:upper() .. "_H_"
 end
 
+local function header_include(cfg)
+  local _, base, _ = utils.get_basename_parts(cfg.filename)
+  return "#include \"" ..base..".h\""
+end
+
 return {
 	templates_dir = vim.fn.stdpath("config") .. "/templates",
 	skel_enabled = true,
@@ -35,7 +40,7 @@ return {
 	substitutions = {
 		["FILENAME"] = skeld.get_filename,
 		["C_HEADER_GUARD"] = source_path_header_guard,
-		["C_HEADER_INCLUDE"] = skeld.get_headerinclude,
+		["C_HEADER_INCLUDE"] = header_include,
 	},
     project_name = nil,
 	projects = {

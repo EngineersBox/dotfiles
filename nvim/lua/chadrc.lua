@@ -4,26 +4,52 @@
 -- ---@type ChadrcConfig
 local M = {}
 
-M.ui = {
+M.base46 = {
 	theme = "chocolate",
-
-	cmp = {
-		style = "atom_colored",
-	},
-
-	statusline = {
-		theme = "minimal",
-		separator_style = "round",
-	},
-
-	lsp = {
-		signature = true,
-		semantic_tokens = true,
-	},
-
 	hl_override = {
 		Comment = { italic = true },
 		["@comment"] = { italic = true },
+	},
+}
+
+M.ui = {
+	cmp = {
+		style = "atom_colored",
+	},
+	statusline = {
+		theme = "minimal",
+		separator_style = "round",
+        order = { "mode", "file", "arrow", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "cursor" },
+        modules = {
+            arrow = function()
+                local config = require("nvconfig").ui.statusline
+                local sep_style = config.separator_style
+                local utils = require "nvchad.stl.utils"
+
+                local sep_icons = utils.separators
+                local separators = (type(sep_style) == "table" and sep_style) or sep_icons[sep_style]
+
+                local sep_l = separators["left"]
+                local sep_r = "%#St_sep_r#" .. separators["right"] .. " %#ST_EmptySpace#"
+
+                local function gen_block(icon, txt, sep_l_hlgroup, iconHl_group, txt_hl_group)
+                  return sep_l_hlgroup .. sep_l .. iconHl_group .. icon .. " " .. txt_hl_group .. " " .. txt .. sep_r
+                end
+                local arrow_statusline = require("arrow.statusline")
+                return gen_block(
+		            "󱡁",
+                    arrow_statusline.text_for_statusline(nil, nil),
+                    "%#St_cwd_sep#",
+                    "%#St_cwd_bg#",
+                    "%#St_cwd_txt#"
+                )
+            end,
+        },
+
+	},
+	lsp = {
+		signature = true,
+		semantic_tokens = true,
 	},
 }
 
