@@ -36,9 +36,13 @@ M.ui = {
                   return sep_l_hlgroup .. sep_l .. iconHl_group .. icon .. " " .. txt_hl_group .. " " .. txt .. sep_r
                 end
                 local arrow_statusline = require("arrow.statusline")
+                local status = arrow_statusline.text_for_statusline(nil, nil)
+                if string.len(status) == 0 then
+                    status = "0"
+                end
                 return gen_block(
 		            "󱡁",
-                    arrow_statusline.text_for_statusline(nil, nil),
+                    status,
                     "%#St_cwd_sep#",
                     "%#St_cwd_bg#",
                     "%#St_cwd_txt#"
