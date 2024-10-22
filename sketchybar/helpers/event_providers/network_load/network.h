@@ -6,7 +6,7 @@
 #include <sys/select.h>
 #include <sys/sysctl.h>
 
-static char unit_str[3][6] = { { " Bps" }, { "KBps" }, { "MBps" }, };
+static char unit_str[3][6] = { { "  Bps" }, { " KBps" }, { " MBps" }, };
 
 enum unit {
   UNIT_BPS,

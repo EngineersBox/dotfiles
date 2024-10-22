@@ -82,8 +82,8 @@ local icons = {
             charging = "􀢋"
         },
         wifi = {
-            upload = "􀄤",
-            download = "􀓃",
+            upload = "▲",
+            download = "▼",
             connected = "􀙇",
             disconnected = "􀙈",
             router = "􁓤"

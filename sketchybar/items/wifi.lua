@@ -231,12 +231,12 @@ local router =
 wifi_up:subscribe(
 	"network_update",
 	function(env)
-		local up_color = env.upload == "000 Bps" and colors.grey or colors.text_active
-		local down_color = env.download == "000 Bps" and colors.grey or colors.text_active
+		local up_color = env.upload == "000 Bps" and colors.foreground_light or colors.red
+		local down_color = env.download == "000 Bps" and colors.grey or colors.blue
 		wifi_up:set(
 			{
 				icon = {
-					color = colors.foreground_light,
+					color = up_color,
 					padding_right = 5
 				},
 				label = {
@@ -244,14 +244,14 @@ wifi_up:subscribe(
 					font = {
                         style = settings.font.style_map.Bold,
                     },
-                    color = colors.foreground_light,
+                    color = up_color,
 				}
 			}
 		)
 		wifi_down:set(
 			{
 				icon = {
-					color = colors.grey,
+					color = down_color,
 					padding_right = 5
 				},
 				label = {
@@ -259,7 +259,7 @@ wifi_up:subscribe(
 					font  = {
                         style = settings.font.style_map.Bold,
                     },
-                    color = colors.grey
+                    color = down_color,
 				}
 			}
 		)
