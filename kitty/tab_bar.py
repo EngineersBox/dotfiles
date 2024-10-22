@@ -171,7 +171,7 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    _draw_icon(screen, index)
+    # _draw_icon(screen, index)
     _draw_left_status(
         draw_data,
         screen,
@@ -182,8 +182,8 @@ def draw_tab(
         is_last,
         extra_data,
     )
-    _draw_right_status(
-        screen,
-        is_last,
-    )
+    # _draw_right_status(
+    #     screen,
+    #     is_last,
+    # )
     return screen.cursor.x
