@@ -1,2 +1,3 @@
 [Tab]
-Title = Config - Kitty
+title = Config - Kitty
+apply_nested = false
