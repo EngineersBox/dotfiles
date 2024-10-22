@@ -10,45 +10,42 @@ local battery = sbar.add("alias", "Control Centre,Battery", {
         color = colors.grey
     },
     padding_left = "-5",
+    update_freq = 10,
+    script = "$CONFIG_DIR/items/scripts/update_battery.sh",
 })
 local function level_to_colour(level)
     if level < 20 then
         return colors.red
     elseif level < 50 then
-        return colors.yellow
-    elseif level < 75 then
         return colors.orange
+    elseif level < 75 then
+        return colors.yellow
     end
     return colors.light_green
 end
 
-battery:subscribe("battery_level", function(env)
-    print("Battery " .. env.BATTERY_LEVEL)
-    battery:set({
-        alias = {
-            color = level_to_colour(tonumber(env.BATTERY_LEVEL))
-        }
-    })
-end)
-
+sbar.add("event", "battery_level_update")
 local battery_level = sbar.add("item", "battery_level", {
-    update_freq = 3,
-    script = "$CONFIG_DIR/items/scripts/update_battery.sh",
     icon = {
         drawing = false,
     },
     position = "right",
     padding_left = 5,
     label = {
-        string = "100%",
+        string = "???%",
         color = colors.light_grey
     }
 })
-battery_level:subscribe("battery_level", function(env)
-    print("Level " .. env.BATTERY_LEVEL)
+
+battery_level:subscribe("battery_level_update", function(env)
     battery_level:set({
         label = {
             string = "" .. env.BATTERY_LEVEL .. "%"
+        }
+    })
+    battery:set({
+        alias = {
+            color = level_to_colour(tonumber(env.BATTERY_LEVEL))
         }
     })
 end)
@@ -58,7 +55,6 @@ sbar.add("bracket", "battery.bracket", {
     battery.name,
 }, {
 	background = {
-
 		color = colors.bar.bg
 	},
 	popup = {
@@ -69,7 +65,6 @@ sbar.add("bracket", "battery.bracket", {
 			font = {
 				style = settings.font.style_map.SemiBold,
 				size = 12,
-
 			},
 			color = colors.dolphin_grey
 		},

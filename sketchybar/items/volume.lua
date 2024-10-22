@@ -9,7 +9,6 @@ local volume_percent =
         "item",
         "volume1",
         {
-            bar = "right_bar",
             position = "right",
             icon = {
                 drawing = false
@@ -20,7 +19,6 @@ local volume_percent =
                 string = "??%",
                 color = colors.bar.foreground,
                 font = {
-
                     style = settings.font.style_map["SemiBold"],
                     family = settings.font.text,
 
@@ -39,7 +37,6 @@ local volume_icon =
             padding_left = 5,
             icon = {
                 color = colors.white,
-
             },
             label = {
                 align = "right",
@@ -129,13 +126,15 @@ volume_percent:subscribe(
 
         local lead = ""
         if volume < 10 then
-            lead = "0"
+            lead = ""
         end
 
         volume_icon:set(
             {
-                color = colors.orange,
-                label = icon
+                label =  {
+                    string = icon,
+                    color = colors.orange,
+                }
             }
         )
         volume_percent:set(

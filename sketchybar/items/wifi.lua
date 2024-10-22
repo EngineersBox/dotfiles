@@ -17,7 +17,6 @@ local wifi_up =
 		"item",
 		"widgets.wifi1",
 		{
-			bar = "right_bar",
 			position = "right",
 			width = 0,
 			icon = {
