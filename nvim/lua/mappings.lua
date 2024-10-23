@@ -38,3 +38,8 @@ map("n", "<leader>tq", "<cmd> Trouble qflist<CR>", { desc = "Toruble quickfix li
 -- Split
 map("n", "<leader>wv", "<cmd> vsplit<CR>", { desc = "Window split vertically" })
 map("n", "<leader>wh", "<cmd> split<CR>", { desc = "Window split horizontally" })
+
+-- Terminal
+map({ "n", "t" }, "<leader>i", function()
+  require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+end, { desc = "terminal toggle floating term" })
