@@ -7,10 +7,10 @@ return {
     animated_icons = false, -- Set to true if you want to use animated icons
 
     font = {
-        text = "Monocraft Nerd Font",
-        numbers = "Monocraft Nerd Font", -- Used for numbers
-        clock = "Monocraft Nerd Font",
-        icons = "Monocraft Nerd Font",               -- Used for icons (or NerdFont)
+        text = "Monocraft",
+        numbers = "Monocraft",
+        clock = "Monocraft",
+        icons = "MonocraftNerd Font",
         style_map = {
             ["Regular"] = "Regular",
             ["Semibold"] = "Medium",

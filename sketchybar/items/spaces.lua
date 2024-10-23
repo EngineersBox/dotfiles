@@ -36,17 +36,37 @@ local function parse_string_to_table(s)
 end
 
 local file = io.popen("aerospace list-workspaces --all --format '%{workspace} %{monitor-id}'")
-local result = file:read("*a")
+local workspace_monitor_mappings = file:read("*a")
 file:close()
 
-local workspaces = parse_string_to_table(result)
+file = io.popen("aerospace list-workspaces --focused --format '%{workspace}'")
+local focused = file:read("*a"):gsub("\n", "")
+file:close()
+
+sbar.add("event", "aerospace_workspace_change")
+local workspaces = parse_string_to_table(workspace_monitor_mappings)
 for i, layout in ipairs(workspaces) do
     local workspace = layout["workspace"]
     local monitor = layout["monitor"]
-	local space = sbar.add("space", workspace, {
-        space = i,
+    print("'" .. workspace .. "' == '" .. focused .. "'")
+    local initial_selected = workspace == focused
+	local space = sbar.add("item", workspace, {
 		position = "left",
         display = monitor,
+        icon = {
+            drawing = false,
+        },
+        label = {
+            padding_left = 5,
+            padding_right = 5,
+            string = workspace,
+            font = {
+                family = "Monocraft",
+                style = settings.font.style_map["Regular"],
+                size = 12,
+            },
+            color = initial_selected and colors.pink or colors.grey,
+        },
 	})
 	table.insert(space_names, workspace)
 
@@ -54,71 +74,14 @@ for i, layout in ipairs(workspaces) do
         local selected = env.FOCUSED_WORKSPACE == workspace
         space:set({
             label = {
-                drawing = false,
-            },
-            icon = {
-                highlight = selected,
-                padding_left = selected and 8 or 5,
-                padding_right = selected and 8 or 5,
-                string = workspace,
-                color = selected and colors.red or colors.grey,
+                color = selected and colors.pink or colors.grey, 
                 font = {
-                    family = settings.font.clock,
-                    style = selected and settings.font.style_map["Bold"] or settings.font.style_map["Regualr"],
-                    size = selected and 14 or 12,
+                    style = selected and settings.font.style_map["Bold"] or settings.font.style_map["Regular"],
                 },
-            },
-            background = {
-                border_width = selected and 1 or 0,
-                border_color = colors.bar.border,
-                drawing = selected and true or false,
-                corner_radius = selected and 4 or 50,
-                y_offset = selected and 0 or 0,
-                color = selected and colors.bar.bg2 or colors.transparent,
-
-                height = selected and 20 or 18,
-                padding_left = 6,
-                padding_right = 6,
             },
             associated_display = monitor,
         })
     end)
-
-	space:subscribe("front_app_switched", function(env)
-        local selected = env.FOCUSED_WORKSPACE == workspace
-		sbar.animate("elastic", 10, function()
-			space:set({
-				label = {
-					drawing = false,
-				},
-				icon = {
-                    highlight = selected,
-					padding_left = selected and 8 or 5,
-					padding_right = selected and 8 or 5,
-					string = workspace,
-					color = selected and colors.red or colors.grey,
-					font = {
-					    family = settings.font.clock,
-						style = selected and settings.font.style_map["Bold"] or settings.font.style_map["Regualr"],
-						size = selected and 14 or 12,
-					},
-				},
-				background = {
-					border_width = selected and 1 or 0,
-					border_color = colors.bar.border,
-					drawing = selected and true or false,
-					corner_radius = selected and 4 or 50,
-					y_offset = selected and 0 or 0,
-					color = selected and colors.bar.bg2 or colors.transparent,
-
-					height = selected and 20 or 18,
-					padding_left = 6,
-					padding_right = 6,
-				},
-                associated_display = monitor,
-			})
-		end)
-	end)
 end
 
 sbar.add("bracket", space_names, {

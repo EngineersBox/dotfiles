@@ -1,6 +1,4 @@
 return {
-
-
     black = 0xff171616,
     white = 0xffdedede,
     foreground_light = 0xffa0a0a0,
