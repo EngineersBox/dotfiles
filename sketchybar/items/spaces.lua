@@ -48,7 +48,6 @@ local workspaces = parse_string_to_table(workspace_monitor_mappings)
 for i, layout in ipairs(workspaces) do
     local workspace = layout["workspace"]
     local monitor = layout["monitor"]
-    print("'" .. workspace .. "' == '" .. focused .. "'")
     local initial_selected = workspace == focused
 	local space = sbar.add("item", workspace, {
 		position = "left",

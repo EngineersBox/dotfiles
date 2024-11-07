@@ -33,7 +33,7 @@ local icons = require("icons")
 local settings = require("settings")
 
 -- Example usage of the colors
-print("Bar background color: " .. colors.bar.bg)
+-- print("Bar background color: " .. colors.bar.bg)
 
 -- Set the bar name, if you are using another bar instance than sketchybar
 -- sbar.set_bar_name("bottom_bar")
