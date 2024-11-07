@@ -18,6 +18,17 @@ return {
         "folke/noice.nvim",
         event = "VeryLazy",
         opts = {
+            routes = {
+                {
+                    filter = {
+                        event = "notify",
+                        find = "No signature help available",
+                    },
+                    opts = {
+                        skip = true
+                    }
+                }
+            },
             lsp = {
                 -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
                 overnide = {
@@ -25,7 +36,10 @@ return {
                     ["vim.lsp.util.stylize_markdown"] = true,
                     ["cmp.entry.get_documentation"] = true,
                 },
-                hover = "disabled"
+                hover = "disabled",
+                signature = {
+                    auto_open = { enabled = false },
+                },
             },
             -- you can enable a preset for easier configuration
             presets = {
