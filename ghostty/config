@@ -1,0 +1,30 @@
+font-family = "Monocraft Nerd Font"
+font-style = "Book"
+font-style-bold = "Bold"
+font-style-italic = "Italic"
+font-style-bold-italic = "Bold-Italic"
+font-size = 10.5
+font-thicken
+adjust-cell-width = -13%
+adjust-cell-height = 35%
+window-theme = dark
+macos-titlebar-style = tabs 
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = true
+
+# Create window splits
+keybind = cmd+shift+;=new_split:right
+keybind = cmd+shift+'=new_split:down
+keybind = cmd+shift+|=equalize_splits
+
+# Navigate window splits
+keybind = cmd+shift+h=goto_split:left
+keybind = cmd+shift+j=goto_split:bottom
+keybind = cmd+shift+k=goto_split:top
+keybind = cmd+shift+l=goto_split:right
+
+# Navigate tabs
+keybind = ctrl+shift+left=previous_tab
+keybind = ctrl+shift+right=next_tab
+
+theme = gruvbox_material_dark_soft

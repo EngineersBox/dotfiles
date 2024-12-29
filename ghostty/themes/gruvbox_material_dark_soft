@@ -1,0 +1,39 @@
+background = 252221
+foreground = d4be98
+
+selection-background = d4be98
+
+cursor-color = a89984
+
+
+# Black
+palette = 0=#665c54
+palette = 8=#928374
+
+# Red
+palette = 1=#ea6962
+palette = 9=#ea6962
+
+# Green
+palette = 2=#a9b665
+palette = 10=#a9b665
+
+# Yellow
+palette = 3=#d8a657
+palette = 11=#e78a4e
+
+# Blue
+palette = 4=#7daea3
+palette = 12=#7daea3
+
+# Magenta
+palette = 5=#d3869b
+palette = 13=#d3869b
+
+# Cyan
+palette = 6=#89b482
+palette = 14=#89b482
+
+# White
+palette = 7=#d4be98
+palette = 15=#d4be98
