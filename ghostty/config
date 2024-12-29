@@ -5,9 +5,15 @@ font-style-italic = "Italic"
 font-style-bold-italic = "Bold-Italic"
 font-size = 10.5
 font-thicken
+
 adjust-cell-width = -13%
 adjust-cell-height = 35%
+
 window-theme = dark
+window-padding-x = 10
+window-padding-y = 10
+window-title-font-family = Monocraft Nerd Font
+
 macos-titlebar-style = tabs 
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
