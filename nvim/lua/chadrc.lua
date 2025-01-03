@@ -18,7 +18,7 @@ M.ui = {
 	},
 	statusline = {
 		theme = "minimal",
-		separator_style = "round",
+		separator_style = "block",
         order = { "mode", "file", "arrow", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "cursor" },
         modules = {
             arrow = function()

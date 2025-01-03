@@ -15,7 +15,7 @@ local lsps = {
     "svlangserver",
     "texlab",
     "ansiblels",
-    "bufls",
+    "buf_ls",
     "dockerls",
     "opencl_ls",
     "marksman"

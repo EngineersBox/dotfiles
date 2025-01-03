@@ -1,9 +1,8 @@
 return {
     {
-        "lukas-reineke/indent-blankline.nvim",
-        main = "ibl",
-        opts = {},
+        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
         init = function()
+            require("rainbow-delimiters.setup").setup({})
             local highlight = {
                 "RainbowRed",
                 "RainbowYellow",
@@ -29,9 +28,5 @@ return {
             require("ibl").setup({ scope = { highlight = highlight } })
             hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
         end
-    },
-    {
-        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
-        init = function() require("rainbow-delimiters.setup").setup({}) end
     }
 }

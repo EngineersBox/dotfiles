@@ -27,7 +27,18 @@ return {
                     opts = {
                         skip = true
                     }
-                }
+                },
+                {
+                    filter = {
+                        event = "msg_show",
+                        any = {
+                            { find = "%d+L, %d+B" },
+                            { find = "; after #%d+" },
+                            { find = "; before #%d+" },
+                        },
+                    },
+                    view = "mini",
+                },
             },
             lsp = {
                 -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -38,54 +49,61 @@ return {
                 },
                 hover = "disabled",
                 signature = {
-                    auto_open = { enabled = false },
+                    enabled = true,
+                    auto_open = {
+                        enabled = true,
+                        trigger = true,
+                        luasnip = true,
+                        throttle = 500, -- wait for 150ms before showing hover info
+                    },
                 },
             },
             -- you can enable a preset for easier configuration
             presets = {
                 bottom_search = false, -- use a classic bottom cmdline for search
-                command_palette = false, -- position the cmdline and popupmenu together
+                command_palette = true, -- position the cmdline and popupmenu together
                 long_message_to_split = true, -- long messages will be sent to a split
                 inc_rename = false, -- enables an input dialog for inc-rename.nvim
                 lsp_doc_border = false, -- add a border to hover docs and signature help
             },
-            views = {
-                cmdline_popup = {
-                    position = {
-                        row = 5,
-                        col = "50%",
-                    },
-                    size = {
-                        width = 60,
-                        height = "auto",
-                    },
-                },
-                popupmenu = {
-                    relative = "editor",
-                    position = {
-                        row = 8,
-                        col = "50%"
-                    },
-                    size = {
-                        width = 60,
-                        height = 10,
-                    },
-                    border = {
-                        style = "rounded",
-                        padding = { 0, 1 }
-                    },
-                    win_options = {
-                        winhighlight = {
-                            Normal = "Normal",
-                            FloatBorder = "DiagnosticInfo"
-                        }
-                    }
-                }
-            }
+            -- views = {
+            --     cmdline_popup = {
+            --         position = {
+            --             row = 5,
+            --             col = "50%",
+            --         },
+            --         size = {
+            --             width = 60,
+            --             height = "auto",
+            --         },
+            --     },
+            --     popupmenu = {
+            --         relative = "editor",
+            --         position = {
+            --             row = 8,
+            --             col = "50%"
+            --         },
+            --         size = {
+            --             width = 60,
+            --             height = 10,
+            --         },
+            --         border = {
+            --             style = "rounded",
+            --             padding = { 0, 1 }
+            --         },
+            --         win_options = {
+            --             winhighlight = {
+            --                 Normal = "Normal",
+            --                 FloatBorder = "DiagnosticInfo"
+            --             }
+            --         }
+            --     }
+            -- }
         },
         dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
             "MunifTanjim/nui.nvim",
+            "grapp-dev/nui-components.nvim",
             -- OPTIONAL:
             --   `nvim-notify` is only needed, if you want to use the notification view.
             --   If not available, we use `mini` as the fallback

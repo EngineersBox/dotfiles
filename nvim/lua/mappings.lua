@@ -35,6 +35,9 @@ map("n", "<leader>tl", "<cmd> Trouble lsp toggle focus=false win.postion=right<C
 map("n", "<leader>tL", "<cmd> Trouble loclist toggle<CR>", { desc = "Trouble location list" })
 map("n", "<leader>tq", "<cmd> Trouble qflist<CR>", { desc = "Toruble quickfix list" })
 
+-- Todo-comments
+map("n", "<leader>ft", "<cmd> TodoTelescope<CR>", { desc = "Telescope find TODOs" })
+
 -- Split
 map("n", "<leader>wv", "<cmd> vsplit<CR>", { desc = "Window split vertically" })
 map("n", "<leader>wh", "<cmd> split<CR>", { desc = "Window split horizontally" })

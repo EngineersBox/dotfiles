@@ -43,7 +43,7 @@ local servers = {
   "bashls",
   "dotls",
   "texlab",
-  "bufls",
+  "buf_ls",
   "dockerls",
   "marksman",
   "jinja_lsp",
@@ -135,9 +135,9 @@ local function format_clangd_command()
     -- The name of the current buffer
     local bufname = vim.api.nvim_buf_get_name(0)
     -- Project root
-    local project_root = vim.loop.cwd()
+    local project_root = vim.fn.getcwd()
     -- Turned into a filename
-    local filename = lspconfig.util.path.is_absolute(bufname) and bufname or lspconfig.util.path.join(project_root, bufname)
+    local filename = vim.startswith(bufname, "/") and bufname or lspconfig.util.path.join(project_root, bufname)
     -- Then the directory of the project
     local project_dirname = root_pattern(filename) or lspconfig.util.path.dirname(filename)
     -- And finally perform what is essentially a `basename` on this directory
