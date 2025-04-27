@@ -12,7 +12,7 @@ after-login-command = []
 after-startup-command = []
 exec-on-workspace-change = [
     '/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED=$AEROSPACE_FOCUSED_WORKSPACE'
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
 # Start AeroSpace at login
@@ -210,10 +210,12 @@ alt-shift-l = ['join-with right', 'mode main']
 
 [workspace-to-monitor-force-assignment]
 1 = 1
+S = 1
 2 = 2
+B = 2
 3 = 3
 T = 3
-B = 2
+I = 3
 
 # Application triggers
 [[on-window-detected]]
@@ -221,7 +223,22 @@ if.app-id = 'net.kovidgoyal.kitty'
 run = "move-node-to-workspace T"
 
 [[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = [
+  # FIX: this is a workaround for https://github.com/nikitabobko/AeroSpace/issues/68
+  # this was also observed in:
+  # - https://github.com/ghostty-org/ghostty/issues/1840
+  # - https://github.com/ghostty-org/ghostty/issues/2006
+  "layout floating",
+  "move-node-to-workspace T",
+]
+
+[[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'
+run = "move-node-to-workspace B"
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
 run = "move-node-to-workspace B"
 
 [[on-window-detected]]
@@ -231,3 +248,7 @@ run = "move-node-to-workspace I"
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
 run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = "move-node-to-workspace S"
