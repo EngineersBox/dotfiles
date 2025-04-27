@@ -56,8 +56,7 @@ local servers = {
   "tflint",
   "texlab",
   "svls",
-  "svlangserver",
-  "zls"
+  "svlangserver"
   -- "dartls"
 }
 

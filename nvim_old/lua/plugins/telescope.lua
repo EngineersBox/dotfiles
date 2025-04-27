@@ -1,50 +1,31 @@
 return {
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim"
-        }
-    },
-    {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-        config = function(_, _)
-            local telescope = require("telescope")
-            telescope.load_extension("fzf")
-            telescope.load_extension("noice")
-            -- NOTE: Requires rcarriga/nvim-notify
-            --telescope.load_extension("notify")
-        end
-    },
-    {
-        "nvim-telescope/telescope-project.nvim",
-        dependencies = {
-            "nvim-telescope/telescope.nvim",
-            "nvim-lua/plenary.nvim"
-        },
-        config = function(_, _)
-            require("telescope").load_extension("project")
-        end
-    },
-    {
-        "nvim-telescope/telescope-file-browser.nvim",
-        dependencies = {
-            "nvim-telescope/telescope.nvim",
-            "nvim-lua/plenary.nvim"
-        },
-        config = function(_, _)
-            require("telescope").load_extension("file_browser")
-        end
-
-    },
-    {
-        "joehannes-os/telescope-media-files.nvim",
-        dependencies = {
-            "nvim-telescope/telescope.nvim",
-            "nvim-lua/plenary.nvim"
-        },
-        config = function(_, _)
-            require("telescope").load_extension("media_files")
-        end
-    }
+	{
+		"nvim-telescope/telescope.nvim",
+		opts = function()
+			local conf = require("nvchad.configs.telescope")
+			-- conf.defaults.mappings.i = {
+			-- 	["<CR>"] = "select_drop",
+			-- 	["<C-b>"] = "select_default",
+			-- 	["<C-'>"] = "select_horizontal",
+			-- 	["<C-;>"] = "select_vertical",
+			-- 	["<C-g>"] = function(prompt_bufnr)
+			-- 		-- Use nvim-window-picker to choose the window by dynamically attaching a function
+			-- 		local action_set = require("telescope.actions.set")
+			-- 		local action_state = require("telescope.actions.state")
+			--
+			-- 		local picker = action_state.get_current_picker(prompt_bufnr)
+			-- 		picker.get_selection_window = function(picker, entry)
+			-- 			local picked_window_id = require("window-picker").pick_window()
+			-- 				or vim.api.nvim_get_current_win()
+			-- 			-- Unbind after using so next instance of the picker acts normally
+			-- 			picker.get_selection_window = nil
+			-- 			return picked_window_id
+			-- 		end
+			--
+			-- 		return action_set.edit(prompt_bufnr, "edit")
+			-- 	end,
+			-- }
+			return conf
+		end,
+	},
 }

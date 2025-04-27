@@ -15,7 +15,7 @@ local lsps = {
     "svlangserver",
     "texlab",
     "ansiblels",
-    "bufls",
+    "buf_ls",
     "dockerls",
     "opencl_ls",
     "marksman"
@@ -39,8 +39,8 @@ return {
                     virtual_text = true,
                     update_in_insert = true,
                 },
-                disable_lsp = "all"
-                --servers = lsps
+                -- disable_lsp = "all"
+                servers = lsps
             }
         }
     }

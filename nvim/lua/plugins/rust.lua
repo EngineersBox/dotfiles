@@ -6,7 +6,7 @@ return {
     },
     {
         "mrcjkb/rustaceanvim",
-        version = '^4', -- Recommended
+        version = '^6.0.2', -- Recommended
         lazy = false,
         dependencies = {
             "lvimuser/lsp-inlayhints.nvim",

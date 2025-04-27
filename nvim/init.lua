@@ -42,3 +42,7 @@ vim.cmd [[
       autocmd VimEnter * :highlight CursorLineNr guifg=#73d3de
    augroup END
 ]]
+
+vim.cmd [[
+    let g:zig_fmt_autosave = 0
+]]
