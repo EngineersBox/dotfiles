@@ -9,14 +9,14 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
+source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -78,21 +78,21 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    k
     autojump
     brew
     cp
     colored-man-pages
     command-not-found
-    docker-machine
+    docker
+    docker-compose
     fancy-ctrl-z
     fzf
     gitignore
     mvn
     rsync
-    ripgrep
     rust
     sudo
+    alias-finder
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -131,12 +131,11 @@ source "$HOME/.cargo/env"
 
 # ---- CUSTOM CONFIGS ----
 
-# heroku autocomplete setup
-HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;source $HOME/Desktop/Work/Second-Year/COMP2310/testing/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 
 # ---- PATH ENV VAR ---- #
-export PATH="/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:$HOME/opt/GNAT/2019/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin"
+export PATH="/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$PATH"
 
 CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
@@ -260,53 +259,19 @@ function kill_port() {
     kill -9 "$pid"
 }
 
-# ---- SKETCHYBAR ---- #
-
-# Sketchybar interactivity overloads
-function brew() {
-  command brew "$@"
-
-  if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]]; then
-    sketchybar --trigger brew_update
-  fi
-}
-
-# Fancy sketchybar commands
-function margin() {
-  if [ $1 = "on" ]; then
-    yabai -m config top_padding 20
-    sketchybar --animate sin 30 --bar margin=10 y_offset=10 corner_radius=9
-  else
-    yabai -m config top_padding 10
-    sketchybar --animate sin 30 --bar margin=0 y_offset=0 corner_radius=0
-  fi
-}
-
-function zen() {
-  ~/.config/sketchybar/plugins/zen.sh $1
-}
-
 # ---- ALIASES ---- #
 
-alias ka="k -a"
-alias xtr="exa -lxaTR --icons"
-alias xr="exa -lxaR --icons"
-alias xt="exa -lxaT --icons"
-alias xa="exa -lxa --icons"
+alias xtr="eza -lxaoTR --icons=always"
+alias xr="eza -lxaoR --icons=always"
+alias xt="eza -lxaoT --icons=always"
+alias xa="eza -lxao --icons=always"
 
-alias server="python -m SimpleHTTPServer 8000"
 alias reload="source ~/.zshrc"
 alias myip="curl http://ipecho.net/plain; echo"
 alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
-alias launch_instruments="open /Applications/Xcode.app/Contents/Applications/Instruments.app"
 alias ulist=ultralist
-alias tcs="ssh -L 3001:localhost:3001 mike@anu.jkl.io"
 alias git_rhh="git reset HEAD --hard"
 
-alias start_vector="brew services start vector"
-alias stop_vector="brew services stop vector"
-
-alias start_msq="mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf"
 alias ts="ets -f '[%Y-%m-%d %H:%M:%S.%L]'"
 alias mvshaders="ditto ~/Desktop/Projects/GLSL/QuantaShader/shaders ~/Library/Application\ Support/minecraft/shaderpacks/QuantaShader/shaders"
 
@@ -315,36 +280,26 @@ alias update_overleaf="nativefier --upgrade /Applications/Overleaf.app"
 
 alias clear_intellij_cache="rm -rf ~/Library/Caches/JetBrains/IntelliJIdea*"
 
-alias reload_yabai="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.yabai\""
 alias reload_sketchybar="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.sketchybar\""
-alias reload_skhd="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.skhd\""
 
 alias kitten="kitty +kitten"
 alias icat="kitten icat"
 
 # ---- EXPORT DEFINITIONS ---- #
 
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+# jenv enable-plugin export
 export EDITOR="$(which nvim)"
-export WEZTERM_CONFIG_FILE="~/.config/wezterm/wezterm.lua"
 export GOPATH=$HOME/golang
 export GOROOT=/usr/local/opt/go/libexec
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$GOROOT/bin:$PATH"
-export JAVA_HOME=`/usr/libexec/java_home -v 19.0.2`
 export GUILE_LOAD_PATH="/usr/local/share/guile/site/3.0"
 export GUILE_LOAD_COMPILED_PATH="/usr/local/lib/guile/3.0/site-ccache"
 export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
-export PATH=$PATH:/usr/local/Cellar/rust/1.59.0/bin
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-export PATH="/usr/local/opt/python@3.10/bin:$HOME/Library/psn00bsdk/bin:$PATH"
 export VCPKG_ROOT="$HOME/vcpkg"
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig:$HOME/vcpkg/packages/openmpi_x64-osx/lib/pkgconfig"
-export NNN_PLUG="p:preview-tui"
-export NNN_FIFO="~/nnn.fifo"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$PATH:$HOME/.local/bin:/usr/local/opt/openjdk/bin"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
 export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
 
