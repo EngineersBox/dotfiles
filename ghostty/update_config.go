@@ -1,3 +1,5 @@
+// Based on the gist by raylee: https://gist.github.com/raylee/283c0299e32926334f3ff5bf7f3e280d
+
 /*
 Example ghostty config snippet:
 
@@ -42,7 +44,6 @@ func main() {
 	lines := strings.Split(string(conf), "\n")
 
 	num_displays := strconv.Itoa(screenshot.NumActiveDisplays())
-	fmt.Printf("Display count: %s\n", num_displays)
 
 	// Example stanza from the ghostty config file:
 	// # displays: {"3": "-13%", "1": "0%"}
