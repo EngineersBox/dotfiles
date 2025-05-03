@@ -306,8 +306,8 @@ export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 # Configure ghostty config
-pushd ~/.config/ghostty
+pushd -q ~/.config/ghostty
 go run update_config.go
-popd
+popd -q
 
 compinit
