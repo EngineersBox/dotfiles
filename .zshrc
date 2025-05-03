@@ -135,8 +135,7 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 
 # ---- PATH ENV VAR ---- #
-export PATH="/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$PATH"
-
+export PATH="/opt/homebrew/opt/gnu-getopt/bin:/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$PATH"
 CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -292,7 +291,7 @@ eval "$(jenv init -)"
 # jenv enable-plugin export
 export EDITOR="$(which nvim)"
 export GOPATH=$HOME/golang
-export GOROOT=/usr/local/opt/go/libexec
+export GOROOT=/opt/homebrew/opt/go/libexec
 export PATH="$GOPATH/bin:$PATH"
 export PATH="$GOROOT/bin:$PATH"
 export GUILE_LOAD_PATH="/usr/local/share/guile/site/3.0"
@@ -305,5 +304,10 @@ export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
 
 # Opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+# Configure ghostty config
+pushd ~/.config/ghostty
+go run update_config.go
+popd
 
 compinit

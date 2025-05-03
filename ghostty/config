@@ -1,18 +1,19 @@
-font-family = "Monocraft Nerd Font"
-font-style = "Book"
+font-family = Monocraft
+font-style = Regular
 font-style-bold = "Bold"
 font-style-italic = "Italic"
 font-style-bold-italic = "Bold-Italic"
 font-size = 10.5
-font-thicken
+#font-thicken
 
+# displays: {"1": "0%", "3": "-13%"}
 adjust-cell-width = -13%
-adjust-cell-height = 35%
+adjust-cell-height = 25%
 
 window-theme = dark
 window-padding-x = 10
 window-padding-y = 5,10
-window-title-font-family = Monocraft Nerd Font
+window-title-font-family = Monocraft
 
 macos-titlebar-style = tabs 
 macos-titlebar-proxy-icon = hidden
