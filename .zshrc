@@ -77,7 +77,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    git
+    # git
     autojump
     brew
     cp
@@ -135,7 +135,7 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 
 # ---- PATH ENV VAR ---- #
-export PATH="/opt/homebrew/opt/gnu-getopt/bin:/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-getopt/bin:/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$HOME/.pub-cache/bin:$PATH"
 CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -260,6 +260,31 @@ function kill_port() {
 
 # ---- ALIASES ---- #
 
+# -- GIT -- #
+
+alias gs="git status --short"
+
+alias gd="git diff"
+
+alias ga="git add"
+alias gc="git commit -S -s -m"
+alias gac="git add . && git commit -S -s -m"
+function gacp() {
+    gac "$1"
+    git push
+}
+
+alias gp="git push"
+alias gu="git pull"
+
+alias gl="git log --all --graph --pretty=format:'%C(magenta)%h %C(white) %an %ar%C(auto) %D%n%s%n'"
+alias gb="git branch"
+
+alias gi="git init"
+alias gcl="git clone"
+
+# -- GIT -- #
+
 alias xtr="eza -lxaoTR --icons=always"
 alias xr="eza -lxaoR --icons=always"
 alias xt="eza -lxaoT --icons=always"
@@ -301,6 +326,7 @@ export VCPKG_ROOT="$HOME/vcpkg"
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig:$HOME/vcpkg/packages/openmpi_x64-osx/lib/pkgconfig"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
 export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
+export GPG_TTY=$(tty)
 
 # Opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
@@ -310,4 +336,11 @@ pushd -q ~/.config/ghostty
 go run update_config.go
 popd -q
 
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jackkilrain/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
 compinit
+
