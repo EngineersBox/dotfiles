@@ -1,0 +1,108 @@
+# Internal Behaviour
+
+[core]
+    pager = delta
+    compression = 9
+    whitespace = error
+    preloadindex = true
+
+# Information Commands
+
+[advice]
+    statusHints = false
+
+[status]
+    branch = true
+    showStash = true
+
+[interactive]
+    diffFilter = delta --color-only
+
+[diff]
+    # Extra padding of 3 lines in each hunk top/bottom
+    context = 3
+    renames = copies
+    # Join neighbouring hunks within 10 lines
+    interHunkContext = 10
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true
+    line-numbers = true
+
+[init]
+    defaultBranch = main
+
+[log]
+    abbrevCommit = true
+    showSignature = true
+    graphColors = blue,yellow,cyan,magenta,green,red
+
+[color "decorate"]
+    HEAD = red
+    branch = blue
+    tag = yellow
+    remoteBranch = green
+
+[color "branch"]
+    current = blue
+    local = default
+    remote = yellow
+    upstream = green
+    plain = magenta
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = -taggerdate
+
+# Operational Commands
+
+[merge]
+    conflictstyle = zdiff3
+
+[push]
+    # Only push curent if not specified
+    default = current
+
+[pull]
+    # Only push curent if not specified
+    default = current
+
+[rebase]
+    autostash = true
+    missingCommitsChecks = warn
+
+# User, signing and 
+# creds management
+
+[user]
+    name = EngineersBox
+    email = 35655145+EngineersBox@users.noreply.github.com
+	signingkey = BD6B230F
+
+[credential]
+	helper = store
+
+[gpg]
+	program = /opt/homebrew/bin/gpg
+
+[commit]
+	gpgsign = true
+
+# Shortcuts in URLs when cloning
+# E.g:
+#  gcl eb:psx-minecraft
+#  gcl gh:torvalds/linux
+[url "git@github.com:engineersbox/"]
+    insteadOf = "eb:"
+
+[url "git@github.com:"]
+    insteadOf = "gh:"
+
+[url "git@gitlab.cecs.anu.edu.au:"]
+    insteadOf = "cecs:"
+
+[url "git@gitlab.cecs.anu.edu.au:u6940136/"]
+    insteadOf = "jk:"
