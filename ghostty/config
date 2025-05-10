@@ -7,8 +7,9 @@ font-size = 10.5
 #font-thicken
 
 # displays: {"1": "0%", "3": "-13%"}
-adjust-cell-width = -13%
+adjust-cell-width = 0%
 adjust-cell-height = 25%
+adjust-underline-position = 20
 
 window-theme = dark
 window-padding-x = 10
