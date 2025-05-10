@@ -7,9 +7,10 @@ return {
         lazy = true,
         priority = 999,
         opts = {
-            preset = "crt-amber",
+            preset = "minimal",
             colors = {
-                primary = "#b85456"
+                primary = "#b85456",
+                background = "#211f1e"
             }
         }
     },

@@ -21,6 +21,14 @@ map("n", "gpi", function() require("goto-preview").goto_preview_implementation()
 map("n", "gP", function() require("goto-preview").close_all_win() end, { desc = "Preview close all windows" })
 map("n", "gr", function() require("goto-preview").goto_preview_references() end, { desc = "Preview references" })
 
+-- Git
+local gitsigns = require('gitsigns')
+map({ "n", "v" }, "ghp", function() gitsigns.preview_hunk() end, { desc = "Git preview hunk" })
+map({ "n", "v" }, "ghip", function() gitsigns.preview_hunk_inline() end, { desc = "Git preview hunk inline" })
+map({ "n", "v" }, "ghr", function() gitsigns.reset_hunk() end, { desc = "Git reset hunk" })
+map({ "n", "v" }, "gb", function() gitsigns.blame() end, { desc = "Git toggle blame" })
+map({ "n", "v" }, "gbl", function() gitsigns.blame_line() end, { desc = "Git blame line" })
+
 -- Hop
 map("n", "<leader>hw", "<cmd> HopWord<CR>", { desc = "Hop to word" })
 map("n", "<leader>hl", "<cmd> HopLine<CR>", { desc = "Hop to line" })

@@ -1,8 +1,0 @@
-#pragma once
-
-#ifndef @C_HEADER_GUARD@
-#define @C_HEADER_GUARD@
-
-
-
-#endif // @C_HEADER_GUARD@
