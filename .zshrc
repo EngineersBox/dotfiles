@@ -2,8 +2,6 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-source $(brew --prefix)/opt/geometry/share/geometry/geometry.zsh
-# source "$(brew --prefix)/opt/spaceship/spaceship.zsh"
 export ZSH="$HOME/.oh-my-zsh"
 
 # Which plugins would you like to load?
@@ -38,6 +36,9 @@ source "$HOME/.cargo/env"
 
 # ---- CUSTOM CONFIGS ----
 
+# source $(brew --prefix)/opt/geometry/share/geometry/geometry.zsh
+source "$HOME/.config/geometry/geometry.zsh"
+# source "$(brew --prefix)/opt/spaceship/spaceship.zsh"
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 
@@ -187,6 +188,8 @@ alias gb="git branch"
 alias gi="git init"
 alias gcl="git clone"
 
+alias grhh="git reset head --hard"
+
 # -- GIT -- #
 
 alias xtr="eza -lxaoTR --icons=always"
@@ -196,9 +199,6 @@ alias xa="eza -lxao --icons=always"
 
 alias reload="source ~/.zshrc"
 alias myip="curl http://ipecho.net/plain; echo"
-alias brewup='brew update; brew upgrade; brew cleanup; brew doctor'
-alias ulist=ultralist
-alias git_rhh="git reset HEAD --hard"
 
 alias ts="ets -f '[%Y-%m-%d %H:%M:%S.%L]'"
 alias mvshaders="ditto ~/Desktop/Projects/GLSL/QuantaShader/shaders ~/Library/Application\ Support/minecraft/shaderpacks/QuantaShader/shaders"
@@ -216,14 +216,30 @@ alias icat="kitten icat"
 # ---- PROMPT ---- #
 
 function prompt_character() {
-    ansi blue "›"
+    ansi blue "󰅂"
 }
 export GEOMETRY_GIT_TIME_DETAILED=true
+export GEOMETRY_STATUS_SYMBOL="󰔶"
+export GEOMETRY_STATUS_SYMBOL_ERROR="󰔷"
 export GEOMETRY_STATUS_COLOR="green"
+export GEOMETRY_STATUS_COLOR_ERROR="red"
 export GEOMETRY_INFO=()
 export GEOMETRY_PATH_TRUNCATE=10
-export GEOMETRY_PROMPT=(geometry_echo geometry_status geometry_path prompt_character)
-export GEOMETRY_RPROMPT=(geometry_exec_time geometry_git geometry_docker_machine geometry_virtualenv geometry_node geometry_rustup geometry_rust_version geometry_hg geometry_echo)
+export GEOMETRY_PROMPT=(
+    geometry_echo
+    geometry_status
+    geometry_path
+    # prompt_character
+)
+export GEOMETRY_RPROMPT=(
+    geometry_exec_time
+    geometry_git
+    geometry_virtualenv
+    geometry_node
+    geometry_rustup
+    geometry_rust_version
+    geometry_echo
+)
 
 # ---- EXPORT DEFINITIONS ---- #
 
@@ -244,10 +260,6 @@ export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --co
 export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
 export GPG_TTY=$(tty)
 
-# Carapace prompts
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-source <(carapace _carapace)
 
 # Opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
@@ -262,6 +274,11 @@ if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# FIXME:
+# There is some weird bug with geometry that doesn't run the RPOMPT commands correctly before running
+# one of them directly. Need to figure out why and fix it in my fork.
+geometry_git
 
 compinit
 
