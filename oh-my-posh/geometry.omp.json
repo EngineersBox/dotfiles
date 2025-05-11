@@ -1,0 +1,153 @@
+{
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"final_space": true,
+	"version": 3,
+    "var": {
+        "Status": {
+            "Success": "󰔶",
+            "Fail": "󰔷"
+        },
+        "Git": {
+            "Branch": "",
+            "Stashes": "●",
+            "Unpushed": "⇡",
+            "Unpulled": "⇣",
+            "Clean": "⬢",
+            "Dirty": "⬡",
+            "ConflictsSolved": "◆",
+            "ConflictsUnsolved": "◈"
+        }
+    },
+    "palette": {
+        "status_success_colour": "green",
+        "status_fail_colour": "red",
+        "path_colour": "blue",
+        "exec_time": "green",
+        "git": "242",
+        "git_clean": "green",
+        "git_dirty": "red",
+        "git_stashes": "yellow",
+        "dart": "lightBlue",
+        "golang": "lightBlue",
+        "java": "yellow",
+        "lua": "blue",
+        "node": "green",
+        "python": "blue",
+        "rust": "yellow",
+        "rust_stable": "green",
+        "rust_nightly": "red",
+        "rust_beta": "yellow",
+        "zig": "yellow"
+    },
+	"blocks": [
+		{
+			"type": "prompt",
+			"alignment": "left",
+			"segments": [
+                {
+                    "type": "status",
+                    "style": "plain",
+                    "template": "{{if .Error}} <p:status_fail_colour>{{.Var.Status.Fail}} {{else}} <p:status_success_colour>{{.Var.Status.Success}} {{end}}",
+                    "properties": {
+                        "always_enabled": true
+                    }
+                },
+                {
+                    "type": "path",
+                    "style": "plain",
+                    "template": "<p:path_colour>{{.Path}}",
+                    "properties": {
+                        "style": "agnoster_short",
+                        "max_depth": 3,
+                        "max_width": 3
+                    }
+                }
+            ]
+		},
+        {
+            "type": "rprompt",
+            "alignment": "right",
+            "overflow": "hide",
+            "segments": [
+                {
+                    "type": "executiontime",
+                    "style": "plain",
+                    "template": "<p:exec_time>{{.FormattedMs}}",
+                    "properties": {
+                        "style": "roundrock",
+                        "threshold": 1
+                    }
+                },
+                {
+                    "type": "git",
+                    "style": "plain",
+                    "foreground": "default",
+                    "template": " <p:git>{{.HEAD}}{{if gt .Ahead 0}} <p:git>{{.Ahead}}{{.Var.Git.Unpushed}}{{end}}{{if gt .Behind 0}} <p:git>{{.Behind}}{{.Var.Git.Behind}}{{end}}{{if gt .StashCount 0}} <p:git_stashes>{{.StashCount}}{{.Var.Git.Stashes}}{{end}}{{if or (.Working.Changed) (.Staging.Changed)}} <p:git_dirty>{{.Var.Git.Dirty}}{{else}} <p:git_clean>{{.Var.Git.Clean}}{{end}} ",
+                    "properties": {
+                        "fetch_status": true,
+                        "fetch_upstream_icon": true,
+                        "branch_icon": " "
+                    }
+                },
+                {
+                    "type": "command",
+                    "style": "plain",
+                    "template": "<p:git>{{.Output}} ",
+                    "properties": {
+                        "shell": "zsh",
+                        "command": "~/.config/oh-my-posh/git_provider_icon.sh"
+                    }
+                },
+                {
+                    "type": "dart",
+                    "style": "plain",
+                    "template": " <p:dart>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
+                },
+                {
+                    "type": "go",
+                    "style": "plain",
+                    "template": " <p:golang>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} 󰟓 "
+                },
+                {
+                    "type": "java",
+                    "style": "plain",
+                    "template": " <p:java>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} 󰬷 "
+                },
+                {
+                    "type": "lua",
+                    "style": "plain",
+                    "template": " <p:lua>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} 󰢱 "
+                },
+                {
+                    "type": "node",
+                    "style": "plain",
+                    "template": " <p:node>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} 󰎙 "
+                },
+                {
+                    "type": "python",
+                    "style": "plain",
+                    "template": " <p:python>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} 󰌠 "
+                },
+                {
+                    "type": "command",
+                    "style": "plain",
+                    "template": " {{if eq .Output \"stable\"}}<p:rust_stable>stable {{else if eq .Output \"nightly\"}}<p:rust_nightly>nightly {{else if eq .Output \"beta\"}}<p:rust_beta>beta {{end}}",
+                    "properties": {
+                        "shell": "zsh",
+                        "command": "(cargo locate-project >/dev/null 2>&1 && rustup show active-toolchain | head -n 1 |  cut -d '-' -f 1 2> /dev/null) || echo ''"
+                    }
+                },
+                {
+                    "type": "rust",
+                    "style": "plain",
+                    "template": "<p:rust>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} 󱘗 "
+                },
+                {
+                    "type": "zig",
+                    "style": "plain",
+                    "template": " <p:zig>v{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
+                }
+            ]
+        }
+	]
+}
