@@ -36,13 +36,12 @@ source "$HOME/.cargo/env"
 
 # ---- CUSTOM CONFIGS ----
 
-# source $(brew --prefix)/opt/geometry/share/geometry/geometry.zsh
-source "$HOME/.config/geometry/geometry.zsh"
-# source "$(brew --prefix)/opt/spaceship/spaceship.zsh"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/geometry.omp.json)"
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 
 # ---- PATH ENV VAR ---- #
+
 export PATH="/opt/homebrew/opt/gnu-getopt/bin:/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$HOME/.pub-cache/bin:$PATH"
 CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
@@ -213,34 +212,6 @@ alias reload_sketchybar="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.sketc
 alias kitten="kitty +kitten"
 alias icat="kitten icat"
 
-# ---- PROMPT ---- #
-
-function prompt_character() {
-    ansi blue "󰅂"
-}
-export GEOMETRY_GIT_TIME_DETAILED=true
-export GEOMETRY_STATUS_SYMBOL="󰔶"
-export GEOMETRY_STATUS_SYMBOL_ERROR="󰔷"
-export GEOMETRY_STATUS_COLOR="green"
-export GEOMETRY_STATUS_COLOR_ERROR="red"
-export GEOMETRY_INFO=()
-export GEOMETRY_PATH_TRUNCATE=10
-export GEOMETRY_PROMPT=(
-    geometry_echo
-    geometry_status
-    geometry_path
-    # prompt_character
-)
-export GEOMETRY_RPROMPT=(
-    geometry_exec_time
-    geometry_git
-    geometry_virtualenv
-    geometry_node
-    geometry_rustup
-    geometry_rust_version
-    geometry_echo
-)
-
 # ---- EXPORT DEFINITIONS ---- #
 
 export PATH="$HOME/.jenv/bin:$PATH"
@@ -274,11 +245,6 @@ if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-# FIXME:
-# There is some weird bug with geometry that doesn't run the RPOMPT commands correctly before running
-# one of them directly. Need to figure out why and fix it in my fork.
-geometry_git
 
 compinit
 
