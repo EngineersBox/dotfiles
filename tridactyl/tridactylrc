@@ -1,0 +1,10 @@
+set configversion 2.0
+
+" Theme
+set theme dark
+
+" Editor
+set edtiorcmd /opt/homebrew/bin/ghostty -e nvim
+
+" Movement
+set smoothscroll true
