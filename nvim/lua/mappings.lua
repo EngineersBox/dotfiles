@@ -26,6 +26,7 @@ local gitsigns = require('gitsigns')
 map({ "n", "v" }, "ghp", function() gitsigns.preview_hunk() end, { desc = "Git preview hunk" })
 map({ "n", "v" }, "ghip", function() gitsigns.preview_hunk_inline() end, { desc = "Git preview hunk inline" })
 map({ "n", "v" }, "ghr", function() gitsigns.reset_hunk() end, { desc = "Git reset hunk" })
+map("n", "gbr", function() gitsigns.reset_buffer() end, { desc = "Git reset buffer" })
 map({ "n", "v" }, "gb", function() gitsigns.blame() end, { desc = "Git toggle blame" })
 map({ "n", "v" }, "gbl", function() gitsigns.blame_line() end, { desc = "Git blame line" })
 
@@ -51,6 +52,17 @@ map("n", "<leader>wv", "<cmd> vsplit<CR>", { desc = "Window split vertically" })
 map("n", "<leader>wh", "<cmd> split<CR>", { desc = "Window split horizontally" })
 
 -- Terminal
-map({ "n", "t" }, "<C-t>", function()
-  require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
-end, { desc = "terminal toggle floating term" })
+map(
+    { "n", "t" }, "<C-t>",
+    function()
+        require("nvchad.term").toggle {
+            pos = "float",
+            id = "floatTerm"
+        }
+    end,
+    { desc = "Terminal toggle floating term" }
+)
+map("t", "<C-h>", [[<C-\><C-N><C-h>]], { desc = "Terminal move to right window" })
+map("t", "<C-l>", [[<C-\><C-N><C-l>]], { desc = "Terminal move to left window" })
+map("t", "<C-j>", [[<C-\><C-N><C-j>]], { desc = "Terminal move to below window" })
+map("t", "<C-k>", [[<C-\><C-N><C-k>]], { desc = "Terminal move to above window " })
