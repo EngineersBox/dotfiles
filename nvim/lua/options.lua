@@ -22,4 +22,5 @@ vim.cmd([[
     set cursorline
     set cursorlineopt=screenline,number
     set switchbuf=useopen
+    set whichwrap=b,s
 ]])

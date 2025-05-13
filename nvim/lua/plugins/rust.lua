@@ -10,6 +10,8 @@ return {
         lazy = false,
         dependencies = {
             "lvimuser/lsp-inlayhints.nvim",
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
         },
         config = function()
             local nvchad_configs = require("nvchad.configs.lspconfig")
