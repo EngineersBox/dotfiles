@@ -1,0 +1,10 @@
+" Theming Settings
+set customtheme {"rustmenu": "~/.config/tridactyl/themes/rustmenu.css", "alt_quake": "~/.config//tridactyl/themes/alt_quake.css"}
+    " auto,dark,default,greenmat,halloween,midnight,quake,quakelight,shydactyl 
+set theme dark
+
+" Editing
+set editorcmd /bin/ghostty -e nvim
+
+" View
+set smoothscroll true
