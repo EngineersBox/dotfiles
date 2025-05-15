@@ -17,7 +17,7 @@ adjust-underline-position = 20
 
 window-theme = dark
 window-padding-x = 10
-window-padding-y = 5,10
+window-padding-y = 5,5
 window-title-font-family = Monocraft
 
 macos-titlebar-style = hidden
