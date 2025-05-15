@@ -1,3 +1,4 @@
+# Themeing
 font-family = Monocraft
 font-style = Regular
 font-style-bold = "Bold"
@@ -5,9 +6,12 @@ font-style-italic = "Italic"
 font-style-bold-italic = "Bold-Italic"
 font-size = 10.5
 #font-thicken
+theme = gruvbox_material_dark_soft
+background-opacity = 0.7
+background-blur = 60
 
 # displays: {"1": "0%", "3": "-13%"}
-adjust-cell-width = 0%
+adjust-cell-width = -13%
 adjust-cell-height = 25%
 adjust-underline-position = 20
 
@@ -16,7 +20,7 @@ window-padding-x = 10
 window-padding-y = 5,10
 window-title-font-family = Monocraft
 
-macos-titlebar-style = tabs 
+macos-titlebar-style = transparent
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
@@ -34,5 +38,3 @@ keybind = cmd+shift+l=goto_split:right
 # Navigate tabs
 keybind = ctrl+shift+left=previous_tab
 keybind = ctrl+shift+right=next_tab
-
-theme = gruvbox_material_dark_soft
