@@ -16,9 +16,9 @@ local battery = sbar.add("alias", "Control Centre,Battery", {
 local function level_to_colour(level)
     if level < 20 then
         return colors.red
-    elseif level < 50 then
+    elseif level < 35 then
         return colors.orange
-    elseif level < 75 then
+    elseif level < 50 then
         return colors.yellow
     end
     return colors.light_green
