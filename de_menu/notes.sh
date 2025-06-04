@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. $HOME/.config/dmenu/config.sh
+. ~/.config/de_menu/config.sh
 
 folder=$HOME/notes/
 
@@ -9,9 +9,8 @@ open_note() {
 }
 
 newnote() {
-  name="$(echo "" | $DMENU -sb "#a3be8c" -nf "#d8dee9" -p "New note name: " <&-)" || exit 0
+  name="$($DMENU --prompt_bg "#a3be8cff" -p "New note name: ")" || exit 0
   : "${name:=$(date +%F_%T | tr ':' '-')}"
-  echo "NAME: $name"
   open_note "$folder$name.md"
 }
 

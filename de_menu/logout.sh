@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. $HOME/.config/dmenu/config.sh
+. ~/.config/de_menu/config.sh
 
 options() {
     choice="$(printf "Lock Screen\nReboot\nShutdown" | $DMENU -p "Shutdown menu:")" || exit 0
