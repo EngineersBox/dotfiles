@@ -9,5 +9,6 @@ ls -d /Applications/*.app \
       | rev \
       | cut -c5- \
       | rev \
+      | sort \
       | $DMENU \
       | xargs -I {} open -a  "{}"

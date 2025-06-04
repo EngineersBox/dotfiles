@@ -2,25 +2,21 @@
 
 . ~/.config/de_menu/config.sh
 
-folder=$HOME/notes/
+notes_dir=$HOME/notes
 
-open_note() {
+function open_note() {
     open -na Ghostty --args -e "nvim $1"
 }
 
-newnote() {
+function newnote() {
   name="$($DMENU --prompt_bg "#a3be8cff" -p "New note name: ")" || exit 0
   : "${name:=$(date +%F_%T | tr ':' '-')}"
-  open_note "$folder$name.md"
+  open_note "$notes_dir/$name.md"
 }
 
-selected() {
-  choice=$(printf "New\n%s" "$(command ls -t1 "$folder")" | $DMENU -p "Choose note or create new: ")
-  case $choice in
+choice=$(printf "New\n%s" "$(command ls -t1 "$notes_dir")" | $DMENU -p "Create/Edit Note:")
+case $choice in
     New) newnote ;;
-    *.md) open_note "$folder$choice" ;;
+    *.md) open_note "$notes_dir/$choice" ;;
     *) exit ;;
-  esac
-}
-
-selected
+esac
