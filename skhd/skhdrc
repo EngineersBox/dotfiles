@@ -1,4 +1,5 @@
 # dmenu
-cmd + space : open -a Xquartz && /usr/bin/env bash -l -c "sh $HOME/.config/dmenu/apps.sh"    # App launcher
-cmd + shift - l : open -a Xquartz && /usr/bin/env bash -l -c "sh ~/Dotfiles/dmenu/logout.sh" # Logout menu
-cmd + shift - n : open -a Xquartz && /usr/bin/env bash -l -c "sh ~/Dotfiles/dmenu/notes.sh"  # Notes
+cmd - space : /usr/bin/env bash -l -c "sh ~/.config/de_menu/apps.sh"    # App launcher
+cmd + shift - q : /usr/bin/env bash -l -c "sh ~/.config/de_menu/logout.sh" # Logout menu
+cmd + shift - n : /usr/bin/env bash -l -c "sh ~/.config/de_menu/notes.sh"  # Notes
+cmd + shift - e : /usr/bin/env bash -l -c "sh ~/.config/de_menu/calc.sh" # Calculator
