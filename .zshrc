@@ -42,7 +42,9 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # ---- PATH ENV VAR ---- #
 
-export PATH="/opt/homebrew/opt/gnu-getopt/bin:/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$HOME/.pub-cache/bin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-getopt/bin:/usr/local/sbin:/Applications/CMake.app/Contents/bin:/usr/local/code:$HOME/.autojump/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/opt/homebrew/:sbin:$HOME/.local/bin:$HOME/.local/sbin:$HOME/Library/psn00bsdk/bin:$HOME/.pub-cache/bin:$HOME/.spicetify:$PATH"
+export MANPATH="/opt/homebrew/share/man:$MANPATH"
+
 CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 # ---- FUNCTIONS ---- #
@@ -230,14 +232,15 @@ export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/libffi/lib/pkgconfig:/us
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=numbers,header,grid --line-range :300 {}'"
 export PSN00BSDK_LIBS="$HOME/Library/psn00bsdk/lib/libpsn00b"
 export GPG_TTY=$(tty)
-
+export TERMINAL=$(which ghostty)
+export FONTCONFIG_PATH="$(brew --prefix)/etc/fonts"
 
 # Opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 # Configure ghostty config
-pushd -q ~/.config/ghostty
-go run update_config.go
+pushd -q ~/.config/cfg_updater
+cfg_updater -cfg ~/.config/ghostty/config
 popd -q
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -247,4 +250,3 @@ if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '
 if [ -f '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jackkilrain/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 compinit
-
