@@ -1,4 +1,4 @@
-module engineersbox.com/ghostty_config
+module engineersbox.com/cfg_updater
 
 go 1.24.2
 

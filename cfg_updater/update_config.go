@@ -1,7 +1,7 @@
 // Based on the gist by raylee: https://gist.github.com/raylee/283c0299e32926334f3ff5bf7f3e280d
 
 /*
-Example ghostty config snippet:
+Example config snippet:
 
 # displays: {"3": "-13%", "1": "0%"}
 adjust-cell-with = "0%"
@@ -22,11 +22,15 @@ import (
 )
 
 var (
-	cfg = flag.String("fn", "~/.config/ghostty/config", "config file path")
+	cfg = flag.String("cfg", "", "config file path")
 )
 
 func main() {
 	flag.Parse()
+	if *cfg == "" {
+		fmt.Fprintln(os.Stderr, "Expected config path")
+		os.Exit(1)
+	}
 
 	// Expand the config file path, subsituting ~ with the home directory
 	homeDir, err := os.UserHomeDir()
