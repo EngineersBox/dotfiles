@@ -3,9 +3,7 @@ local nvchad_configs = require("nvchad.configs.nvimtree");
 -- patched nerdfonts, they end up with incorrect displayed
 -- icons.
 nvchad_configs.renderer = {
-    renderer = {
-        group_empty = true,
-    },
+    group_empty = true,
     icons = {},
 }
 return nvchad_configs
