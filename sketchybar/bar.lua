@@ -9,9 +9,9 @@ sbar.bar(
         color = colors.transparent,
         padding_right = 0,
         padding_left = 0,
-        margin = 10,
+        margin = 5,
         corner_radius = 8,
-        y_offset = 8,
+        y_offset = 5,
         shadow = true,
         blur_radius = 10,
         position = "top"

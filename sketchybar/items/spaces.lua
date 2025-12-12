@@ -14,22 +14,21 @@ local function split(inputstr, sep)
   return t
 end
 
-local function parse_string_to_table(s)
+local function parse_workspace_monitor_mappings(s)
     local result = {}
     table.insert(result, {
         workspace = "...",
-        monitor = 1,
-        -- monitor = 3,
+        monitor = settings.primary_monitor,
     })
     for line in s:gmatch("([^\n]+)") do
         local split_line = split(line, "%s")
         local monitor = tonumber(split_line[2])
-        if monitor == 1 then
+        if monitor == settings.primary_monitor then
             goto continue
         end
         table.insert(result, {
             workspace = split_line[1],
-            monitor = tonumber(split_line[2]) == 2 and 3 or 2,
+            monitor = settings.monitor_ordering[tonumber(split_line[2])]
         })
         ::continue::
     end
@@ -38,10 +37,10 @@ end
 sbar.add("event", "aerospace_workspace_change")
 
 sbar.exec("aerospace list-workspaces --all --format '%{workspace} %{monitor-id}'", function (workspace_monitor_mappings)
-    local workspaces = parse_string_to_table(workspace_monitor_mappings)
+    local workspaces = parse_workspace_monitor_mappings(workspace_monitor_mappings)
     sbar.exec("aerospace list-workspaces --focused --format '%{workspace}'", function(all_workspaces)
         local focused = all_workspaces:gsub("\n", "")
-        for i, layout in ipairs(workspaces) do
+        for _, layout in ipairs(workspaces) do
             local workspace = layout["workspace"]
             local monitor = layout["monitor"]
             local initial_selected = workspace == focused
@@ -56,7 +55,7 @@ sbar.exec("aerospace list-workspaces --all --format '%{workspace} %{monitor-id}'
                     padding_right = 5,
                     string = workspace,
                     font = {
-                        family = "Monocraft",
+                        family = settings.font.text,
                         style = settings.font.style_map["Regular"],
                         size = 12,
                     },
@@ -69,7 +68,7 @@ sbar.exec("aerospace list-workspaces --all --format '%{workspace} %{monitor-id}'
                 local selected = env.FOCUSED_WORKSPACE == workspace
                 space:set({
                     label = {
-                        color = selected and colors.pink or colors.grey, 
+                        color = selected and colors.pink or colors.grey,
                         font = {
                             style = selected and settings.font.style_map["Bold"] or settings.font.style_map["Regular"],
                         },
