@@ -4,6 +4,14 @@ local settings = require("settings")
 
 local popup_width = 180
 
+sbar.add(
+    "item",
+    {
+        position = "right",
+        width = settings.group_paddings
+    }
+)
+
 local volume_percent =
     sbar.add(
         "item",
@@ -64,13 +72,6 @@ local volume_bracket =
         }
     )
 
--- sbar.add(
---     "item",
---     {
---         position = "right",
---         width = settings.group_paddings
---     }
--- )
 local volume_slider =
 
     sbar.add(
