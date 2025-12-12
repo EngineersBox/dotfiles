@@ -1,7 +1,7 @@
 # Internal Behaviour
 
 [core]
-    pager = delta
+    pager = diffnav
     compression = 9
     whitespace = error
     preloadindex = true
