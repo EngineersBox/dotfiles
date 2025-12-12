@@ -1,11 +1,12 @@
 #!/bin/bash
 
 options=(
-    style=uniform
-    width=6.0
+    style=round
+    width=4.0
     hidpi=on
     active_color=0xffe2e2e3
     inactive_color=0x00414550
+    blacklist="de_menu"
 )
 
 borders "${options[@]}"
