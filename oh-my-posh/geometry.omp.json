@@ -37,7 +37,8 @@
         "rust_stable": "green",
         "rust_nightly": "red",
         "rust_beta": "yellow",
-        "zig": "yellow"
+        "zig": "yellow",
+        "ssh": "magenta"
     },
 	"blocks": [
 		{
@@ -53,9 +54,14 @@
                     }
                 },
                 {
+                    "type": "session",
+                    "style": "diamond",
+                    "template": " {{if .SSHSession}}<p:ssh>{{.UserName}}:{{.HostName}}</p>{{end}}"
+                },
+                {
                     "type": "path",
                     "style": "plain",
-                    "template": "<p:path_colour>{{.Path}}",
+                    "template": " <p:path_colour>{{.Path}}",
                     "options": {
                         "style": "agnoster_short",
                         "max_depth": 3,
@@ -69,6 +75,14 @@
             "alignment": "right",
             "overflow": "hide",
             "segments": [
+                {
+                    "type": "status",
+                    "style": "plain",
+                    "template": "{{if ne .Code 0}} [<p:status_fail_colour>{{.Code}} {{reason .Code}}</>] {{end}}",
+                    "options": {
+                        "always_enabled": false
+                    }
+                },
                 {
                     "type": "executiontime",
                     "style": "plain",
