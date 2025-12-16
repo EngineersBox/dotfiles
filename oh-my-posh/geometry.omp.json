@@ -78,7 +78,7 @@
                 {
                     "type": "status",
                     "style": "plain",
-                    "template": "{{if ne .Code 0}} [<p:status_fail_colour>{{.Code}} {{reason .Code}}</>] {{end}}",
+                    "template": "{{if ne .Code 0}} [<p:status_fail_colour>{{if eq (.Code | printf \"%d\") (.Code | reason)}}{{.Code}}{{else}}{{.Code}} {{reason .Code}}{{end}}</>] {{end}}",
                     "options": {
                         "always_enabled": false
                     }
