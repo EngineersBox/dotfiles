@@ -48,7 +48,7 @@
                 {
                     "type": "status",
                     "style": "plain",
-                    "template": "{{if .Error}} <p:status_fail_colour>{{.Var.Status.Fail}} {{else}} <p:status_success_colour>{{.Var.Status.Success}} {{end}}",
+                    "template": "{{if .Error}}<p:status_fail_colour>{{.Var.Status.Fail}}{{else}}<p:status_success_colour>{{.Var.Status.Success}}{{end}}",
                     "options": {
                         "always_enabled": true
                     }
