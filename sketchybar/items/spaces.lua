@@ -23,7 +23,7 @@ local function parse_workspace_monitor_mappings(s)
     for line in s:gmatch("([^\n]+)") do
         local split_line = split(line, "%s")
         local monitor = tonumber(split_line[2])
-        if monitor == settings.primary_monitor then
+        if monitor == settings.monitor_ordering[settings.primary_monitor] then
             goto continue
         end
         table.insert(result, {
