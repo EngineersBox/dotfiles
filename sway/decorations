@@ -1,0 +1,8 @@
+# setting a solid background color. if you want to change it to a wallpaper replace the
+# hex color with the path to wallpaper and replace "solid_color" with "fill".
+#
+# for more info, run `man 5 sway-output`
+output * bg #786958 solid_color
+
+# See `man 5 sway`
+font pango:Monocraft Regular 10

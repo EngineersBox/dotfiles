@@ -1,0 +1,78 @@
+{
+    "layer": "top",
+    "spacing": 0,
+    "height": 0,
+
+    "margin-top": 0,
+    "margin-right": 0,
+    "margin-bottom": 0,
+    "margin-left": 0,
+
+    "modules-left":
+    [
+        "sway/workspaces"
+    ],
+
+    "modules-center":
+    [
+    ],
+
+    "modules-right":
+    [
+        "tray",
+        "battery",
+        "network",
+        "pulseaudio",
+        "clock"
+    ],
+
+    "sway/workspaces":
+    {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "tooltip": false
+    },
+
+    "tray":
+    {
+        "spacing": 10,
+        "tooltip": false
+    },
+
+    "battery":
+    {
+        "format": "Bat {capacity}%",
+        "interval": 5,
+        "states":
+        {
+            "warning": 20,
+            "critical": 10
+        },
+        "tooltip": false
+    },
+
+    "network":
+    {
+        "format-wifi": "{essid}",
+        "format-ethernet": "{ipaddr}/{cidr}",
+        "format-disconnected" : "No Network",
+        "tooltip": false
+    },
+
+    "pulseaudio":
+    {
+        "scroll-step": 5,
+        "max-volume": 150,
+        "format": "Vol {volume}%",
+        "format-bluetooth": "Vol {volume}%",
+        "nospacing": 1,
+        "on-click": "pavucontrol",
+        "tooltip": false
+    },
+
+    "clock":
+    {
+        "format": "{:%a %d-%m-%Y %I:%M}",
+        "tooltip": false
+    }
+}

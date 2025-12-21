@@ -1,0 +1,28 @@
+# floating window control rules
+# -----------------------------
+#
+# drag floating windows by holding down $mod and left mouse button.
+# resize them with right mouse button + $mod.
+# despite the name, also works for non-floating windows.
+
+# start a terminal. you can change the terminal in variables file.
+bindsym $mod+return exec $term
+
+# kill focused window.
+bindsym $mod+q kill
+
+# start your launcher.
+bindsym $mod+space exec $menu
+
+# take screenshot.
+bindsym $mod+s exec $config_path/screenshot.sh
+
+# change normal to inverse to use left mouse button for resizing and
+# right mouse button for dragging.
+floating_modifier $mod normal
+
+# reload the configuration file.
+bindsym $mod+Shift+c reload
+
+# exit sway (logs you out of your wayland session).
+bindsym $mod+Shift+q exec $config_path/logout.sh
