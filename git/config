@@ -101,8 +101,8 @@
 [url "git@github.com:"]
     insteadOf = "gh:"
 
-[url "git@gitlab.cecs.anu.edu.au:"]
+[url "git@gitlab.comp.anu.edu.au:"]
     insteadOf = "cecs:"
 
-[url "git@gitlab.cecs.anu.edu.au:u6940136/"]
+[url "git@gitlab.comp.anu.edu.au:u6940136/"]
     insteadOf = "jk:"
