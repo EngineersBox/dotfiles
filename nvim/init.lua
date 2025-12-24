@@ -46,3 +46,5 @@ vim.cmd [[
 vim.cmd [[
     let g:zig_fmt_autosave = 0
 ]]
+
+require("configs.lspconfig")

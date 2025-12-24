@@ -1,4 +1,5 @@
 local nvchad_configs = require("nvchad.configs.lspconfig")
+nvchad_configs.defaults()
 
 local on_attach = function(client, bufnr)
     nvchad_configs.on_attach(client, bufnr)
@@ -33,66 +34,50 @@ end
 
 local lspconfig = require("lspconfig")
 local servers = {
-  "html",
-  "cssls",
-  "pyright",
-  "ts_ls",
-  "cmake",
-  -- "clangd",
-  "clojure_lsp",
-  "gopls",
-  "vimls",
-  "asm_lsp",
-  "bashls",
-  "dotls",
-  "texlab",
-  "buf_ls",
-  "dockerls",
-  "marksman",
-  "jinja_lsp",
-  "zls",
-  "wgsl_analyzer",
-  "vhdl_ls",
-  "veridian",
-  "verible",
-  "thriftls",
-  "tflint",
-  "texlab",
-  "svls",
-  "svlangserver",
-  "zls",
-  "dartls"
+    html = {},
+    cssls = {},
+    pyright = {},
+    ts_ls = {},
+    cmake = {},
+    clangd = {},
+    gopls = {},
+    vimls = {},
+    asm_lsp = {},
+    bashls = {},
+    dotls = {},
+    buf_ls = {},
+    dockerls = {},
+    marksman = {},
+    jinja_lsp = {},
+    texlab = {},
+    zls = {},
+    rust_analyzer = {},
+    json_ls = {},
 }
 
 -- lsps with default config
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    on_init = nvchad_configs.on_init,
-    capabilities = nvchad_configs.capabilities,
-  }
+for lsp, _ in pairs(servers) do
+    servers[lsp] = {
+        on_attach = on_attach,
+        on_init = nvchad_configs.on_init,
+        capabilities = nvchad_configs.capabilities,
+    }
 end
 
-lspconfig['jdtls'].setup({
+servers.jdtls = {
     on_init = nvchad_configs.on_init,
     on_attach = on_attach,
     capabilities = nvchad_configs.capabilities,
     cmd = { "jdtls" },
     root_dir = function(name)
-        return lspconfig['jdtls'].util.root_pattern(
+        return lspconfig.util.root_pattern(
             'pom.xml',
             'gradle.build',
             '.git'
         )(name) or vim.fn.getcwd()
-    end
-})
-
-lspconfig['jsonls'].setup({
-    on_attach = on_attach,
-    on_init = nvchad_configs.on_init,
-    capabilities = nvchad_configs.capabilities,
-})
-lspconfig['lua_ls'].setup({
+    end,
+}
+servers.lua_ls = {
     on_attach = on_attach,
     on_init = nvchad_configs.on_init,
     capabilities = nvchad_configs.capabilities,
@@ -112,8 +97,8 @@ lspconfig['lua_ls'].setup({
             },
         },
     },
-})
-lspconfig['groovyls'].setup({
+}
+servers.groovyls = {
     on_attach = on_attach,
     on_init = nvchad_configs.on_init,
     capabilities = nvchad_configs.capabilities,
@@ -122,12 +107,17 @@ lspconfig['groovyls'].setup({
         "-jar",
         "/home/jackkilrain/repos/groovy-language-server/build/libs/groovy-language-server-all.jar"
     },
-})
+}
 
 local root_pattern = lspconfig.util.root_pattern('.git')
 local function file_exists(name)
-   local f=io.open(name,"r")
-   if f ~= nil then io.close(f) return true else return false end
+    local f = io.open(name, "r")
+    if f ~= nil then
+        io.close(f)
+        return true
+    else
+        return false
+    end
 end
 -- Might be cleaner to try to expose this as a pattern from `lspconfig.util`, as
 -- really it is just stolen from part of the `clangd` config
@@ -160,16 +150,55 @@ local function format_clangd_command()
         return { "/usr/local/bin/cclangd", name, project_root }
     end
 end
-lspconfig["clangd"].setup({
+servers.clangd = {
     on_attach = on_attach,
     cmd = format_clangd_command(),
-})
+}
 
 -- jinja_lsp
 vim.filetype.add {
-  extension = {
-    jinja = 'jinja',
-    jinja2 = 'jinja',
-    j2 = 'jinja',
-  },
+    extension = {
+        jinja = 'jinja',
+        jinja2 = 'jinja',
+        j2 = 'jinja',
+    },
 }
+
+for lsp, config in pairs(servers) do
+    vim.lsp.config(lsp, config)
+    vim.lsp.enable(lsp)
+end
+
+local autocmd = vim.api.nvim_create_autocmd
+
+autocmd("BufReadPost", {
+    pattern = "*",
+    callback = function()
+        local line = vim.fn.line "'\""
+        if
+            line > 1
+            and line <= vim.fn.line "$"
+            and vim.bo.filetype ~= "commit"
+            and vim.fn.index({ "xxd", "gitrebase" }, vim.bo.filetype) == -1
+        then
+            vim.cmd 'normal! g`"'
+        end
+    end,
+})
+if dfsd then
+    
+end
+
+vim.o.foldmethod = 'expr'
+-- Default to treesitter folding
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+-- Prefer LSP folding if client supports it
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client:supports_method('textDocument/foldingRange') then
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+        end
+    end,
+})
