@@ -22,6 +22,7 @@ local_tools - Listings of local tools and their purpose
 
 * `tdf`: Document viewer supporting pdf, epub and ctz, using the Kitty graphics protocol.
 * `tspin`: Log viewer with syntax highlighting on common log elements
+* `flameshow`: Flamegraph viewer
 
 == Research
 
