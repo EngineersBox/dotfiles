@@ -1,0 +1,12 @@
+[Unit]
+Description=davmail
+After=network.target
+
+[Service]
+Type=simple
+User=%u
+ExecStart=davmail %h/.config/davmail/config.properties
+Retsart=always
+
+[Install]
+WantedBy=default.target

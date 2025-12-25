@@ -1,0 +1,38 @@
+= local_tools(1)
+Jack Kilrain
+v1.0.0
+:doctype: manpage
+:manmanual: local_tools
+:mansource: local_tools
+:man-linkstyle: pass:[blue R < >]
+
+== Name 
+
+local_tools - Listings of local tools and their purpose
+
+== Synopsis
+
+*local_tools*
+
+== System
+
+* `bluetoothctl`: Manage blueooth connections
+
+== Data Viewing
+
+* `tdf`: Document viewer supporting pdf, epub and ctz, using the Kitty graphics protocol.
+* `tspin`: Log viewer with syntax highlighting on common log elements
+
+== Research
+
+* `bibiman`: BibLatex database management for references and citations
+
+== Mail
+
+* `davmail`: Mail exchange gateway with authentication for mail clients to talk to
+* `aerc`: Mail writing and replying (NOTE: has an open https://todo.sr.ht/~rjarry/aerc/323[issue] with MIME type headers when reading emails)
+* `meli`: Mail reading (NOTE: has issue with composing and sending emails, seems like date format is always wrong and results in an SMTP error  code)
+
+== Music
+
+* `spotify_player`: TUI based spotify client

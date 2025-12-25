@@ -1,0 +1,8 @@
+[Unit]
+Description=globalprotect-vpn
+After=network.target
+
+[Service]
+Type=exec
+User=%u
+ExecStart=%h/.config/systemd/user/connect_vpn.sh
