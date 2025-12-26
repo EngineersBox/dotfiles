@@ -3,6 +3,7 @@
 #
 # for more info, run `man 5 sway-output`
 output * bg #786958 solid_color
+# output * bg #232323 solid_color
 
 # See `man 5 sway`
 font pango:Monocraft Regular 10

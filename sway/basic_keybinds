@@ -5,24 +5,34 @@
 # resize them with right mouse button + $mod.
 # despite the name, also works for non-floating windows.
 
-# start a terminal. you can change the terminal in variables file.
+# Start a terminal. you can change the terminal in variables file.
 bindsym $mod+return exec $term
 
-# kill focused window.
+# Kill focused window.
 bindsym $mod+q kill
 
-# start your launcher.
+# Start your launcher.
 bindsym $mod+space exec $menu
 
-# take screenshot.
+# Take screenshot.
 bindsym $mod+s exec $config_path/screenshot.sh
 
-# change normal to inverse to use left mouse button for resizing and
+# Change normal to inverse to use left mouse button for resizing and
 # right mouse button for dragging.
 floating_modifier $mod normal
 
-# reload the configuration file.
+# Reload the configuration file.
 bindsym $mod+Shift+c reload
 
-# exit sway (logs you out of your wayland session).
+# Exit sway (logs you out of your wayland session).
 bindsym $mod+Shift+q exec $config_path/logout.sh
+
+# Volume
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
+bindsym XF86AudioMute exec pactl set-sink-volume @DEFAULT_SINK@ 0
+
+# Screen brightness
+bindsym XF86MonBrightnessUp exec brightnessctl -c backlight set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl -c backlight set 5%-
+
