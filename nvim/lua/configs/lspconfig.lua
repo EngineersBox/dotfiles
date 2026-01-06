@@ -55,6 +55,9 @@ local servers = {
     json_ls = {},
 }
 
+-- Disable inline diagnostics in favour of tiny_inline_diagnostic
+vim.diagnostic.config({ virtual_text = false });
+
 -- lsps with default config
 for lsp, _ in pairs(servers) do
     servers[lsp] = {
