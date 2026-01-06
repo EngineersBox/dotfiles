@@ -18,7 +18,7 @@ window#waybar
 #clock, #pulseaudio, #network, #tray, #battery
 {
     margin: 4px 4px 4px 0px;
-    padding: 2px 8px 2px 8px;
+    padding: 1px 4px 1px 4px;
     color: #1b140a;
     background-color: #b3976d;
     border: 2px solid #8c734e;
@@ -26,13 +26,13 @@ window#waybar
 
 #workspaces
 {
-    margin: 8px 0px 8px 16px;
+    margin: 2px 0px 2px 8px;
 }
 
 #workspaces button
 {
     all: initial;
-    padding: 2px 8px 2px 0px;
+    padding: 2px 5px 2px 0px;
     color: #8c734e;
 }
 
@@ -45,7 +45,7 @@ window#waybar
 #battery.urgent
 {
     background-color: #b3976d;
-    padding: 2px 8px;
+    padding: 1px 4px 1px 4px;
     color: #120e08;
 }
 
@@ -53,7 +53,7 @@ window#waybar
 {
     background-color: #b37b6d;
     border: 2px solid #8a5f54;
-    padding: 2px 8px;
+    padding: 1px 4px 1px 4px;
     color: #120e08;
 }
 
@@ -61,6 +61,6 @@ window#waybar
 {
     background-color: #ad4747;
     border: 2px solid #8a3838;
-    padding: 2px 8px;
+    padding: 1px 4px 1px 4px;
     color: #120e08;
 }
