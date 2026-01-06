@@ -106,11 +106,7 @@ servers.groovyls = {
     on_attach = on_attach,
     on_init = nvchad_configs.on_init,
     capabilities = nvchad_configs.capabilities,
-    cmd = {
-        "java",
-        "-jar",
-        "/home/jackkilrain/repos/groovy-language-server/build/libs/groovy-language-server-all.jar"
-    },
+    cmd = { "groovy_language_server" },
 }
 
 local root_pattern = lspconfig.util.root_pattern('.git')
@@ -189,9 +185,6 @@ autocmd("BufReadPost", {
         end
     end,
 })
-if dfsd then
-    
-end
 
 vim.o.foldmethod = 'expr'
 -- Default to treesitter folding
