@@ -51,7 +51,7 @@ local servers = {
     jinja_lsp = {},
     texlab = {},
     zls = {},
-    rust_analyzer = {},
+    -- rust_analyzer = {},
     json_ls = {},
 }
 
@@ -64,18 +64,22 @@ for lsp, _ in pairs(servers) do
     }
 end
 
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+local jdtls_workspace_dir = vim.fs.abspath('~/.cache/' .. project_name)
 servers.jdtls = {
     on_init = nvchad_configs.on_init,
     on_attach = on_attach,
     capabilities = nvchad_configs.capabilities,
-    cmd = { "jdtls" },
-    root_dir = function(name)
-        return lspconfig.util.root_pattern(
-            'pom.xml',
-            'gradle.build',
-            '.git'
-        )(name) or vim.fn.getcwd()
-    end,
+    cmd = {
+        "jdtls",
+        "-data", jdtls_workspace_dir
+    },
+    root_dir = vim.fs.root(0, {
+        "gradlew",
+        "build.gradle",
+        ".git",
+        "pom.xml"
+    }),
 }
 servers.lua_ls = {
     on_attach = on_attach,
