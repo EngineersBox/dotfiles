@@ -32,7 +32,6 @@ local on_attach = function(client, bufnr)
     -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
-local lspconfig = require("lspconfig")
 local servers = {
     html = {},
     cssls = {},
@@ -75,6 +74,7 @@ servers.jdtls = {
     capabilities = nvchad_configs.capabilities,
     cmd = {
         "jdtls",
+        "-java-executable", "/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home/bin/java",
         "-data", jdtls_workspace_dir
     },
     root_dir = vim.fs.root(0, {
@@ -83,6 +83,46 @@ servers.jdtls = {
         ".git",
         "pom.xml"
     }),
+    settings = {
+        java = {
+            eclipse = {
+				downloadSources = true,
+			},
+			configuration = {
+				updateBuildConfiguration = "interactive",
+			},
+			gradle = {
+				enabled = true,
+			},
+			maven = {
+				downloadSources = true,
+			},
+			implementationsCodeLens = {
+				enabled = true,
+			},
+			referencesCodeLens = {
+				enabled = true,
+			},
+			references = {
+				includeDecompiledSources = true,
+			},
+            inlayHints = {
+                parameterNames = {
+                    enabled = 'all', -- literals, all, none
+                },
+            },
+            signatureHelp = {
+                enabled = true,
+            },
+            autobuild = {
+                enabled = true,
+            }
+        },
+        signatureHelp = { enabled = true },
+    },
+    flags = {
+        allow_incremental_sync = true,
+    },
 }
 servers.lua_ls = {
     on_attach = on_attach,
@@ -112,7 +152,60 @@ servers.groovyls = {
     cmd = { "groovy_language_server" },
 }
 
-local root_pattern = lspconfig.util.root_pattern('.git')
+local function escape_wildcards(path)
+  return path:gsub('([%[%]%?%*])', '\\%1')
+end
+
+local util = {}
+
+function util.strip_archive_subpath(path)
+  -- Matches regex from zip.vim / tar.vim
+  path = vim.fn.substitute(path, 'zipfile://\\(.\\{-}\\)::[^\\\\].*$', '\\1', '')
+  path = vim.fn.substitute(path, 'tarfile:\\(.\\{-}\\)::.*$', '\\1', '')
+  return path
+end
+
+function util.search_ancestors(startpath, func)
+  vim.validate('func', func, 'function')
+  if func(startpath) then
+    return startpath
+  end
+  local guard = 100
+  for path in vim.fs.parents(startpath) do
+    -- Prevent infinite recursion if our algorithm breaks
+    guard = guard - 1
+    if guard == 0 then
+      return
+    end
+
+    if func(path) then
+      return path
+    end
+  end
+end
+
+function util.root_pattern(...)
+  local patterns = vim.iter({...}):flatten(math.huge):totable()
+  return function(startpath)
+    startpath = util.strip_archive_subpath(startpath)
+    for _, pattern in ipairs(patterns) do
+      local match = util.search_ancestors(startpath, function(path)
+        for _, p in ipairs(vim.fn.glob(table.concat({ escape_wildcards(path), pattern }, '/'), true, true)) do
+          if vim.uv.fs_stat(p) then
+            return path
+          end
+        end
+      end)
+
+      if match ~= nil then
+        local real = vim.uv.fs_realpath(match)
+        return real or match -- fallback to original if realpath fails
+      end
+    end
+  end
+end
+
+local root_pattern = util.root_pattern('.git')
 local function file_exists(name)
     local f = io.open(name, "r")
     if f ~= nil then
@@ -122,7 +215,7 @@ local function file_exists(name)
         return false
     end
 end
--- Might be cleaner to try to expose this as a pattern from `lspconfig.util`, as
+-- Might be cleaner to try to expose this as a pattern from `lspconfig`, as
 -- really it is just stolen from part of the `clangd` config
 local function format_clangd_command()
     -- Turn the name of the current file into the name of an expected container, assuming that
@@ -134,11 +227,18 @@ local function format_clangd_command()
     -- Project root
     local project_root = vim.fn.getcwd()
     -- Turned into a filename
-    local filename = vim.startswith(bufname, "/") and bufname or lspconfig.util.path.join(project_root, bufname)
+    local filename = vim.startswith(bufname, "/")
+        and bufname
+        or table.concat({project_root, bufname}, "/")
     -- Then the directory of the project
-    local project_dirname = root_pattern(filename) or lspconfig.util.path.dirname(filename)
+    local project_dirname = root_pattern(filename) or vim.fs.dirname(filename)
     -- And finally perform what is essentially a `basename` on this directory
-    local basename = vim.fn.fnamemodify(lspconfig.util.find_git_ancestor(project_dirname), ':t')
+    local basename = vim.fn.fnamemodify(vim.fs.dirname(
+        vim.fs.find(
+            '.git',
+            { path = project_dirname, upward = true }
+        )[1]
+    ), ':t')
     if (basename == nil) then
         return nil
     end
