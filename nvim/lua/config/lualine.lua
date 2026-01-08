@@ -1,0 +1,54 @@
+local lualine = require("lualine")
+local icon = require("config.icons")
+local diagnostics = {
+    "diagnostics",
+    sources = { "nvim_diagnostic" },
+    sections = { "error", "warn", "info", "hint" },
+    symbols = {
+      error = icon.diagnostics.Error,
+      hint = icon.diagnostics.Hint,
+      info = icon.diagnostics.Info,
+      warn = icon.diagnostics.Warning,
+    },
+    colored = true,
+    update_in_insert = false,
+    always_visible = false,
+}
+
+local diff = {
+    "diff",
+    source = function()
+      local gitsigns = vim.b[vim.api.nvim_get_current_buf()].minidiff_summary
+      if gitsigns then
+        return {
+          added = gitsigns.add,
+          modified = gitsigns.change,
+          removed = gitsigns.delete,
+        }
+      end
+    end,
+    symbols = {
+      added = icon.git.LineAdded .. " ",
+      modified = icon.git.LineModified .. " ",
+      removed = icon.git.LineRemoved .. " ",
+    },
+    colored = true,
+    always_visible = false,
+}
+lualine.setup({
+    options = {
+        theme = require("lualine.themes.gruvbox_custom"),
+        globalstatus = true,
+        section_separators = "",
+        component_separators = "",
+        disabled_filetypes = { "mason", "lazy", "NvimTree", "TelescopePrompt" },
+    },
+    sections = {
+        lualine_a = {"mode"},
+        lualine_b = {"branch", diff},
+        lualine_c = {"filename"},
+        lualine_x = {diagnostics, "filetype"},
+        lualine_y = {},
+        lualine_z = {"location"}
+    },
+})
