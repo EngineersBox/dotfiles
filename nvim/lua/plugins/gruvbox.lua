@@ -40,7 +40,7 @@ return {
 					set_hl("CursorLineNr", {"#73d3de", "284"}, palette.none)
 				end,
 			})
-			vim.cmd.colorscheme("gruvbox-material")
+			--vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
 }

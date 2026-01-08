@@ -4,22 +4,12 @@ return {
         dependencies = {
             { 'tjdevries/colorbuddy.nvim' }
         },
-        lazy = true,
-        priority = 999,
-        opts = {
-            preset = "minimal",
-            colors = {
-                primary = "#b85456",
-                background = "#211f1e"
-            }
-        }
-    },
-    {
-        "ntk148v/komau.vim",
-        lazy = false
-    },
-    {
-        "kdheepak/monochrome.nvim",
-        lazy = false
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require("noirbuddy").setup({
+                preset = "minimal"
+            })
+        end,
     }
 }

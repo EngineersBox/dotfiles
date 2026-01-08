@@ -64,7 +64,34 @@ return {
         opts = {
             on_colors = function(colors)
                 colors.glow = "#b85456"
+                colors.bg = "#232323"
             end
         },
+    },
+    {
+        'jesseleite/nvim-noirbuddy',
+        dependencies = {
+            { 'tjdevries/colorbuddy.nvim' }
+        },
+        lazy = true,
+        priority = 999,
+        opts = {
+            preset = "minimal",
+            colors = {
+                primary = "#b85456",
+                background = "#211f1e"
+            }
+        },
+        config = function(opts)
+            require("noirbuddy").setup(opts)
+        end
+    },
+    {
+        "ntk148v/komau.vim",
+        lazy = false
+    },
+    {
+        "kdheepak/monochrome.nvim",
+        lazy = false
     }
 }
