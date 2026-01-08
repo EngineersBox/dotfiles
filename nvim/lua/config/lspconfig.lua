@@ -25,7 +25,11 @@ function M.on_attach(client, bufnr)
     end, opts "List workspace folders")
     map("n", "<leader>D", vim.lsp.buf.type_definition, opts "go to type definition")
     map("n", "<leader>ra", require "lsp.renamer", opts("rename symbol"))
-    map('n', 'K', vim.lsp.buf.hover, opts("hover"))
+    map('n', 'K', function()
+        vim.lsp.buf.hover({
+            border = "single"
+        })
+    end, opts("hover"))
     map('n', 'gi', vim.lsp.buf.implementation, opts("go to implementation"))
     map('n', '<C-k>', vim.lsp.buf.signature_help, opts("signature help"))
     map('n', '<space>ca', vim.lsp.buf.code_action, opts("code action"))
