@@ -22,6 +22,7 @@ return {
         list = {
             selection = {
                 preselect = true,
+                auto_insert = false,
             },
         },
         keyword = { range = "full" },
