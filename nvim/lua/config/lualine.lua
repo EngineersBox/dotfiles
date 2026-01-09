@@ -40,15 +40,15 @@ local icons = require("config.icons")
 local lsp_progress = require("lsp-progress")
 lsp_progress.setup({
 	spinner = icons.spinner,
-	client_format = function(client_name, spinner, series_messages)
+	client_format = function(client_name, _, series_messages)
 		if #series_messages > 0 then
-			return ("%s %s %s"):format(client_name, spinner, table.concat(series_messages, ", "))
+			return ("%s %s"):format(client_name, table.concat(series_messages, ", "))
 		end
 		return nil
 	end,
 	format = function(messages)
 		if #messages > 0 then
-			return ("%s %s"):format(icons.ui.LSP, table.concat(messages, " "))
+			return table.concat(messages, " ")
 		end
 
 		local clients = vim.lsp.get_clients()
@@ -60,7 +60,7 @@ lsp_progress.setup({
 				table.insert(client_names, client.name)
 			end
 		end
-		return ("%s %s"):format(icons.kind.Event, table.concat(client_names, " "))
+		return ""
 	end,
 })
 vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
@@ -81,10 +81,10 @@ lualine.setup({
 	},
 	sections = {
 		lualine_a = { "mode" },
-		lualine_b = { "branch", diff },
-		lualine_c = { "filename", lsp_progress.progress },
-		lualine_x = { diagnostics, "filetype" },
-		lualine_y = {},
+		lualine_b = { "filetype", "filename", "branch", diff },
+		lualine_c = { "%=", lsp_progress.progress },
+		lualine_x = { "searchcount", "selectioncount", diagnostics },
+		lualine_y = { { "lsp_status", symbols = { spinner = icons.spinner, done = "" } } },
 		lualine_z = { "location" },
 	},
 })
