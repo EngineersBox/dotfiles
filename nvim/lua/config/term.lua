@@ -28,6 +28,26 @@ local pos_data = {
   ["bo vsp"] = { resize = "width", area = "columns" },
 }
 
+local configuration = vim.fn['gruvbox_material#get_configuration']()
+local palette = vim.fn['gruvbox_material#get_palette'](configuration.background, configuration.foreground, configuration.colors_override)
+
+vim.g.terminal_color_0=palette.bg5[0]
+vim.g.terminal_color_1=palette.red[0]
+vim.g.terminal_color_2=palette.green[0]
+vim.g.terminal_color_3=palette.yellow[0]
+vim.g.terminal_color_4=palette.blue[0]
+vim.g.terminal_color_5=palette.purple[0]
+vim.g.terminal_color_6=palette.aqua[0]
+vim.g.terminal_color_7=palette.fg0[0]
+vim.g.terminal_color_8=palette.bg5[0]
+vim.g.terminal_color_9=palette.red[0]
+vim.g.terminal_color_10=palette.green[0]
+vim.g.terminal_color_11=palette.yellow[0]
+vim.g.terminal_color_12=palette.blue[0]
+vim.g.terminal_color_13=palette.purple[0]
+vim.g.terminal_color_14=palette.aqua[0]
+vim.g.terminal_color_15=palette.fg0[0]
+
 -- used for initially resizing terms
 vim.g.nvhterm = false
 vim.g.nvvterm = false
