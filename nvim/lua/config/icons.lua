@@ -76,6 +76,7 @@ return {
     Hint = " ",
   },
   spinner = { "", "", "", "", "", "", "", "", "", "", "", "", "" },
+  spinners = { "", "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥", "" },
   dap = {
     Stopped = { " ", "DiagnosticWarn", "DapStoppedLine" },
     Breakpoint = " ",

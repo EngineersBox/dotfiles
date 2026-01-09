@@ -1,5 +1,8 @@
-
 return {
+    {
+    "linrongbin16/lsp-progress.nvim",
+        event = "LspAttach",
+    },
     {
         'nvim-lualine/lualine.nvim',
         lazy = false,

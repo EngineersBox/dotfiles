@@ -39,6 +39,7 @@ return  {
                 "marksman",
                 "jinja-lsp"
             },
+            automatic_enable = false
         },
     }
 }

@@ -1,9 +1,12 @@
 return {
-    {
-        "nvim-tree/nvim-tree.lua",
-        lazy = false,
-        config = function(opts)
-            require("nvim-tree").setup(require("config.nvimtree"))
-        end
-    }
+	{
+		"nvim-tree/nvim-web-devicons",
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+		config = function(_)
+			require("nvim-tree").setup(require("config.nvimtree"))
+		end,
+	},
 }

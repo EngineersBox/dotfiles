@@ -60,6 +60,9 @@ end
 
 return {
 	defaults = {
+        prompt_prefix = "   ",
+        selection_caret = " ",
+        entry_prefix = " ",
 		layout_strategy = "flex",
 		layout_config = {
 			horizontal = {
@@ -77,6 +80,10 @@ return {
 				},
 			},
 		},
+        mappings = {
+          n = { ["q"] = require("telescope.actions").close },
+        },
+        sorting_strategy="ascending",
 		create_layout = function(picker)
 			local border = {
 				results = {
