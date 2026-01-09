@@ -15,24 +15,30 @@ vc(string.format("hi TelescopePromptCounter ctermbg=NONE guifg=White"))
 vc(string.format("hi VertSplit ctermbg=NONE guibg=NONE gui=NONE"))
 local bufferline = require("bufferline")
 return {
-    options = {
-        style_preset = bufferline.style_preset.no_italic,
-        offsets = {
-            {
-                filetype = "NvimTree",
-                text="Nvim Tree",
-                separator= false,
-                text_align = "center"
-            }
-        },
-        indicator = {
-            style = "none"
-        },
-        diagnostics = "nvim_lsp",
-        separator_style = {"", ""},
-        modified_icon = '●',
-        show_close_icon = true,
-        show_buffer_close_icons = true,
-        always_show_bufferline = true,
-    }
+	options = {
+		style_preset = bufferline.style_preset.no_italic,
+		offsets = {
+			{
+				filetype = "NvimTree",
+				text = "Nvim Tree",
+				separator = false,
+				text_align = "center",
+			},
+			{
+				filetype = "neo-tree",
+				text = "Neo Tree",
+				separator = false,
+				text_align = "center",
+			},
+		},
+		indicator = {
+			style = "none",
+		},
+		diagnostics = "nvim_lsp",
+		separator_style = { "", "" },
+		modified_icon = "●",
+		show_close_icon = true,
+		show_buffer_close_icons = true,
+		always_show_bufferline = true,
+	},
 }

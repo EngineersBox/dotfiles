@@ -77,11 +77,18 @@ function M.lsp_mappings(bufnr)
 	map("n", "<space>ca", vim.lsp.buf.code_action, opts("code action"))
 end
 
--- Keymap List
-map("n", "km", "<cmd> Telescope keymaps<CR>", { desc = "Telescope search keymaps" })
-
 -- NvimTree
-map("n", "<C-n>", "<cmd> NvimTreeToggle<CR>", { desc = "NvimTree toggle" })
+-- map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "NvimTree toggle" })
+-- NeoTree
+local neotree_open = false
+map("n", "<C-n>", function()
+    if neotree_open then
+        vim.cmd("Neotree close")
+    else
+        vim.cmd("Neotree source=filesystem reveal=true position=left")
+    end
+    neotree_open = not neotree_open
+end, { desc = "NeoTree toggle" })
 
 -- Git
 local gitsigns = require("gitsigns")
@@ -103,6 +110,7 @@ end, { desc = "Git toggle blame" })
 map({ "n", "v" }, "gbl", function()
 	gitsigns.blame_line()
 end, { desc = "Git blame line" })
+map("n", "<leader>gs", "<cmd>Neotree git_status<CR>", { desc = "Git status" })
 
 -- Trouble
 map("n", "<leader>td", "<cmd> Trouble diagnostics toggle<CR>", { desc = "Trouble global diagnostics" })
@@ -135,6 +143,7 @@ map(
 	{ desc = "telescope find all files" }
 )
 map("n", "<leader>ft", "<cmd> TodoTelescope<CR>", { desc = "Telescope find TODOs" })
+map("n", "<leader>km", "<cmd>Telescope keymaps<CR>", { desc = "Telescope search keymaps" })
 
 -- Comment
 map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
