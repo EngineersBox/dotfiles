@@ -1,7 +1,6 @@
 return {
     hijack_cursor = true,
     filters = {
-        custom = { "^.git$" },
         dotfiles = false,
     },
     sync_root_with_cwd = true,
@@ -11,11 +10,11 @@ return {
     },
     git = {
         enable = true,
-        show_on_dirs = false,
+        show_on_dirs = true,
     },
     renderer = {
-        root_folder_label = false,
-        highlight_git = false,
+        root_folder_label = true,
+        highlight_git = true,
     },
     view = {
         adaptive_size = false,

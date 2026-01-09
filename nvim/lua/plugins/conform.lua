@@ -2,7 +2,7 @@ return {
     {
         "stevearc/conform.nvim",
         opts = function()
-            return reqiure("config.conform")
+            return require("config.conform")
         end
     },
 }

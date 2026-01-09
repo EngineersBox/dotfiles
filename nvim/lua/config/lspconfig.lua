@@ -15,9 +15,16 @@ function M.on_attach(client, bufnr)
     local function opts(desc)
         return { buffer = bufnr, desc = "LSP " .. desc }
     end
+    local goto_preview = require("goto-preview")
     local map = vim.keymap.set
-    map("n", "gD", vim.lsp.buf.declaration, opts("go to declaration"))
-    map("n", "gd", vim.lsp.buf.definition, opts("go to definition"))
+    map("n", "gD", vim.lsp.buf.declaration, opts("Go to declaration"))
+    map("n", "gd", vim.lsp.buf.definition, opts("Go to definition"))
+    map('n', 'gu', "<cmd>Telescope lsp_references<CR>", opts("preview references"))
+    map("n", "gpD", function() goto_preview.goto_preview_declaration({}) end, opts("preview declaration"))
+    map("n", "gpd", "<cmd>Telescope lsp_definitions<CR>", opts("preview definitions"))
+    map('n', 'gpI', "<cmd>Telescope lsp_implementations<CR>", opts("preview implementations"))
+    map('n', 'gpo', "<cmd>Telescope lsp_outgoing_calls<CR>", opts("preview outgoing calls"))
+    map('n', 'gpi', "<cmd>Telescope lsp_incoming_calls<CR>", opts("preview incoming calls"))
     map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts("Workspace add folder"))
     map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Workspace remove folder"))
     map("n", "<leader>wl", function()
@@ -30,10 +37,8 @@ function M.on_attach(client, bufnr)
             border = "single"
         })
     end, opts("hover"))
-    map('n', 'gi', vim.lsp.buf.implementation, opts("go to implementation"))
     map('n', '<C-k>', vim.lsp.buf.signature_help, opts("signature help"))
     map('n', '<space>ca', vim.lsp.buf.code_action, opts("code action"))
-    map('n', 'gr', vim.lsp.buf.references, opts("view references"))
 end
 
 local lspconfig = require("lspconfig")
@@ -76,7 +81,13 @@ for lsp, _ in pairs(servers) do
 end
 
 -- Disable inline diagnostics in favour of tiny_inline_diagnostic
-vim.diagnostic.config({ virtual_text = false });
+local x = vim.diagnostic.severity
+vim.diagnostic.config({
+    virtual_text = false,
+    signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
+    underline = true,
+    float = { border = "single" },
+  });
 
 servers.jdtls = {
     on_attach = M.on_attach,

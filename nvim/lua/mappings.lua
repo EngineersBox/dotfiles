@@ -37,12 +37,12 @@ map("n", "ch", "<cmd> Telescope keymaps<CR>", { desc = "Telescope search keymaps
 map("n", "<C-n>", "<cmd> NvimTreeToggle<CR>", { desc = "NvimTree toggle" })
 
 -- Previews
-map("n", "gpd", function() require("goto-preview").goto_preview_definition() end, { desc = "Preview definition" })
-map("n", "gpD", function() require("goto-preview").goto_preview_declaration() end, { desc = "Preview declaration" })
-map("n", "gpt", function() require("goto-preview").goto_preview_type_definition() end, { desc = "Preview type definition" })
-map("n", "gpi", function() require("goto-preview").goto_preview_implementation() end, { desc = "Preview implementation" })
-map("n", "gP", function() require("goto-preview").close_all_win() end, { desc = "Preview close all windows" })
-map("n", "gr", function() require("goto-preview").goto_preview_references() end, { desc = "Preview references" })
+-- map("n", "gpd", function() require("goto-preview").goto_preview_definition() end, { desc = "Preview definition" })
+-- map("n", "gpD", function() require("goto-preview").goto_preview_declaration() end, { desc = "Preview declaration" })
+-- map("n", "gpt", function() require("goto-preview").goto_preview_type_definition() end, { desc = "Preview type definition" })
+-- map("n", "gpi", function() require("goto-preview").goto_preview_implementation() end, { desc = "Preview implementation" })
+-- map("n", "gP", function() require("goto-preview").close_all_win() end, { desc = "Preview close all windows" })
+-- map("n", "gr", function() require("goto-preview").goto_preview_references() end, { desc = "Preview references" })
 
 -- Git
 local gitsigns = require('gitsigns')
