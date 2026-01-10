@@ -13,3 +13,4 @@ include $config_path/workspace_keybinds
 include $config_path/resize_keybinds
 include $config_path/layout_keybinds
 include $config_path/bar
+include $config_path/monitors
