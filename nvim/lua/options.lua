@@ -9,6 +9,7 @@ vim.opt.showmatch = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.undofile = true
+vim.o.winborder = "single"
 
 vim.cmd.colorscheme("monoglow-void")
 vim.cmd("highlight WinSeparator guifg=#232323")

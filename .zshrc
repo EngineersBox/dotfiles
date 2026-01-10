@@ -218,6 +218,10 @@ alias reload_sketchybar="launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.sketc
 alias kitten="kitty +kitten"
 alias icat="kitten icat"
 
+# -- EDITOR -- #
+
+alias n="nvim"
+
 # ---- EXPORT DEFINITIONS ---- #
 
 export PATH="$HOME/.jenv/bin:$PATH"

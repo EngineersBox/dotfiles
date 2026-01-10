@@ -33,6 +33,7 @@ return {
 		},
 		ghost_text = { enabled = true },
 		menu = {
+            border = "single",
 			draw = {
 				components = {
 					kind_icon = {

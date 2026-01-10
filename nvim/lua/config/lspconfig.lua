@@ -56,23 +56,8 @@ vim.diagnostic.config({
     signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
     underline = true,
     float = { border = "single" },
-  });
+});
 
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local jdtls_workspace_dir = vim.fs.abspath('~/.cache/' .. project_name)
-servers.jdtls = {
-    on_attach = M.on_attach,
-    cmd = {
-        "jdtls",
-        "-data", jdtls_workspace_dir
-    },
-    root_dir = vim.fs.root(0, {
-        "gradlew",
-        "build.gradle",
-        ".git",
-        "pom.xml"
-    }),
-}
 servers.lua_ls = {
     on_attach = M.on_attach,
     settings = {
@@ -95,8 +80,11 @@ servers.lua_ls = {
 
 local root_pattern2 = lspconfig.util.root_pattern('.git')
 local function file_exists(name)
-   local f=io.open(name,"r")
-   if f ~= nil then io.close(f) return true else return false end
+    local f = io.open(name, "r")
+    if f ~= nil then
+        io.close(f)
+        return true
+    else return false end
 end
 -- Might be cleaner to try to expose this as a pattern from `lspconfig.util`, as
 -- really it is just stolen from part of the `clangd` config
@@ -136,11 +124,11 @@ servers.clangd = {
 
 -- jinja_lsp
 vim.filetype.add {
-  extension = {
-    jinja = 'jinja',
-    jinja2 = 'jinja',
-    j2 = 'jinja',
-  },
+    extension = {
+        jinja = 'jinja',
+        jinja2 = 'jinja',
+        j2 = 'jinja',
+    },
 }
 
 for lsp, config in pairs(servers) do
