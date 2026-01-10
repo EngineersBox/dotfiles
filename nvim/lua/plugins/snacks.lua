@@ -1,9 +1,10 @@
 return {
 	{
 		"folke/snacks.nvim",
-		opts = {
-			input = {
-			},
-		},
+		priority = 1000,
+		lazy = false,
+		opts = function()
+		    return require("config.snacks")
+		end,
 	},
 }

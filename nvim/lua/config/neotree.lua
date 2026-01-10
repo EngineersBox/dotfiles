@@ -1,8 +1,13 @@
+local events = require("neo-tree.events")
+local snacks = require("snacks")
+local function on_move(data)
+    snacks.rename.on_rename_file(data.source, data.destination)
+end
 ---@module 'neo-tree'
 ---@type neotree.Config
 return {
 	close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
-	popup_border_style = "NC", -- or "" to use 'winborder' on Neovim v0.11+
+	popup_border_style = "", -- or "" to use 'winborder' on Neovim v0.11+
 	clipboard = {
 		sync = "none", -- or "global"/"universal" to share a clipboard for each/all Neovim instance(s), respectively
 	},

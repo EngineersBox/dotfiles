@@ -1,5 +1,6 @@
 local M = {}
 local map = vim.keymap.set
+local snacks = require("snacks")
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
@@ -24,6 +25,8 @@ end, { desc = "Buffer close" })
 map({ "n", "x" }, "<leader>fm", function()
 	require("conform").format({ lsp_fallback = true })
 end, { desc = "Buffer format" })
+map({ "n", "v" }, "<leader>.", function() snacks.scratch() end, { desc = "Sratch buffer toggle" })
+map({ "n", "v" }, "<leader>S", function() snacks.scratch.select() end, { desc = "Sratch buffer select" })
 
 -- LSP
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
@@ -75,6 +78,9 @@ function M.lsp_mappings(bufnr)
 	end, opts("hover"))
 	map("n", "<C-k>", vim.lsp.buf.signature_help, opts("signature help"))
 	map("n", "<space>ca", vim.lsp.buf.code_action, opts("code action"))
+	map("n", "<C-/>", function()
+		require("snacks").words.jump(1, true)
+	end, opts("jump to next occurance of word under cursor"))
 end
 
 -- NvimTree
@@ -82,12 +88,12 @@ end
 -- NeoTree
 local neotree_open = false
 map("n", "<C-n>", function()
-    if neotree_open then
-        vim.cmd("Neotree close")
-    else
-        vim.cmd("Neotree source=filesystem reveal=true position=left")
-    end
-    neotree_open = not neotree_open
+	if neotree_open then
+		vim.cmd("Neotree close")
+	else
+		vim.cmd("Neotree source=filesystem reveal=true position=left")
+	end
+	neotree_open = not neotree_open
 end, { desc = "NeoTree toggle" })
 
 -- Git
