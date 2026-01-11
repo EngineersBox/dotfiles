@@ -9,7 +9,6 @@ return {
 	quickfile = { enabled = true },
 	scope = { enabled = true },
     scratch = { enabled = true },
-	scroll = { enabled = true },
 	statuscolumn = {
 		enabled = true,
 		left = { "mark", "sign" }, -- priority of signs on the left (high to low)
