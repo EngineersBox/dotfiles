@@ -6,10 +6,6 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
 -- Windows
-map("n", "<C-h>", "<C-w>h", { desc = "Window goto left" })
-map("n", "<C-l>", "<C-w>l", { desc = "Window goto right" })
-map("n", "<C-j>", "<C-w>j", { desc = "Window goto down" })
-map("n", "<C-k>", "<C-w>k", { desc = "Window goto up" })
 map("n", "<leader>wv", "<cmd> vsplit<CR>", { desc = "Window split vertically" })
 map("n", "<leader>wh", "<cmd> split<CR>", { desc = "Window split horizontally" })
 
