@@ -77,6 +77,19 @@ function M.lsp_mappings(bufnr)
 	map("n", "<C-/>", function()
 		require("snacks").words.jump(1, true)
 	end, opts("jump to next occurance of word under cursor"))
+
+    map(
+        "n",
+        "<leader>ic",
+        "<cmd>Telescope hierarchy incoming_calls<cr>",
+        opts("preview incoming call hierarchy")
+    )
+    map(
+        "n",
+        "<leader>oc",
+        "<cmd>Telescope hierarchy outgoing_calls<cr>",
+        opts("preview outgoing call hierarchy")
+    )
 end
 
 -- NvimTree

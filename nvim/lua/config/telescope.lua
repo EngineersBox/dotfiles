@@ -274,4 +274,7 @@ return {
 			return TSLayout(layout)
 		end,
 	},
+    extensions = {
+        hierarchy = {},
+    },
 }
