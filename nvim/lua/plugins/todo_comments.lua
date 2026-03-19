@@ -15,11 +15,13 @@ return {
                 },
                 keywords = {
                     FIX  = { icon = " ", color = "info", alt = { "body", } },
+                    DEBUG = { icon = " ", color = "warning", alt = { "test", } },
                     TODO = { icon = " ", color = "info", alt = { "todo", } },
                     HACK = { icon = " ", color = "warning", alt = { "hack", } },
-                    WARN = { icon = " ", color = "warning", alt = { "warn", } },
-                    TEST = { icon = "⏲ ", color = "test", alt = { "test", } },
-                    DEBUG = { icon = " ", color = "warning", alt = { "test", } },
+                    WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+                    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                    NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+                    TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
                 },
                 merge_keywords = false,
                 -- regex that will be used to match keywords.

@@ -4,6 +4,9 @@ return {
         event = { "BufReadPost", "BufNewFile" },
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
         build = ":TSUpdate",
+        config = function()
+            require("config/treesitter")
+        end
     },
     {
         "neovim/nvim-lspconfig",

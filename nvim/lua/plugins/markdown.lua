@@ -6,7 +6,10 @@ return {
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             "nvim-tree/nvim-web-devicons"
-        }
+        },
+        config = function()
+            return require("config/markview");
+        end
     },
     {
         "iamcco/markdown-preview.nvim",
