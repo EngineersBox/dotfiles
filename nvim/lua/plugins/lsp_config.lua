@@ -1,6 +1,7 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        branch = "main",
         event = { "BufReadPost", "BufNewFile" },
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
         build = ":TSUpdate",
@@ -26,14 +27,5 @@ return {
                 enabled = true
             }
         }
-    },
-    {
-        "MysticalDevil/inlay-hints.nvim",
-        event = "LspAttach",
-        dependencies = { "neovim/nvim-lspconfig" },
-        config = function()
-            local inlay_hints = require("inlay-hints")
-            inlay_hints.setup()
-        end
     }
 }

@@ -92,6 +92,11 @@ local function file_exists(name)
 		return false
 	end
 end
+local path_separator = "/"
+local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win32unix") == 1
+if is_windows == true then
+  path_separator = "\\"
+end
 -- Might be cleaner to try to expose this as a pattern from `lspconfig.util`, as
 -- really it is just stolen from part of the `clangd` config
 local function format_clangd_command()
@@ -104,11 +109,14 @@ local function format_clangd_command()
 	-- Project root
 	local project_root = vim.fn.getcwd()
 	-- Turned into a filename
-	local filename = vim.startswith(bufname, "/") and bufname or lspconfig.util.path.join(project_root, bufname)
+	local filename = vim.startswith(bufname, "/") and bufname or table.concat({project_root, bufname}, path_separator)
 	-- Then the directory of the project
-	local project_dirname = root_pattern2(filename) or lspconfig.util.path.dirname(filename)
+	local project_dirname = root_pattern2(filename) or vim.fs.dirname(filename)
 	-- And finally perform what is essentially a `basename` on this directory
-	local basename = vim.fn.fnamemodify(lspconfig.util.find_git_ancestor(project_dirname), ":t")
+	local basename = vim.fn.fnamemodify(
+        vim.fs.dirname(vim.fs.find('.git', { path = project_dirname, upward = true })[1]),
+        ":t"
+    )
 	if basename == nil then
 		return nil
 	end
@@ -162,10 +170,16 @@ vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client == nil then
+            return
+        end
 		if client:supports_method("textDocument/foldingRange") then
 			local win = vim.api.nvim_get_current_win()
 			vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
 		end
+        if client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+        end
 	end,
 })
 
